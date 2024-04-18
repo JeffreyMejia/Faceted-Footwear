@@ -29,8 +29,17 @@ app.use(express.static(reactStaticDir));
 app.use(express.static(uploadsStaticDir));
 app.use(express.json());
 
-app.get('/api/hello', (req, res) => {
-  res.json({ message: 'Hello, World!' });
+app.get('/api/catalog', async (req, res, next) => {
+  try {
+    const sql = `
+    select * from "products"
+    `;
+    const results = await db.query(sql);
+    const catalog = results.rows;
+    res.status(200).json(catalog);
+  } catch (error) {
+    next(error);
+  }
 });
 
 /*

@@ -36,12 +36,12 @@ export function Carousel() {
   return (
     <div className="flex relative flex-wrap justify-center">
       <FaChevronLeft
-        className="text-primary w-20 h-20 absolute left-0 top-2/4"
+        className="text-primary w-20 h-20 absolute left-0 top-2/4 cursor-pointer"
         onClick={handlePrevious}
       />
       <img className="w-screen my-6" src={footwear[activeIndex]} />
       <FaChevronRight
-        className="text-primary w-20 h-20 absolute  right-0   top-2/4"
+        className="text-primary w-20 h-20 absolute  right-0   top-2/4 cursor-pointer"
         onClick={handleNext}
       />
       <Indicators

@@ -7,7 +7,7 @@ type Props = {
 
 export function NavDrawer({ isOpen, open }: Props) {
   return (
-    <div className="container">
+    <>
       {isOpen && (
         <div className="fixed left-0 top-0 h-screen flex bg-secondary items-center">
           <button onClick={open} className="text-white">
@@ -25,6 +25,6 @@ export function NavDrawer({ isOpen, open }: Props) {
           <h2>Account</h2>
         </div>
       )}
-    </div>
+    </>
   );
 }

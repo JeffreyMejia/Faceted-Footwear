@@ -8,6 +8,7 @@ create schema "public";
 
 CREATE TABLE "products" (
   "productId" serial PRIMARY KEY,
+  "name" text,
   "brand" text,
   "style" text,
   "image" text,
