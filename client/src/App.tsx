@@ -1,35 +1,22 @@
-import { useEffect, useState } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
 import './App.css';
+import { Routes, Route } from 'react-router-dom';
+import { Navbar } from './components/NavBar';
+import { Catalog } from './pages/Catalog';
+import { Registration } from './pages/Registration';
+import { ProductDetails } from './pages/ProductDetails';
+import { NotFound } from './pages/NotFound';
 
 export default function App() {
-  const [serverData, setServerData] = useState('');
-
-  useEffect(() => {
-    async function readServerData() {
-      const resp = await fetch('/api/hello');
-      const data = await resp.json();
-
-      console.log('Data from server:', data);
-
-      setServerData(data.message);
-    }
-
-    readServerData();
-  }, []);
-
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank" rel="noreferrer">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank" rel="noreferrer">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>{serverData}</h1>
+      <Routes>
+        <Route path="/" element={<Navbar />}>
+          <Route index element={<Catalog />} />
+          <Route path="registration" element={<Registration />} />
+          <Route path="details" element={<ProductDetails />} />
+          <Route path="*" element={<NotFound />} />
+        </Route>
+      </Routes>
     </>
   );
 }
