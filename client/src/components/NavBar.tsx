@@ -18,7 +18,7 @@ export function Navbar() {
           <h1 className="text-primary font-bold text-lg text-opacity-95">
             Faceted Footwear
           </h1>
-          <FaCube className="text-primary ml-3 h-7 w-7 hover:animate-spin" />
+          <FaCube className="text-primary ml-3 h-7 w-7 hover:animate-spin active:animate-bounce" />
         </div>
         <div className="flex">
           <FaSearch className="fill-primary cursor-pointer h-7 w-7" />
