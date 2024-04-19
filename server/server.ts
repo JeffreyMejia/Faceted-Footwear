@@ -29,14 +29,19 @@ app.use(express.static(reactStaticDir));
 app.use(express.static(uploadsStaticDir));
 app.use(express.json());
 
-app.get('/api/catalog', async (req, res, next) => {
+app.get(`/api/catalog`, async (req, res, next) => {
   try {
+    const { style } = req.query;
+    console.log('style:', style);
     const sql = `
     select * from "products"
     `;
-    const results = await db.query(sql);
-    const catalog = results.rows;
-    res.status(200).json(catalog);
+    const where = style ? 'where style = $1' : '';
+    console.log(sql + where);
+    const params = style ? [style] : [];
+    const results = await db.query(sql + where, params);
+    const footwearStyles = results.rows;
+    res.status(200).json(footwearStyles);
   } catch (error) {
     next(error);
   }
