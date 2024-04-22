@@ -1,42 +1,67 @@
 import { Link } from 'react-router-dom';
+import { useContext } from 'react';
+import { closeContext } from './NavDrawerCloseContext';
 type BrandProps = {
   isOpen: boolean;
+  handleClosing: () => void;
 };
 
-export function Brand({ isOpen }: BrandProps) {
+export function Brand({ isOpen, handleClosing }: BrandProps) {
+  const { closeNavDrawer } = useContext(closeContext);
+
   return (
     <>
       {isOpen && (
-        <ul className="ml-3 cursor-pointer">
+        <ul className="ml-3 cursor-pointer" onClick={closeNavDrawer}>
           <li>
-            <Link to="/catalog?brand=Adidas">Adidas</Link>
+            <Link onClick={handleClosing} to="/catalog?brand=Adidas">
+              Adidas
+            </Link>
           </li>
           <li>
-            <Link to="/catalog?brand=Asics">Asics</Link>
+            <Link onClick={handleClosing} to="/catalog?brand=Asics">
+              Asics
+            </Link>
           </li>
           <li>
-            <Link to="/catalog?brand=Birkenstock">Birkenstock</Link>
+            <Link onClick={handleClosing} to="/catalog?brand=Birkenstock">
+              Birkenstock
+            </Link>
           </li>
           <li>
-            <Link to="/catalog?brand=Brador">Brador</Link>
+            <Link onClick={handleClosing} to="/catalog?brand=Brador">
+              Brador
+            </Link>
           </li>
           <li>
-            <Link to="/catalog?brand=Grant Stone">Grant Stone</Link>
+            <Link onClick={handleClosing} to="/catalog?brand=Grant Stone">
+              Grant Stone
+            </Link>
           </li>
           <li>
-            <Link to="/catalog?brand=Jim Green">Jim Green</Link>
+            <Link onClick={handleClosing} to="/catalog?brand=Jim Green">
+              Jim Green
+            </Link>
           </li>
           <li>
-            <Link to="/catalog?brand=Jordan">Jordan</Link>
+            <Link onClick={handleClosing} to="/catalog?brand=Jordan">
+              Jordan
+            </Link>
           </li>
           <li>
-            <Link to="/catalog?brand=Nike">Nike</Link>
+            <Link onClick={handleClosing} to="/catalog?brand=Nike">
+              Nike
+            </Link>
           </li>
           <li>
-            <Link to="/catalog?brand=Reebok">Reebok</Link>
+            <Link onClick={handleClosing} to="/catalog?brand=Reebok">
+              Reebok
+            </Link>
           </li>
           <li>
-            <Link to="/catalog?brand=Solovair">Solovair</Link>
+            <Link onClick={handleClosing} to="/catalog?brand=Solovair">
+              Solovair
+            </Link>
           </li>
           <li>
             <Link to="/catalog?brand=Whites">White's</Link>

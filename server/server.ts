@@ -47,6 +47,26 @@ app.get(`/api/catalog`, async (req, res, next) => {
   }
 });
 
+app.get('/api/catalog/details/:productId', async (req, res, next) => {
+  try {
+    const { productId } = req.params;
+    if (!Number.isInteger(+productId)) {
+      throw new ClientError(400, 'productId must be a number');
+    }
+    const sql = `
+    select * from "products"
+    where "productId" = $1
+    `;
+    const params = [productId];
+    const results = await db.query(sql, params);
+    const [product] = results.rows;
+    if (!product) throw new ClientError(404, 'Error that id does not exist!');
+    res.status(200).json(product);
+  } catch (error) {
+    next(error);
+  }
+});
+
 /*
  * Middleware that handles paths that aren't handled by static middleware
  * or API route handlers.

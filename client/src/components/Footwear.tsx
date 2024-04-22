@@ -1,32 +1,50 @@
 import { Link } from 'react-router-dom';
+import { useContext } from 'react';
+import { closeContext } from './NavDrawerCloseContext';
 
 type Footwear = {
   isOpen: boolean;
+  handleClose: () => void;
 };
 
-export function Footwear({ isOpen }: Footwear) {
+export function Footwear({ isOpen, handleClose }: Footwear) {
+  const { closeNavDrawer } = useContext(closeContext);
+
   return (
     <>
       {isOpen && (
         <div>
-          <ul className="ml-3 cursor-pointer">
+          <ul className="ml-3 cursor-pointer" onClick={closeNavDrawer}>
             <li>
-              <Link to="/catalog">Shop all</Link>
+              <Link to="/catalog" onClick={handleClose}>
+                Shop all
+              </Link>
             </li>
             <li>
-              <Link to="/catalog?style=sneakers">Sneakers</Link>
+              <Link to="/catalog?style=sneakers" onClick={handleClose}>
+                Sneakers
+              </Link>
             </li>
             <li>
-              <Link to="/catalog?style=boots">Boots</Link>
+              <Link to="/catalog?style=boots" onClick={handleClose}>
+                Boots
+              </Link>
             </li>
             <li>
-              <Link to="/catalog?style=loafers">Loafers</Link>
+              <Link to="/catalog?style=loafers" onClick={handleClose}>
+                Loafers
+              </Link>
             </li>
             <li>
-              <Link to="/catalog?style=sandals"> Sandals</Link>
+              <Link to="/catalog?style=sandals" onClick={handleClose}>
+                {' '}
+                Sandals
+              </Link>
             </li>
             <li>
-              <Link to="/catalog?style=dress">Dress shoes</Link>
+              <Link to="/catalog?style=dress" onClick={handleClose}>
+                Dress shoes
+              </Link>
             </li>
           </ul>
         </div>

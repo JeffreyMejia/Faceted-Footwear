@@ -1,5 +1,7 @@
-import { Link } from 'react-router-dom';
+import { useContext } from 'react';
+import { closeContext } from '../components/NavDrawerCloseContext';
 
 export function Registration() {
-  return <Link to={'/'}>Hey</Link>;
+  const { closeNavDrawer } = useContext(closeContext);
+  return <div onClick={closeNavDrawer}></div>;
 }
