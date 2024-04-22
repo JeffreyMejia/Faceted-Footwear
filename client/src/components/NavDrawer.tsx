@@ -44,7 +44,10 @@ export function NavDrawer({ isOpen, open }: Props) {
               />
             )}
           </div>
-          <Footwear isOpen={openFootwear} />
+          <Footwear
+            isOpen={openFootwear}
+            handleClose={() => setOpenFootwear(!openFootwear)}
+          />
           <div className="flex items-center justify-between">
             <h2>Brand</h2>
             {openBrand === false ? (
@@ -59,7 +62,10 @@ export function NavDrawer({ isOpen, open }: Props) {
               />
             )}
           </div>
-          <Brand isOpen={openBrand} />
+          <Brand
+            isOpen={openBrand}
+            handleClosing={() => setOpenBrand(!openBrand)}
+          />
           <h2>Account</h2>
         </div>
       )}
