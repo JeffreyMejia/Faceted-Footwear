@@ -67,6 +67,19 @@ app.get('/api/catalog/details/:productId', async (req, res, next) => {
   }
 });
 
+app.get('/api/catalog/search', async (req, res, next) => {
+  try {
+    const { name } = req.params;
+    const sql = `
+   select * from "products"
+   where name = $1
+   `;
+    const params = [name];
+  } catch (error) {
+    next(error);
+  }
+});
+
 /*
  * Middleware that handles paths that aren't handled by static middleware
  * or API route handlers.

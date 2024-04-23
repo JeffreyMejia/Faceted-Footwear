@@ -18,38 +18,32 @@ export default function App() {
   const [isSearchDrawerOpen, setIsSearchDrawerOpen] = useState(false);
   const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false);
 
-  function close() {
+  function close(): void {
     setIsNavDrawerOpen(false);
-    return undefined;
   }
-  function open() {
+  function open(): void {
     setIsNavDrawerOpen(!isNavDrawerOpen);
-    return undefined;
   }
 
-  function closeSearch() {
+  function closeSearch(): void {
     setIsSearchDrawerOpen(false);
-    return undefined;
   }
-  function openSearch() {
+  function openSearch(): void {
     setIsSearchDrawerOpen(!isSearchDrawerOpen);
-    return undefined;
   }
 
-  function closeCart() {
+  function closeCart(): void {
     setIsCartDrawerOpen(false);
-    return undefined;
   }
-  function openCart() {
+  function openCart(): void {
     setIsCartDrawerOpen(!isCartDrawerOpen);
-    return undefined;
   }
 
   return (
     <>
       <NavContext.Provider
         value={{
-          isItOpen: isNavDrawerOpen,
+          isDrawerOpen: isNavDrawerOpen,
           closeNavDrawer: close,
           openNavDrawer: open,
         }}>

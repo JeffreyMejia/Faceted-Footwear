@@ -7,9 +7,11 @@ import { SearchDrawer } from './SearchDrawer';
 
 export function Navbar() {
   const navigate = useNavigate();
-  const { isItOpen, openNavDrawer, closeNavDrawer } = useContext(NavContext);
+  const { isDrawerOpen, openNavDrawer, closeNavDrawer } =
+    useContext(NavContext);
   const { isSearchOpen, openSearchDrawer, closeSearchDrawer } =
     useContext(SearchContext);
+  // const [search, setSearch] = useState('');
 
   return (
     <div>
@@ -18,7 +20,7 @@ export function Navbar() {
           onClick={openNavDrawer}
           className="fill-primary cursor-pointer h-7 w-7"
         />
-        <NavDrawer isOpen={isItOpen} close={closeNavDrawer} />
+        <NavDrawer isOpen={isDrawerOpen} close={closeNavDrawer} />
         <div
           onClick={closeNavDrawer}
           className="flex bg-secondary h-full items-center p-4">

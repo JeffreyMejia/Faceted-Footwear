@@ -14,8 +14,9 @@ export function Catalog() {
   useEffect(() => {
     async function getStyle() {
       try {
-        const style = searchParams.get('style') ?? '';
-        const response = await fetch(`/api/catalog?style=${style}`);
+        const style = searchParams.get('style');
+        const query = style ? `?style=${style}` : '';
+        const response = await fetch(`/api/catalog${query}`);
         if (!response.ok)
           throw new Error(`Error! bad network request ${response.status}`);
         const catalog = await response.json();
@@ -49,7 +50,7 @@ export function Catalog() {
               <img
                 className="h-36  md:h-52 lg:h-52 w-full rounded shadow-md"
                 src={product.image}
-                alt="Jordan one"
+                alt={product.name}
               />
               <h2 className="text-white mr-4">{product.brand}</h2>
               <h2 className="text-white mr-4">{product.name}</h2>
