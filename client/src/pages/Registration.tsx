@@ -1,7 +1,7 @@
 import { useContext } from 'react';
-import { closeContext } from '../components/NavDrawerCloseContext';
+import { NavContext } from '../components/DrawerContext';
 
 export function Registration() {
-  const { closeNavDrawer } = useContext(closeContext);
+  const { closeNavDrawer } = useContext(NavContext);
   return <div onClick={closeNavDrawer}></div>;
 }

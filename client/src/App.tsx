@@ -7,38 +7,76 @@ import { ProductDetails } from './pages/ProductDetails';
 import { NotFound } from './pages/NotFound';
 import { Home } from './pages/Home';
 import { useState } from 'react';
-import { closeContext } from './components/NavDrawerCloseContext';
+import {
+  NavContext,
+  SearchContext,
+  CartDrawerContext,
+} from './components/DrawerContext';
 
 export default function App() {
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isNavDrawerOpen, setIsNavDrawerOpen] = useState(false);
+  const [isSearchDrawerOpen, setIsSearchDrawerOpen] = useState(false);
+  const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false);
 
   function close() {
-    setIsDrawerOpen(false);
+    setIsNavDrawerOpen(false);
     return undefined;
   }
   function open() {
-    setIsDrawerOpen(!isDrawerOpen);
+    setIsNavDrawerOpen(!isNavDrawerOpen);
+    return undefined;
+  }
+
+  function closeSearch() {
+    setIsSearchDrawerOpen(false);
+    return undefined;
+  }
+  function openSearch() {
+    setIsSearchDrawerOpen(!isSearchDrawerOpen);
+    return undefined;
+  }
+
+  function closeCart() {
+    setIsCartDrawerOpen(false);
+    return undefined;
+  }
+  function openCart() {
+    setIsCartDrawerOpen(!isCartDrawerOpen);
     return undefined;
   }
 
   return (
     <>
-      <closeContext.Provider
+      <NavContext.Provider
         value={{
-          isItOpen: isDrawerOpen,
+          isItOpen: isNavDrawerOpen,
           closeNavDrawer: close,
           openNavDrawer: open,
         }}>
-        <Routes>
-          <Route path="/" element={<Navbar />}>
-            <Route index element={<Home />} />
-            <Route path="catalog" element={<Catalog />} />
-            <Route path="registration" element={<Registration />} />
-            <Route path="details/:productId" element={<ProductDetails />} />
-            <Route path="*" element={<NotFound />} />
-          </Route>
-        </Routes>
-      </closeContext.Provider>
+        <SearchContext.Provider
+          value={{
+            isSearchOpen: isSearchDrawerOpen,
+            closeSearchDrawer: closeSearch,
+            openSearchDrawer: openSearch,
+          }}>
+          <CartDrawerContext.Provider
+            value={{
+              isCartOpen: isCartDrawerOpen,
+              closeCartDrawer: closeCart,
+              openCartDrawer: openCart,
+            }}>
+            <Routes>
+              <Route path="/" element={<Navbar />}>
+                <Route index element={<Home />} />
+                <Route path="catalog" element={<Catalog />} />
+                <Route path="registration" element={<Registration />} />
+                <Route path="details/:productId" element={<ProductDetails />} />
+                <Route path="*" element={<NotFound />} />
+              </Route>
+            </Routes>
+          </CartDrawerContext.Provider>
+        </SearchContext.Provider>
+      </NavContext.Provider>
     </>
   );
 }

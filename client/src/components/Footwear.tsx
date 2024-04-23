@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useContext } from 'react';
-import { closeContext } from './NavDrawerCloseContext';
+import { NavContext } from './DrawerContext';
 
 type Footwear = {
   isOpen: boolean;
@@ -8,7 +8,7 @@ type Footwear = {
 };
 
 export function Footwear({ isOpen, handleClose }: Footwear) {
-  const { closeNavDrawer } = useContext(closeContext);
+  const { closeNavDrawer } = useContext(NavContext);
 
   return (
     <>

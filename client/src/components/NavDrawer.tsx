@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, ChangeEvent } from 'react';
 import { FaCube, FaPlus, FaMinus } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { Footwear } from './Footwear';
@@ -6,10 +6,12 @@ import { Brand } from './Brand';
 
 type Props = {
   isOpen: boolean;
-  open: () => void;
+  close: () => void;
+  value: string;
+  search: (event: ChangeEvent<HTMLInputElement>) => void;
 };
 
-export function NavDrawer({ isOpen, open }: Props) {
+export function NavDrawer({ isOpen, close, value, search }: Props) {
   const [openFootwear, setOpenFootwear] = useState(false);
   const [openBrand, setOpenBrand] = useState(false);
   const navigate = useNavigate();
@@ -25,10 +27,16 @@ export function NavDrawer({ isOpen, open }: Props) {
               className="text-primary ml-3 h-7 w-7 hover:animate-spin active:animate-bounce"
             />
           </div>
-          <button onClick={open} className="text-white">
+          <button onClick={close} className="text-white">
             Close
           </button>
-          <input type="text" className="rounded" placeholder="search..." />
+          <input
+            type="text"
+            className="rounded"
+            placeholder="search..."
+            value={value}
+            onChange={(e) => search(e)}
+          />
           <h1>Shop by</h1>
           <div className="flex items-center justify-between">
             <h2>Footwear</h2>

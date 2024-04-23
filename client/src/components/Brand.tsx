@@ -1,13 +1,13 @@
 import { Link } from 'react-router-dom';
 import { useContext } from 'react';
-import { closeContext } from './NavDrawerCloseContext';
+import { NavContext } from './DrawerContext';
 type BrandProps = {
   isOpen: boolean;
   handleClosing: () => void;
 };
 
 export function Brand({ isOpen, handleClosing }: BrandProps) {
-  const { closeNavDrawer } = useContext(closeContext);
+  const { closeNavDrawer } = useContext(NavContext);
 
   return (
     <>

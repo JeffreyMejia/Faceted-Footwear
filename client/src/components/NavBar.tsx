@@ -2,11 +2,14 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import { FaBars, FaSearch, FaShoppingCart, FaCube } from 'react-icons/fa';
 import { NavDrawer } from './NavDrawer';
 import { useContext } from 'react';
-import { closeContext } from './NavDrawerCloseContext';
+import { NavContext, SearchContext } from './DrawerContext';
+import { SearchDrawer } from './SearchDrawer';
 
 export function Navbar() {
   const navigate = useNavigate();
-  const { isItOpen, openNavDrawer, closeNavDrawer } = useContext(closeContext);
+  const { isItOpen, openNavDrawer, closeNavDrawer } = useContext(NavContext);
+  const { isSearchOpen, openSearchDrawer, closeSearchDrawer } =
+    useContext(SearchContext);
 
   return (
     <div>
@@ -15,7 +18,7 @@ export function Navbar() {
           onClick={openNavDrawer}
           className="fill-primary cursor-pointer h-7 w-7"
         />
-        <NavDrawer isOpen={isItOpen} open={openNavDrawer} />
+        <NavDrawer isOpen={isItOpen} close={closeNavDrawer} />
         <div
           onClick={closeNavDrawer}
           className="flex bg-secondary h-full items-center p-4">
@@ -28,7 +31,11 @@ export function Navbar() {
           />
         </div>
         <div onClick={closeNavDrawer} className="flex">
-          <FaSearch className="fill-primary cursor-pointer h-7 w-7" />
+          <FaSearch
+            onClick={openSearchDrawer}
+            className="fill-primary cursor-pointer h-7 w-7"
+          />
+          <SearchDrawer close={closeSearchDrawer} isItOpen={isSearchOpen} />
           <FaShoppingCart className="fill-primary cursor-pointer h-7 w-7 ml-4" />
         </div>
       </div>

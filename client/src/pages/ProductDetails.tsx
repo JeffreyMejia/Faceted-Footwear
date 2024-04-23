@@ -2,14 +2,14 @@ import { toDollars } from '../library/to-dollars';
 import { useParams } from 'react-router-dom';
 import type { Product } from '../library/data';
 import { useEffect, useState, useContext } from 'react';
-import { closeContext } from '../components/NavDrawerCloseContext';
+import { NavContext } from '../components/DrawerContext';
 
 export function ProductDetails() {
   const { productId } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<unknown>();
   const [product, setProduct] = useState<Product>();
-  const { closeNavDrawer } = useContext(closeContext);
+  const { closeNavDrawer } = useContext(NavContext);
 
   useEffect(() => {
     async function loadProduct(productId: number) {
@@ -30,7 +30,7 @@ export function ProductDetails() {
   if (isLoading) return <div>Loading...</div>;
   if (error) {
     return (
-      <div>
+      <div className="text-primary">
         Error Loading catalog:{' '}
         {error instanceof Error ? error.message : 'Unknown Error'}
       </div>

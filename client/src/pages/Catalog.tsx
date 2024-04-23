@@ -2,14 +2,14 @@ import { toDollars } from '../library/to-dollars';
 import { useState, useEffect, useContext } from 'react';
 import { Product } from '../library/data';
 import { useSearchParams, Link } from 'react-router-dom';
-import { closeContext } from '../components/NavDrawerCloseContext';
+import { NavContext } from '../components/DrawerContext';
 
 export function Catalog() {
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<unknown>();
   const [searchParams] = useSearchParams();
-  const { closeNavDrawer } = useContext(closeContext);
+  const { closeNavDrawer } = useContext(NavContext);
 
   useEffect(() => {
     async function getStyle() {
@@ -32,7 +32,7 @@ export function Catalog() {
   if (isLoading) return <div>Loading...</div>;
   if (error) {
     return (
-      <div>
+      <div className="text-primary">
         Error Loading catalog:{' '}
         {error instanceof Error ? error.message : 'Unknown Error'}
       </div>
