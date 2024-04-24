@@ -32,12 +32,10 @@ app.use(express.json());
 app.get(`/api/catalog`, async (req, res, next) => {
   try {
     const { style } = req.query;
-    console.log('style:', style);
     const sql = `
     select * from "products"
     `;
     const where = style ? 'where style = $1' : '';
-    console.log(sql + where);
     const params = style ? [style] : [];
     const results = await db.query(sql + where, params);
     const footwearStyles = results.rows;
@@ -69,12 +67,15 @@ app.get('/api/catalog/details/:productId', async (req, res, next) => {
 
 app.get('/api/catalog/search', async (req, res, next) => {
   try {
-    const { name } = req.params;
+    const { q } = req.query;
     const sql = `
    select * from "products"
-   where name = $1
+   where "name" ilike $1 or "style" ilike $1 or "brand" ilike $1
    `;
-    const params = [name];
+    const params = [`%${q}%`];
+    const results = await db.query(sql, params);
+    const search = results.rows;
+    res.status(200).json(search);
   } catch (error) {
     next(error);
   }

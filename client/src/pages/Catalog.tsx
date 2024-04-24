@@ -15,8 +15,11 @@ export function Catalog() {
     async function getStyle() {
       try {
         const style = searchParams.get('style');
-        const query = style ? `?style=${style}` : '';
-        const response = await fetch(`/api/catalog${query}`);
+        const q = searchParams.get('q');
+        const query = q ? `/search?q=${q}` : '';
+        const styleQuery = style ? `?style=${style}` : '';
+        const newQuery = styleQuery ? styleQuery : query;
+        const response = await fetch(`/api/catalog${newQuery}`);
         if (!response.ok)
           throw new Error(`Error! bad network request ${response.status}`);
         const catalog = await response.json();
@@ -30,7 +33,7 @@ export function Catalog() {
     getStyle();
   }, [searchParams]);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <div className="tex-primary">Loading...</div>;
   if (error) {
     return (
       <div className="text-primary">

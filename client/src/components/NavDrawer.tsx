@@ -1,4 +1,4 @@
-import { useState, ChangeEvent } from 'react';
+import { useState } from 'react';
 import { FaCube, FaPlus, FaMinus } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { Footwear } from './Footwear';
@@ -7,11 +7,9 @@ import { Brand } from './Brand';
 type Props = {
   isOpen: boolean;
   close: () => void;
-  value: string;
-  search: (event: ChangeEvent<HTMLInputElement>) => void;
 };
 
-export function NavDrawer({ isOpen, close, value, search }: Props) {
+export function NavDrawer({ isOpen, close }: Props) {
   const [openFootwear, setOpenFootwear] = useState(false);
   const [openBrand, setOpenBrand] = useState(false);
   const navigate = useNavigate();
@@ -24,19 +22,15 @@ export function NavDrawer({ isOpen, close, value, search }: Props) {
             <button onClick={close} className="text-primary mx-4">
               Close
             </button>
-            <h1 className="text-primary font-bold text-lg">Faceted Footwear</h1>
+            <h1 className="text-primary font-bold text-lg font-zen">
+              Faceted Footwear
+            </h1>
             <FaCube
               onClick={() => navigate('/')}
               className="text-primary ml-3 h-7 w-7 hover:animate-spin active:animate-bounce"
             />
           </div>
-          <input
-            type="text"
-            className="rounded"
-            placeholder="search..."
-            value={value}
-            onChange={(e) => search(e)}
-          />
+          <input type="text" className="rounded" placeholder="search..." />
           <h1>Shop by</h1>
           <div className="flex items-center justify-between">
             <h2>Footwear</h2>

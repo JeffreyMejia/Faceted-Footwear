@@ -1,13 +1,20 @@
-import { ChangeEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { FormEvent, useState } from 'react';
 
 type Props = {
   isItOpen: boolean;
   close: () => void;
-  value: string;
-  search: (event: ChangeEvent<HTMLInputElement>) => void;
 };
 
-export function SearchDrawer({ isItOpen, close, value, search }: Props) {
+export function SearchDrawer({ isItOpen, close }: Props) {
+  const navigate = useNavigate();
+  const [searchValue, setSearchValue] = useState('');
+
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    navigate(`/catalog?q=${searchValue}`);
+  }
+
   return (
     <>
       {isItOpen && (
@@ -15,17 +22,19 @@ export function SearchDrawer({ isItOpen, close, value, search }: Props) {
           <div className="ml-5 mt-7">
             <h1 className="text-primary font-bold text-3xl mb-2">Search</h1>
           </div>
-          <div className="ml-5">
+          <div className="flex items-center justify-center">
             <button className="mr-4" onClick={close}>
               Close
             </button>
-            <input
-              className="rounded"
-              type="text"
-              placeholder="search..."
-              value={value}
-              onChange={(e) => search(e)}
-            />
+            <form onSubmit={(e) => handleSubmit(e)}>
+              <input
+                className="rounded"
+                type="text"
+                placeholder="search..."
+                value={searchValue}
+                onChange={(e) => setSearchValue(e.target.value)}
+              />
+            </form>
           </div>
         </div>
       )}
