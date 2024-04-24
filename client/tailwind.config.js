@@ -11,6 +11,9 @@ export default {
       boxShadow: {
         wrapper: '0 25px 50px -12px rgba(242,97,63, 0.25)',
       },
+      fontFamily: {
+        zen: ['zen tokyo zoo', 'sans-serif'],
+      },
     },
   },
   plugins: [],

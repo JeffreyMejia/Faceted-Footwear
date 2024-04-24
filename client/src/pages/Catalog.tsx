@@ -2,20 +2,24 @@ import { toDollars } from '../library/to-dollars';
 import { useState, useEffect, useContext } from 'react';
 import { Product } from '../library/data';
 import { useSearchParams, Link } from 'react-router-dom';
-import { closeContext } from '../components/NavDrawerCloseContext';
+import { NavContext } from '../components/DrawerContext';
 
 export function Catalog() {
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<unknown>();
   const [searchParams] = useSearchParams();
-  const { closeNavDrawer } = useContext(closeContext);
+  const { closeNavDrawer } = useContext(NavContext);
 
   useEffect(() => {
     async function getStyle() {
       try {
-        const style = searchParams.get('style') ?? '';
-        const response = await fetch(`/api/catalog?style=${style}`);
+        const style = searchParams.get('style');
+        const q = searchParams.get('q');
+        const query = q ? `/search?q=${q}` : '';
+        const styleQuery = style ? `?style=${style}` : '';
+        const newQuery = styleQuery ? styleQuery : query;
+        const response = await fetch(`/api/catalog${newQuery}`);
         if (!response.ok)
           throw new Error(`Error! bad network request ${response.status}`);
         const catalog = await response.json();
@@ -29,10 +33,10 @@ export function Catalog() {
     getStyle();
   }, [searchParams]);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <div className="tex-primary">Loading...</div>;
   if (error) {
     return (
-      <div>
+      <div className="text-primary">
         Error Loading catalog:{' '}
         {error instanceof Error ? error.message : 'Unknown Error'}
       </div>
@@ -49,7 +53,7 @@ export function Catalog() {
               <img
                 className="h-36  md:h-52 lg:h-52 w-full rounded shadow-md"
                 src={product.image}
-                alt="Jordan one"
+                alt={product.name}
               />
               <h2 className="text-white mr-4">{product.brand}</h2>
               <h2 className="text-white mr-4">{product.name}</h2>

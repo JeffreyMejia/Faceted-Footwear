@@ -2,14 +2,14 @@ import { toDollars } from '../library/to-dollars';
 import { useParams } from 'react-router-dom';
 import type { Product } from '../library/data';
 import { useEffect, useState, useContext } from 'react';
-import { closeContext } from '../components/NavDrawerCloseContext';
+import { NavContext } from '../components/DrawerContext';
 
 export function ProductDetails() {
   const { productId } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<unknown>();
   const [product, setProduct] = useState<Product>();
-  const { closeNavDrawer } = useContext(closeContext);
+  const { closeNavDrawer } = useContext(NavContext);
 
   useEffect(() => {
     async function loadProduct(productId: number) {
@@ -28,16 +28,15 @@ export function ProductDetails() {
   }, [productId]);
 
   if (isLoading) return <div>Loading...</div>;
-  if (error) {
+  if (error || !product) {
     return (
-      <div>
+      <div className="text-primary">
         Error Loading catalog:{' '}
         {error instanceof Error ? error.message : 'Unknown Error'}
       </div>
     );
   }
 
-  if (!product) return null;
   const { brand, name, amount, image, details } = product;
   return (
     <div onClick={closeNavDrawer} className="container">
@@ -53,57 +52,47 @@ export function ProductDetails() {
         </div>
         <div className="mx-6">
           <h1 className="text-3xl font-bold">Details</h1>
-          <p className="whitespace-normal">{details}.</p>
+          <p className="whitespace-normal">{details}</p>
           <h3 className="text-xl mt-10 mb-5">sizes</h3>
           <ul className="flex flex-wrap justify-between lg:justify-around">
             <li>
-              <div className="bg-black w-10 flex justify-center border-2 hover:bg-white hover:border-black">
-                8
-              </div>
+              <Size size={8} />
             </li>
             <li>
-              <div className="bg-black w-10 flex justify-center border-2 hover:bg-white hover:border-black">
-                8.5
-              </div>
+              <Size size={8.5} />
             </li>
             <li>
-              <div className="bg-black w-10 flex justify-center border-2 hover:bg-white hover:border-black">
-                9
-              </div>
+              <Size size={9} />
             </li>
             <li>
-              <div className="bg-black w-10 flex justify-center border-2 hover:bg-white hover:border-black">
-                9.5
-              </div>
+              <Size size={9.5} />
             </li>
             <li>
-              <div className="bg-black w-10 flex justify-center border-2 hover:bg-white hover:border-black">
-                10
-              </div>
+              <Size size={10} />
             </li>
             <li>
-              <div className="bg-black w-10 flex justify-center border-2 hover:bg-white hover:border-black">
-                10.5
-              </div>
+              <Size size={10.5} />
             </li>
             <li>
-              <div className="bg-black w-10 flex justify-center border-2 hover:bg-white hover:border-black">
-                11
-              </div>
+              <Size size={11} />
             </li>
             <li>
-              <div className="bg-black w-10 flex justify-center border-2 hover:bg-white hover:border-black">
-                11.5
-              </div>
+              <Size size={11.5} />
             </li>
             <li>
-              <div className="bg-black w-10 flex justify-center border-2 hover:bg-white hover:border-black">
-                12
-              </div>
+              <Size size={12} />
             </li>
           </ul>
         </div>
       </div>
+    </div>
+  );
+}
+
+function Size({ size }) {
+  return (
+    <div className="bg-black w-10 flex justify-center border-2 hover:bg-white hover:border-black">
+      {size}
     </div>
   );
 }

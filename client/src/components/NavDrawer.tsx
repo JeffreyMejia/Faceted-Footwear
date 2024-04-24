@@ -6,10 +6,10 @@ import { Brand } from './Brand';
 
 type Props = {
   isOpen: boolean;
-  open: () => void;
+  close: () => void;
 };
 
-export function NavDrawer({ isOpen, open }: Props) {
+export function NavDrawer({ isOpen, close }: Props) {
   const [openFootwear, setOpenFootwear] = useState(false);
   const [openBrand, setOpenBrand] = useState(false);
   const navigate = useNavigate();
@@ -17,17 +17,19 @@ export function NavDrawer({ isOpen, open }: Props) {
   return (
     <>
       {isOpen && (
-        <div className="fixed left-0 top-0 h-screen flex bg-secondary flex-col text-primary">
-          <div className="flex bg-secondary h-full items-center p-4 ">
-            <h1 className="text-primary font-bold text-lg">Faceted Footwear</h1>
+        <div className="fixed left-0 top-0 h-screen bg-secondary flex flex-col text-primary ">
+          <div className="flex bg-secondary h-full items-center p-4">
+            <button onClick={close} className="text-primary mx-4">
+              Close
+            </button>
+            <h1 className="text-primary font-bold text-lg font-zen">
+              Faceted Footwear
+            </h1>
             <FaCube
               onClick={() => navigate('/')}
               className="text-primary ml-3 h-7 w-7 hover:animate-spin active:animate-bounce"
             />
           </div>
-          <button onClick={open} className="text-white">
-            Close
-          </button>
           <input type="text" className="rounded" placeholder="search..." />
           <h1>Shop by</h1>
           <div className="flex items-center justify-between">
@@ -62,10 +64,7 @@ export function NavDrawer({ isOpen, open }: Props) {
               />
             )}
           </div>
-          <Brand
-            isOpen={openBrand}
-            handleClosing={() => setOpenBrand(!openBrand)}
-          />
+          <Brand isOpen={openBrand} onClose={() => setOpenBrand(!openBrand)} />
           <h2>Account</h2>
         </div>
       )}
