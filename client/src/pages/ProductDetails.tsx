@@ -1,15 +1,15 @@
 import { toDollars } from '../library/to-dollars';
 import { useParams } from 'react-router-dom';
 import type { Product } from '../library/data';
-import { useEffect, useState, useContext } from 'react';
-import { NavContext } from '../components/DrawerContext';
+import { useEffect, useState, useContext, FormEvent } from 'react';
+import { CartContext } from '../components/CartContext';
 
 export function ProductDetails() {
   const { productId } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<unknown>();
   const [product, setProduct] = useState<Product>();
-  const { closeNavDrawer } = useContext(NavContext);
+  const { addToCart } = useContext(CartContext);
 
   useEffect(() => {
     async function loadProduct(productId: number) {
@@ -27,6 +27,24 @@ export function ProductDetails() {
     loadProduct(Number(productId));
   }, [productId]);
 
+  async function handleAddToCart(
+    event: FormEvent<HTMLFormElement>
+  ): Promise<void> {
+    try {
+      event.preventDefault();
+      if (!product) throw new Error('you broke something');
+
+      const formData = new FormData(event.currentTarget);
+      const formValues = Object.fromEntries(formData);
+      console.log('formValues:', formValues);
+      addToCart(product, +formValues.sizes);
+      alert(`${product.name} added to cart`);
+    } catch (error) {
+      setError(error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
   if (isLoading) return <div>Loading...</div>;
   if (error || !product) {
     return (
@@ -36,10 +54,9 @@ export function ProductDetails() {
       </div>
     );
   }
-
   const { brand, name, amount, image, details } = product;
   return (
-    <div onClick={closeNavDrawer} className="container">
+    <div className="container mt-4">
       <div className="flex  text-primary bg-secondary rounded shadow-wrapper">
         <div className="ml-3">
           <img
@@ -50,39 +67,31 @@ export function ProductDetails() {
           <h1 className="text-3xl font-bold my-3">{`${brand} ${name}`}</h1>
           <h3>{toDollars(amount)}</h3>
         </div>
-        <div className="mx-6">
+        <div className="mx-6 mt-3">
           <h1 className="text-3xl font-bold">Details</h1>
           <p className="whitespace-normal">{details}</p>
-          <h3 className="text-xl mt-10 mb-5">sizes</h3>
-          <ul className="flex flex-wrap justify-between lg:justify-around">
-            <li>
-              <Size size={8} />
-            </li>
-            <li>
-              <Size size={8.5} />
-            </li>
-            <li>
-              <Size size={9} />
-            </li>
-            <li>
-              <Size size={9.5} />
-            </li>
-            <li>
-              <Size size={10} />
-            </li>
-            <li>
-              <Size size={10.5} />
-            </li>
-            <li>
-              <Size size={11} />
-            </li>
-            <li>
-              <Size size={11.5} />
-            </li>
-            <li>
-              <Size size={12} />
-            </li>
-          </ul>
+          <h3 className="text-xl mt-10 mb-5">Choose your size</h3>
+          <form onSubmit={handleAddToCart}>
+            <label>
+              <select name="sizes" id="size-select">
+                <option defaultValue={'select-size'}>select-size</option>
+                <Size size={8} />
+                <Size size={8.5} />
+                <Size size={9} />
+                <Size size={9.5} />
+                <Size size={10} />
+                <Size size={10.5} />
+                <Size size={11} />
+                <Size size={11.5} />
+                <Size size={12} />
+              </select>
+            </label>
+            <button
+              type="submit"
+              className="bg-tertiary text-black hover:text-white rounded p-1 ml-2">
+              Add to cart
+            </button>
+          </form>
         </div>
       </div>
     </div>
@@ -91,8 +100,8 @@ export function ProductDetails() {
 
 function Size({ size }) {
   return (
-    <div className="bg-black w-10 flex justify-center border-2 hover:bg-white hover:border-black">
+    <option value={size} className="bg-black">
       {size}
-    </div>
+    </option>
   );
 }

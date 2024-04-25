@@ -14,21 +14,21 @@ CREATE TABLE "products" (
   "image" text,
   "details" text,
   "amount" integer,
-  "createdAt" timestamptz
+  "createdAt" timestamptz default now()
 );
 
 CREATE TABLE "users" (
   "userId" serial PRIMARY KEY,
   "password" text,
   "email" text,
-  "createdAt" timestamptz
+  "createdAt" timestamptz default now()
 );
 
 CREATE TABLE "orders" (
   "orderId" serial PRIMARY KEY,
   "amount" integer,
   "userId" integer,
-  "createdAt" timestamptz
+  "createdAt" timestamptz default now()
 );
 
 CREATE TABLE "inventory" (
@@ -36,21 +36,17 @@ CREATE TABLE "inventory" (
   "productId" integer,
   "size" integer,
   "quantity" integer,
-  "createdAt" timestamptz
+  "createdAt" timestamptz default now()
 );
 
-CREATE TABLE "carts" (
-  "cartId" serial PRIMARY KEY,
-  "userId" integer,
-  "createdAt" timestamptz
-);
 
 CREATE TABLE "cartItems" (
   "cartItemId" serial PRIMARY KEY,
-  "cartId" integer,
+  "userId" integer,
   "productId" integer,
   "quantity" integer,
-  "createdAt" timestamptz
+  "size" integer,
+  "createdAt" timestamptz default now()
 );
 
 CREATE TABLE "orderItems" (
@@ -59,7 +55,7 @@ CREATE TABLE "orderItems" (
   "amount" integer,
   "quantity" integer,
   "orderId" integer,
-  "createdAt" timestamptz
+  "createdAt" timestamptz default now()
 );
 
 ALTER TABLE "cartItems" ADD FOREIGN KEY ("productId") REFERENCES "products" ("productId");
@@ -70,8 +66,6 @@ ALTER TABLE "orderItems" ADD FOREIGN KEY ("productId") REFERENCES "products" ("p
 
 ALTER TABLE "orders" ADD FOREIGN KEY ("userId") REFERENCES "users" ("userId");
 
-ALTER TABLE "carts" ADD FOREIGN KEY ("userId") REFERENCES "users" ("userId");
-
-ALTER TABLE "cartItems" ADD FOREIGN KEY ("cartId") REFERENCES "carts" ("cartId");
+ALTER TABLE "cartItems" ADD FOREIGN KEY ("userId") REFERENCES "users" ("userId");
 
 ALTER TABLE "orderItems" ADD FOREIGN KEY ("orderId") REFERENCES "orders" ("orderId");

@@ -1,6 +1,4 @@
 import { Link } from 'react-router-dom';
-import { useContext } from 'react';
-import { NavContext } from './DrawerContext';
 
 type Footwear = {
   isOpen: boolean;
@@ -8,13 +6,11 @@ type Footwear = {
 };
 
 export function Footwear({ isOpen, handleClose }: Footwear) {
-  const { closeNavDrawer } = useContext(NavContext);
-
   return (
     <>
       {isOpen && (
         <div>
-          <ul className="ml-3 cursor-pointer" onClick={closeNavDrawer}>
+          <ul className="ml-3 cursor-pointer">
             <li>
               <Link to="/catalog" onClick={handleClose}>
                 Shop all

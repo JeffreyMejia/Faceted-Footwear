@@ -1,0 +1,9 @@
+.shade {
+  pointer-events: none;
+  transition: opacity 0.25s ease-in-out;
+}
+
+.shade.is-drawn {
+  opacity: 0.5;
+  pointer-events: all;
+}
