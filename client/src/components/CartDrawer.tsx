@@ -1,5 +1,7 @@
 import { FaPlus, FaMinus } from 'react-icons/fa';
 import { toDollars } from '../library/to-dollars';
+import { CartContext } from './CartContext';
+import { useContext } from 'react';
 
 type Props = {
   isItOpen: boolean;
@@ -7,6 +9,8 @@ type Props = {
 };
 
 export function CartDrawer({ isItOpen, close }: Props) {
+  const { cart } = useContext(CartContext);
+
   return (
     <>
       {isItOpen && (
@@ -18,22 +22,24 @@ export function CartDrawer({ isItOpen, close }: Props) {
                 Close
               </button>
             </div>
-            <div className="p-4">
-              <img
-                className="object-contain w-60"
-                src="/final-project-photos/Nike - Air Max 1.png"
-              />
-              <div className="flex mt-4 justify-evenly">
-                <h3>Nike</h3>
-                <h3>Air Max 1</h3>
-                <h3>{toDollars(14999)}</h3>
+            {cart.map((p) => (
+              <div key={p?.item?.productId} className="p-4">
+                <img className="object-contain w-60" src={p?.item?.image} />
+                <div className="flex mt-4 justify-evenly">
+                  <h3>{p?.item?.brand}</h3>
+                  <h3>{p?.item?.name}</h3>
+                  <h3>{toDollars(p?.item?.amount)}</h3>
+                </div>
+                <div>
+                  <p>{p?.size}</p>
+                </div>
+                <div className="flex items-center mt-2">
+                  <FaMinus className="ml-6 mr-4" />
+                  <h3 className="text-lg">{p?.quantity}</h3>
+                  <FaPlus className="ml-4" />
+                </div>
               </div>
-              <div className="flex items-center mt-2">
-                <FaMinus className="ml-6 mr-4" />
-                <h3 className="text-lg">3</h3>
-                <FaPlus className="ml-4" />
-              </div>
-            </div>
+            ))}
           </div>
           <div
             onClick={close}

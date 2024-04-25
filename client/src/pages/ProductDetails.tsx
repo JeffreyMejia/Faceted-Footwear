@@ -1,7 +1,7 @@
 import { toDollars } from '../library/to-dollars';
 import { useParams } from 'react-router-dom';
 import type { Product } from '../library/data';
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState, useContext, FormEvent } from 'react';
 import { CartContext } from '../components/CartContext';
 
 export function ProductDetails() {
@@ -37,9 +37,12 @@ export function ProductDetails() {
     );
   }
 
-  function handleAddToCart() {
+  function handleAddToCart(event: FormEvent<HTMLFormElement>, size: number) {
+    console.log('size:', size);
+    event.preventDefault();
     if (!product) throw new Error('you broke something');
-    addToCart(product);
+    alert(`${product.name} added to cart`);
+    addToCart(product, size);
   }
 
   const { brand, name, amount, image, details } = product;
@@ -58,51 +61,38 @@ export function ProductDetails() {
         <div className="mx-6 mt-3">
           <h1 className="text-3xl font-bold">Details</h1>
           <p className="whitespace-normal">{details}</p>
-          <h3 className="text-xl mt-10 mb-5">sizes</h3>
-          <ul className="flex flex-wrap justify-between lg:justify-around">
-            <li>
-              <Size size={8} />
-            </li>
-            <li>
-              <Size size={8.5} />
-            </li>
-            <li>
-              <Size size={9} />
-            </li>
-            <li>
-              <Size size={9.5} />
-            </li>
-            <li>
-              <Size size={10} />
-            </li>
-            <li>
-              <Size size={10.5} />
-            </li>
-            <li>
-              <Size size={11} />
-            </li>
-            <li>
-              <Size size={11.5} />
-            </li>
-            <li>
-              <Size size={12} />
-            </li>
-          </ul>
+          <h3 className="text-xl mt-10 mb-5">Choose your size</h3>
+          <form onSubmit={(e) => handleAddToCart(e, e.currentTarget.value)}>
+            <label>
+              <select name="sizes" id="size-select">
+                <option defaultValue={'select-size'}>select-size</option>
+                <Size size={8} />
+                <Size size={8.5} />
+                <Size size={9} />
+                <Size size={9.5} />
+                <Size size={10} />
+                <Size size={10.5} />
+                <Size size={11} />
+                <Size size={11.5} />
+                <Size size={12} />
+              </select>
+            </label>
+            <button
+              type="submit"
+              className="bg-tertiary text-black hover:text-white rounded p-1 ml-2">
+              Add to cart
+            </button>
+          </form>
         </div>
       </div>
-      <button
-        className="bg-tertiary text-black hover:text-white rounded p-1 mt-2"
-        onClick={handleAddToCart}>
-        Add to cart
-      </button>
     </div>
   );
 }
 
 function Size({ size }) {
   return (
-    <div className="bg-black w-10 flex justify-center border-2 hover:bg-white hover:border-black">
+    <option value={size} className="bg-black">
       {size}
-    </div>
+    </option>
   );
 }

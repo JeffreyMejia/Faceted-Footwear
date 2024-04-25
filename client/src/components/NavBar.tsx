@@ -12,9 +12,9 @@ export function Navbar() {
   const [openCartDrawer, setOpenCartDrawer] = useState(false);
   const { cart } = useContext(CartContext);
 
-  const quantity = 0;
+  let quantity = 0;
 
-  cart.forEach((cp) => (cp.quantity += quantity));
+  cart.forEach((cp) => (quantity += cp.quantity));
 
   return (
     <div>

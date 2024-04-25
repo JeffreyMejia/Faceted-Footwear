@@ -7,14 +7,20 @@ import { ProductDetails } from './pages/ProductDetails';
 import { NotFound } from './pages/NotFound';
 import { Home } from './pages/Home';
 import { CartContext } from './components/CartContext';
+import { CartProduct } from './components/CartContext';
 import { useState } from 'react';
 import { Product } from './library/data';
 
 export default function App() {
   const [cart, setCart] = useState<CartProduct[]>([]);
-  function addToCart(item: Product): void {
-    const cartItem = { item, quantity: 1 };
-    setCart([...cart, cartItem]);
+  function addToCart(item: Product, size: number): void {
+    const exists = cart.find(
+      (product) => product.item?.productId === item.productId
+    );
+    if (!exists) {
+      const cartItem = { item, quantity: 1, size };
+      setCart([...cart, cartItem]);
+    }
   }
 
   return (

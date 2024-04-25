@@ -4,11 +4,12 @@ import { Product } from '../library/data';
 export type CartProduct = {
   item: Product;
   quantity: number;
+  size: number;
 };
 
 export type CartValues = {
   cart: CartProduct[];
-  addToCart: (product: Product) => void;
+  addToCart: (product: Product, size: number) => void;
 };
 
 export const CartContext = createContext<CartValues>({
