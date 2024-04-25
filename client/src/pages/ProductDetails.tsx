@@ -1,15 +1,13 @@
 import { toDollars } from '../library/to-dollars';
 import { useParams } from 'react-router-dom';
 import type { Product } from '../library/data';
-import { useEffect, useState, useContext } from 'react';
-import { NavContext } from '../components/DrawerContext';
+import { useEffect, useState } from 'react';
 
 export function ProductDetails() {
   const { productId } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<unknown>();
   const [product, setProduct] = useState<Product>();
-  const { closeNavDrawer } = useContext(NavContext);
 
   useEffect(() => {
     async function loadProduct(productId: number) {
@@ -39,7 +37,7 @@ export function ProductDetails() {
 
   const { brand, name, amount, image, details } = product;
   return (
-    <div onClick={closeNavDrawer} className="container">
+    <div className="container">
       <div className="flex  text-primary bg-secondary rounded shadow-wrapper">
         <div className="ml-3">
           <img

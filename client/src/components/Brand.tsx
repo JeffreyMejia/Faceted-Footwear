@@ -1,18 +1,15 @@
 import { Link } from 'react-router-dom';
-import { useContext } from 'react';
-import { NavContext } from './DrawerContext';
+
 type BrandProps = {
   isOpen: boolean;
   onClose: () => void;
 };
 
 export function Brand({ isOpen, onClose }: BrandProps) {
-  const { closeNavDrawer } = useContext(NavContext);
-
   return (
     <>
       {isOpen && (
-        <ul className="ml-3 cursor-pointer" onClick={closeNavDrawer}>
+        <ul className="ml-3 cursor-pointer">
           <li>
             <Link onClick={onClose} to="/catalog?brand=Adidas">
               Adidas

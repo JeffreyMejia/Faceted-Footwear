@@ -1,15 +1,13 @@
 import { toDollars } from '../library/to-dollars';
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import { Product } from '../library/data';
 import { useSearchParams, Link } from 'react-router-dom';
-import { NavContext } from '../components/DrawerContext';
 
 export function Catalog() {
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<unknown>();
   const [searchParams] = useSearchParams();
-  const { closeNavDrawer } = useContext(NavContext);
 
   useEffect(() => {
     async function getStyle() {
@@ -44,7 +42,7 @@ export function Catalog() {
   }
 
   return (
-    <div onClick={closeNavDrawer} className="container">
+    <div className="container">
       <h1 className="font-bold text-5xl text-tertiary my-6">Catalog</h1>
       <div className="grid grid-cols-2 gap-10 md:grid-cols-3 lg:grid-cols-4 cursor-pointer">
         {products.map((product) => (
