@@ -13,13 +13,23 @@ import { Product } from './library/data';
 
 export default function App() {
   const [cart, setCart] = useState<CartProduct[]>([]);
-  function addToCart(item: Product, size: number): void {
+
+  async function addToCart(item: Product, size: number) {
     const exists = cart.find(
       (product) => product.item?.productId === item.productId
     );
     if (!exists) {
-      const cartItem = { item, quantity: 1, size };
-      setCart([...cart, cartItem]);
+      const cartItem = { productId: item.productId, quantity: 1, size };
+      const response = await fetch('/api/catalog/cart', {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/JSON',
+        },
+        body: JSON.stringify(cartItem),
+      });
+      if (!response.ok)
+        throw new Error(`Error! bad network request ${response.status}`);
+      setCart([...cart, { item, quantity: 1, size }]);
     }
   }
 

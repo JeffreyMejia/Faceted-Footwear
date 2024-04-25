@@ -27,6 +27,24 @@ export function ProductDetails() {
     loadProduct(Number(productId));
   }, [productId]);
 
+  async function handleAddToCart(
+    event: FormEvent<HTMLFormElement>
+  ): Promise<void> {
+    try {
+      event.preventDefault();
+      if (!product) throw new Error('you broke something');
+
+      const formData = new FormData(event.currentTarget);
+      const formValues = Object.fromEntries(formData);
+      console.log('formValues:', formValues);
+      addToCart(product, +formValues.sizes);
+      alert(`${product.name} added to cart`);
+    } catch (error) {
+      setError(error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
   if (isLoading) return <div>Loading...</div>;
   if (error || !product) {
     return (
@@ -36,15 +54,6 @@ export function ProductDetails() {
       </div>
     );
   }
-
-  function handleAddToCart(event: FormEvent<HTMLFormElement>, size: number) {
-    console.log('size:', size);
-    event.preventDefault();
-    if (!product) throw new Error('you broke something');
-    alert(`${product.name} added to cart`);
-    addToCart(product, size);
-  }
-
   const { brand, name, amount, image, details } = product;
   return (
     <div className="container mt-4">
@@ -62,7 +71,7 @@ export function ProductDetails() {
           <h1 className="text-3xl font-bold">Details</h1>
           <p className="whitespace-normal">{details}</p>
           <h3 className="text-xl mt-10 mb-5">Choose your size</h3>
-          <form onSubmit={(e) => handleAddToCart(e, e.currentTarget.value)}>
+          <form onSubmit={handleAddToCart}>
             <label>
               <select name="sizes" id="size-select">
                 <option defaultValue={'select-size'}>select-size</option>

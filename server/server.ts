@@ -81,6 +81,29 @@ app.get('/api/catalog/search', async (req, res, next) => {
   }
 });
 
+app.post('/api/catalog/cart', async (req, res, next) => {
+  try {
+    const { productId, quantity, size } = req.body;
+    console.log('productId:', productId);
+    console.log('quantity:', quantity);
+    console.log('size:', size);
+    if (!productId) throw new ClientError(400, 'productId required!');
+    if (!quantity) throw new ClientError(400, 'quantity required!');
+    if (!size) throw new ClientError(400, 'size required!');
+    const sql = `
+    insert into "cartItems" ("userId", "productId", "quantity", "size")
+    values ('1', $1, $2, $3)
+    returning *
+    `;
+    const params = [productId, quantity, size];
+    const results = await db.query(sql, params);
+    const newCart = results.rows[0];
+    res.status(201).json(newCart);
+  } catch (error) {
+    next(error);
+  }
+});
+
 /*
  * Middleware that handles paths that aren't handled by static middleware
  * or API route handlers.
