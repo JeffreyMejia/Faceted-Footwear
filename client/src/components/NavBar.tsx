@@ -3,13 +3,18 @@ import { FaBars, FaSearch, FaShoppingCart, FaCube } from 'react-icons/fa';
 import { NavDrawer } from './NavDrawer';
 import { SearchDrawer } from './SearchDrawer';
 import { CartDrawer } from './CartDrawer';
-import { useState } from 'react';
-
+import { useContext, useState } from 'react';
+import { CartContext } from './CartContext';
 export function Navbar() {
   const navigate = useNavigate();
   const [openNavDrawer, setOpenNavDrawer] = useState(false);
   const [openSearchDrawer, setOpenSearchDrawer] = useState(false);
   const [openCartDrawer, setOpenCartDrawer] = useState(false);
+  const { cart } = useContext(CartContext);
+
+  const quantity = 0;
+
+  cart.forEach((cp) => (cp.quantity += quantity));
 
   return (
     <div>
@@ -44,6 +49,11 @@ export function Navbar() {
             onClick={() => setOpenCartDrawer(true)}
             className="fill-primary cursor-pointer h-7 w-7 ml-4 hover:fill-tertiary active:fill-tertiary"
           />
+          {quantity !== 0 && (
+            <span className="absolute top-3 right-2 inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-secondary rounded-full">
+              {quantity}
+            </span>
+          )}
           <CartDrawer
             close={() => setOpenCartDrawer(false)}
             isItOpen={openCartDrawer}

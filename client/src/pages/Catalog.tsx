@@ -43,18 +43,22 @@ export function Catalog() {
 
   return (
     <div className="container">
-      <h1 className="font-bold text-5xl text-tertiary my-6">Catalog</h1>
+      <h1 className="font-bold text-xl md:text-3xl lg:text-5xl text-tertiary my-6">
+        Catalog
+      </h1>
       <div className="grid grid-cols-2 gap-10 md:grid-cols-3 lg:grid-cols-4 cursor-pointer">
         {products.map((product) => (
           <Link key={product?.productId} to={`/details/${product.productId}`}>
-            <div className="bg-tertiary rounded flex flex-wrap justify-center p-2 shadow-wrapper hover:bg-black">
+            <div className="bg-tertiary rounded p-2 shadow-wrapper hover:bg-black">
               <img
                 className="h-36  md:h-52 lg:h-52 w-full rounded shadow-md"
                 src={product.image}
                 alt={product.name}
               />
-              <h2 className="text-white mr-4">{product.brand}</h2>
-              <h2 className="text-white mr-4">{product.name}</h2>
+              <div className="flex mt-2">
+                <h2 className="text-white mr-2">{product.brand}</h2>
+                <h2 className="text-white">{product.name}</h2>
+              </div>
               <h3 className="text-white font-bold">
                 {toDollars(product.amount)}
               </h3>
