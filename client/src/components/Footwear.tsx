@@ -33,7 +33,6 @@ export function Footwear({ isOpen, handleClose }: Footwear) {
             </li>
             <li>
               <Link to="/catalog?style=sandals" onClick={handleClose}>
-                {' '}
                 Sandals
               </Link>
             </li>

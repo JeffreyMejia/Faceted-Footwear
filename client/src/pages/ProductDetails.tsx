@@ -33,10 +33,8 @@ export function ProductDetails() {
     try {
       event.preventDefault();
       if (!product) throw new Error('you broke something');
-
       const formData = new FormData(event.currentTarget);
       const formValues = Object.fromEntries(formData);
-      console.log('formValues:', formValues);
       addToCart(product, +formValues.sizes);
       alert(`${product.name} added to cart`);
     } catch (error) {
@@ -75,15 +73,9 @@ export function ProductDetails() {
             <label>
               <select name="sizes" id="size-select">
                 <option defaultValue={'select-size'}>select-size</option>
-                <Size size={8} />
-                <Size size={8.5} />
-                <Size size={9} />
-                <Size size={9.5} />
-                <Size size={10} />
-                <Size size={10.5} />
-                <Size size={11} />
-                <Size size={11.5} />
-                <Size size={12} />
+                {sizes.map((size) => (
+                  <Size key={size} size={size}></Size>
+                ))}
               </select>
             </label>
             <button
@@ -97,6 +89,8 @@ export function ProductDetails() {
     </div>
   );
 }
+
+const sizes = [8, 8.5, 9, 9.5, 10, 10.5, 11, 11.5, 12];
 
 function Size({ size }) {
   return (
