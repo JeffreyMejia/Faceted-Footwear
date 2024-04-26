@@ -45,7 +45,7 @@ CREATE TABLE "cartItems" (
   "userId" integer,
   "productId" integer,
   "quantity" integer,
-  "size" integer,
+  "size" numeric,
   "createdAt" timestamptz default now()
 );
 

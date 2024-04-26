@@ -1,12 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars -- Remove when used */
 import 'dotenv/config';
-import express from 'express';
+import express, { application } from 'express';
 import pg from 'pg';
 import {
   ClientError,
   defaultMiddleware,
   errorMiddleware,
 } from './lib/index.js';
+
+pg.types.setTypeParser(pg.types.builtins.NUMERIC, (x) => parseFloat(x));
 
 const connectionString =
   process.env.DATABASE_URL ||
@@ -33,8 +35,8 @@ app.get(`/api/catalog`, async (req, res, next) => {
   try {
     const { style } = req.query;
     const sql = `
-    select * from "products"
-    `;
+     select * from "products"
+                `;
     const where = style ? 'where style = $1' : '';
     const params = style ? [style] : [];
     const results = await db.query(sql + where, params);
@@ -52,9 +54,9 @@ app.get('/api/catalog/details/:productId', async (req, res, next) => {
       throw new ClientError(400, 'productId must be a number');
     }
     const sql = `
-    select * from "products"
-    where "productId" = $1
-    `;
+     select * from "products"
+     where "productId" = $1
+                `;
     const params = [productId];
     const results = await db.query(sql, params);
     const [product] = results.rows;
@@ -69,9 +71,9 @@ app.get('/api/catalog/search', async (req, res, next) => {
   try {
     const { q } = req.query;
     const sql = `
-   select * from "products"
-   where "name" ilike $1 or "style" ilike $1 or "brand" ilike $1
-   `;
+     select * from "products"
+     where "name" ilike $1 or "style" ilike $1 or "brand" ilike $1
+                `;
     const params = [`%${q}%`];
     const results = await db.query(sql, params);
     const search = results.rows;
@@ -91,14 +93,33 @@ app.post('/api/catalog/cart', async (req, res, next) => {
     if (!quantity) throw new ClientError(400, 'quantity required!');
     if (!size) throw new ClientError(400, 'size required!');
     const sql = `
-    insert into "cartItems" ("userId", "productId", "quantity", "size")
-    values ('1', $1, $2, $3)
-    returning *
-    `;
+     insert into "cartItems" ("userId", "productId", "quantity", "size")
+     values ('1', $1, $2, $3)
+     returning *
+                `;
     const params = [productId, quantity, size];
     const results = await db.query(sql, params);
     const newCart = results.rows[0];
     res.status(201).json(newCart);
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.delete('/api/catalog/cart/:productId', async (req, res, next) => {
+  try {
+    const { productId } = req.params;
+    const sql = `
+       delete from "cartItems"
+       where "productId" = $1
+       returning *
+                 `;
+    const params = [productId];
+    const results = await db.query(sql, params);
+    const deletedCartItem = results.rows[0];
+    if (!deletedCartItem)
+      throw new ClientError(404, `error could not find ${productId}`);
+    res.status(204);
   } catch (error) {
     next(error);
   }

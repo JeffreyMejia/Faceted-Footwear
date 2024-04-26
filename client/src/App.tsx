@@ -6,8 +6,7 @@ import { Registration } from './pages/Registration';
 import { ProductDetails } from './pages/ProductDetails';
 import { NotFound } from './pages/NotFound';
 import { Home } from './pages/Home';
-import { CartContext } from './components/CartContext';
-import { CartProduct } from './components/CartContext';
+import { CartContext, CartProduct } from './components/CartContext';
 import { useState } from 'react';
 import { Product } from './library/data';
 
@@ -33,9 +32,29 @@ export default function App() {
     }
   }
 
+  async function removeFromCart(item: CartProduct): Promise<void> {
+    item.quantity--;
+    if (item.quantity === 0) {
+      const filtered = cart.filter(
+        (p) => p.item.productId !== item.item.productId
+      );
+      const response = await fetch(`/api/catalog/cart/${item.item.productId}`, {
+        method: 'DELETE',
+      });
+      if (!response.ok)
+        throw new Error('Error! bad network request ${response.status}');
+      setCart([...filtered]);
+    }
+  }
+
   return (
     <>
-      <CartContext.Provider value={{ cart: cart, addToCart: addToCart }}>
+      <CartContext.Provider
+        value={{
+          cart: cart,
+          addToCart: addToCart,
+          removeFromCart: removeFromCart,
+        }}>
         <Routes>
           <Route path="/" element={<Navbar />}>
             <Route index element={<Home />} />
