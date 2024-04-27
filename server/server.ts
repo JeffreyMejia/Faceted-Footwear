@@ -86,9 +86,6 @@ app.get('/api/catalog/search', async (req, res, next) => {
 app.post('/api/catalog/cart', async (req, res, next) => {
   try {
     const { productId, quantity, size } = req.body;
-    console.log('productId:', productId);
-    console.log('quantity:', quantity);
-    console.log('size:', size);
     if (!productId) throw new ClientError(400, 'productId required!');
     if (!quantity) throw new ClientError(400, 'quantity required!');
     if (!size) throw new ClientError(400, 'size required!');
@@ -119,7 +116,29 @@ app.delete('/api/catalog/cart/:productId', async (req, res, next) => {
     const deletedCartItem = results.rows[0];
     if (!deletedCartItem)
       throw new ClientError(404, `error could not find ${productId}`);
-    res.status(204);
+    res.sendStatus(204);
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.put('/api/catalog/cart/:productId', async (req, res, next) => {
+  try {
+    const { productId } = req.params;
+    const { quantity } = req.body;
+    const sql = `
+    update "cartItems"
+    set "quantity" = $1
+    where "productId" =$2
+    returning*
+    `;
+    const params = [quantity, productId];
+    const results = await db.query(sql, params);
+    const updatedProduct = results.rows[0];
+    if (!updatedProduct) {
+      throw new ClientError(404, `error ${productId} does not exist`);
+    }
+    res.sendStatus(200).json(updatedProduct);
   } catch (error) {
     next(error);
   }

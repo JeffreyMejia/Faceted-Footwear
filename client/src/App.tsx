@@ -29,12 +29,36 @@ export default function App() {
       if (!response.ok)
         throw new Error(`Error! bad network request ${response.status}`);
       setCart([...cart, { item, quantity: 1, size }]);
+    } else {
+      exists.quantity++;
+      const newArr = cart.map((product) =>
+        product.item.productId === item.productId ? exists : product
+      );
+      const response = await fetch(`/api/catalog/cart/${item.productId}`, {
+        method: 'PUT',
+        headers: {
+          'content-type': 'application/JSON',
+        },
+        body: JSON.stringify({ quantity: exists.quantity }),
+      });
+      if (!response.ok) {
+        throw new Error(`Error! bad network request ${response.status}`);
+      }
+      setCart(newArr);
     }
   }
 
   async function removeFromCart(item: CartProduct): Promise<void> {
-    item.quantity--;
-    if (item.quantity === 0) {
+    const exists = cart.find(
+      (product) => product?.item?.productId === item?.item?.productId
+    );
+    if (!exists) throw new Error('something broke');
+    exists.quantity--;
+    const newArr = cart.map((product) =>
+      product.item.productId === item.item.productId ? exists : product
+    );
+    setCart(newArr);
+    if (exists.quantity === 0) {
       const filtered = cart.filter(
         (p) => p.item.productId !== item.item.productId
       );
