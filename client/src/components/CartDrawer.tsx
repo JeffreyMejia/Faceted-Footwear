@@ -9,10 +9,14 @@ type Props = {
 };
 
 export function CartDrawer({ isItOpen, close }: Props) {
-  const { cart, removeFromCart } = useContext(CartContext);
+  const { cart, removeFromCart, addToCart } = useContext(CartContext);
 
   function handleRemoval(product: CartProduct) {
     removeFromCart(product);
+  }
+
+  function handleIncrement(product: CartProduct) {
+    addToCart(product.item, product.size);
   }
 
   if (!isItOpen) return null;
@@ -31,7 +35,7 @@ export function CartDrawer({ isItOpen, close }: Props) {
             <div className="flex mt-4 justify-evenly">
               <h3>{p?.item?.brand}</h3>
               <h3>{p?.item?.name}</h3>
-              <h3>{toDollars(p?.item?.amount)}</h3>
+              <h3>{toDollars(p?.item?.amount * p?.quantity)}</h3>
             </div>
             <div>
               <p>{p?.size}</p>
@@ -42,7 +46,10 @@ export function CartDrawer({ isItOpen, close }: Props) {
                 onClick={() => handleRemoval(p)}
               />
               <h3 className="text-lg">{p?.quantity}</h3>
-              <FaPlus className="ml-4 cursor-pointer" />
+              <FaPlus
+                onClick={() => handleIncrement(p)}
+                className="ml-4 cursor-pointer"
+              />
             </div>
           </div>
         ))}
