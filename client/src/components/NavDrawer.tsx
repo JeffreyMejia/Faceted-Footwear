@@ -29,7 +29,9 @@ export function NavDrawer({ isItOpen, close }: Props) {
             <button onClick={close} className="text-primary mx-4">
               Close
             </button>
-            <h1 className="text-primary  text-lg font-zen">Faceted Footwear</h1>
+            <h1 className="text-primary text-lg md:text-xl lg:text-2xl font-zen">
+              Faceted Footwear
+            </h1>
             <FaCube
               onClick={() => navigate('/')}
               className="text-primary ml-3 h-7 w-7 hover:animate-spin active:animate-bounce"

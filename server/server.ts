@@ -103,15 +103,15 @@ app.post('/api/catalog/cart', async (req, res, next) => {
   }
 });
 
-app.delete('/api/catalog/cart/:productId', async (req, res, next) => {
+app.delete('/api/catalog/cart/:productId/:size', async (req, res, next) => {
   try {
-    const { productId } = req.params;
+    const { productId, size } = req.params;
     const sql = `
        delete from "cartItems"
-       where "productId" = $1
+       where "productId" = $1 and "size" =$2
        returning *
                  `;
-    const params = [productId];
+    const params = [productId, size];
     const results = await db.query(sql, params);
     const deletedCartItem = results.rows[0];
     if (!deletedCartItem)
@@ -125,20 +125,21 @@ app.delete('/api/catalog/cart/:productId', async (req, res, next) => {
 app.put('/api/catalog/cart/:productId', async (req, res, next) => {
   try {
     const { productId } = req.params;
-    const { quantity } = req.body;
+    const { quantity, size } = req.body;
     const sql = `
     update "cartItems"
     set "quantity" = $1
-    where "productId" =$2
+    where "productId" = $2
+    and "size" = $3
     returning*
     `;
-    const params = [quantity, productId];
+    const params = [quantity, productId, size];
     const results = await db.query(sql, params);
     const updatedProduct = results.rows[0];
     if (!updatedProduct) {
       throw new ClientError(404, `error ${productId} does not exist`);
     }
-    res.sendStatus(200).json(updatedProduct);
+    res.status(200).json(updatedProduct);
   } catch (error) {
     next(error);
   }

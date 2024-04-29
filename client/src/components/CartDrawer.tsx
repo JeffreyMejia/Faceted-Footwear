@@ -1,6 +1,6 @@
 import { FaPlus, FaMinus } from 'react-icons/fa';
 import { toDollars } from '../library/to-dollars';
-import { CartContext, CartProduct } from './CartContext';
+import { CartContext } from './CartContext';
 import { useContext } from 'react';
 
 type Props = {
@@ -9,20 +9,13 @@ type Props = {
 };
 
 export function CartDrawer({ isItOpen, close }: Props) {
-  const { cart, removeFromCart, addToCart } = useContext(CartContext);
-
-  function handleRemoval(product: CartProduct) {
-    removeFromCart(product);
-  }
-
-  function handleIncrement(product: CartProduct) {
-    addToCart(product.item, product.size);
-  }
+  const { cart, removeFromCart, incrementProductInCart } =
+    useContext(CartContext);
 
   if (!isItOpen) return null;
   return (
     <>
-      <div className="fixed right-0 top-0 h-screen bg-secondary text-primary flex flex-col z-10">
+      <div className="fixed right-0 top-0 h-screen bg-secondary text-primary flex flex-col z-10 overflow-y-auto">
         <div className="p-4">
           <h1 className="font-zen text-3xl">Shopping Cart</h1>{' '}
           <button className="mx-4" onClick={close}>
@@ -30,24 +23,24 @@ export function CartDrawer({ isItOpen, close }: Props) {
           </button>
         </div>
         {cart.map((p) => (
-          <div key={p?.item?.productId} className="p-4">
+          <div key={`${p.item.productId} + ${p.size}`} className="p-4">
             <img className="object-contain w-60" src={p?.item?.image} />
             <div className="flex mt-4 justify-evenly">
               <h3>{p?.item?.brand}</h3>
               <h3>{p?.item?.name}</h3>
-              <h3>{toDollars(p?.item?.amount * p?.quantity)}</h3>
             </div>
-            <div>
+            <div className="flex justify-around">
+              <h3>{toDollars(p?.item?.amount * p?.quantity)}</h3>
               <p>{p?.size}</p>
             </div>
             <div className="flex items-center mt-2">
               <FaMinus
                 className="ml-6 mr-4 cursor-pointer"
-                onClick={() => handleRemoval(p)}
+                onClick={() => removeFromCart(p)}
               />
               <h3 className="text-lg">{p?.quantity}</h3>
               <FaPlus
-                onClick={() => handleIncrement(p)}
+                onClick={() => incrementProductInCart(p)}
                 className="ml-4 cursor-pointer"
               />
             </div>
