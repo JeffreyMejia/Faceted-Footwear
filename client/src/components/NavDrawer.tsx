@@ -91,7 +91,7 @@ export function NavDrawer({ isItOpen, close }: Props) {
         onClick={close}
         className={`shade ${
           isItOpen ? 'is-drawn' : ''
-        } w-screen h-screen bg-black opacity-0 absolute top-0 left-0 `}
+        } w-screen h-screen bg-black opacity-0 absolute top-0 left-0`}
       />
     </>
   );
