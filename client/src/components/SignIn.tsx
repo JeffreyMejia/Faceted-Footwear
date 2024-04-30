@@ -63,7 +63,6 @@ export function SignIn() {
           </label>
           <input name="password" type="password" className="rounded mb-2" />
           <button
-            onClick={() => navigate('/')}
             type="submit"
             className="my-4 bg-black rounded w-full hover:bg-primary hover:text-black active:bg-secondary active:text-tertiary">
             Sign In

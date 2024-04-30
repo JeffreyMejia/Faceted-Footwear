@@ -58,8 +58,3 @@ values  ('Adidas', 'ZX 1000', 'sneakers', '/final-project-photos/Adidas - ZX 100
  ('New Balance', '990v6 ', 'sneakers', '/final-project-photos/New Balance - 990v6.png', 'The designers of the first 990 were tasked with creating the single best running shoe on the market. The MADE in USA 990v6 embraces this original mandate, with a series of performance-inspired updates. The upper dispenses with the standard midfoot saddle, allowing the pigskin and synthetic overlays to flow from heel to toe across the mesh underlay, for a speedy, streamlined look. While the evolved design marks one of the most dramatic changes from one generation model to the next that the 990 has ever seen, the greatest leap forward occurs on the inside. The addition of FuelCell midsole cushioning means that the evolution of the 990 can be felt as much as it can be seen.', '19999'),
  ('Off-White', 'Out of Office Low Top Sneaker ', 'sneakers', '/final-project-photos/Off-White - Out of Office Low Top Sneaker.png', 'Off-White looks to 80s and 90s athletic shoes to create a modern sneaker that sports a low profile with nods to street, basketball and runner aesthetics.', '65000'),
  ('Prada', 'Americas Cup ', 'sneakers', '/final-project-photos/Prada - Americas Cup.png', 'These patent leather sneakers with bike fabric inserts are inspired by an iconic aesthetic. The unmistakable Prada Linea Rossa logo on the tongue and sole enhances the design.', '89500');
-
-
-
-insert into "users" ("hashedPassword", "email")
-values ('something', 'stuff');

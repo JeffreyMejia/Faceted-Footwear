@@ -1,14 +1,15 @@
 import { FormEvent, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 type Props = {
   value: string;
-  handlePassword: () => void;
-  onSwitch: () => void;
+  handlePassword: (e) => void;
 };
 
-export function RegistrationForm({ value, handlePassword, onSwitch }: Props) {
+export function RegistrationForm({ value, handlePassword }: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<unknown>();
+  const navigate = useNavigate();
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -25,13 +26,10 @@ export function RegistrationForm({ value, handlePassword, onSwitch }: Props) {
         throw new Error(`fetch Error ${res.status}`);
       }
       const user = await res.json();
-      console.log('Registered', user);
-      console.log(
-        `You can check the database with: psql -d userManagement -c 'select * from users'`
-      );
       alert(
         `Successfully registered ${user.username} as userId ${user.userId}.`
       );
+      navigate('/registration');
     } catch (error) {
       setError(error);
     } finally {
@@ -83,7 +81,6 @@ export function RegistrationForm({ value, handlePassword, onSwitch }: Props) {
           required
         />
         <button
-          onClick={onSwitch}
           type="submit"
           className="my-4 bg-black rounded w-full hover:bg-primary hover:text-black active:bg-secondary active:text-tertiary">
           Create

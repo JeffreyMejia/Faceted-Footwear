@@ -1,6 +1,17 @@
 import { Link } from 'react-router-dom';
+import { useUser } from '../library/useUser';
+import { useNavigate } from 'react-router-dom';
 
 export function AccountPage() {
+  const { handleSignOut } = useUser();
+  const navigate = useNavigate();
+
+  function handleSubmit() {
+    handleSignOut();
+    alert('You have signed out successfully');
+    navigate('/registration');
+  }
+
   return (
     <div className="container flex flex-col items-center mt-6">
       <div className="bg-secondary sm:6/12 md:6/12 lg:w-3/12 rounded p-4 shadow-wrapper text-primary flex flex-col items-center">
@@ -9,6 +20,11 @@ export function AccountPage() {
         <Link className="my-2" to={'/wishlist'}>
           Wishlist
         </Link>
+        <form onSubmit={handleSubmit}>
+          <button className=" bg-black rounded w-full hover:bg-primary hover:text-black active:bg-secondary active:text-tertiary p-2">
+            Sign Out
+          </button>
+        </form>
       </div>
     </div>
   );
