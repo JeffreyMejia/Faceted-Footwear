@@ -80,7 +80,11 @@ export function NavDrawer({ isItOpen, close }: Props) {
             )}
           </div>
           <Brand isOpen={openBrand} onClose={() => setOpenBrand(!openBrand)} />
-          <h2>Account</h2>
+          <h2
+            className="cursor-pointer"
+            onClick={() => navigate('/registration')}>
+            Account
+          </h2>
         </div>
       </div>
       <div

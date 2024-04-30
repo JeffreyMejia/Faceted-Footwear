@@ -20,7 +20,7 @@ export function SearchDrawer({ isItOpen, close }: Props) {
     <>
       <div className="fixed top-0 left-0 right-0 w-screen h-28  bg-secondary text-primary flex flex-col items-center z-10">
         <div className="ml-5 mt-7">
-          <h1 className="text-primary font-bold text-3xl mb-2">Search</h1>
+          <h1 className="text-primary font-zen text-3xl mb-2">Search</h1>
         </div>
         <div className="flex items-center justify-center">
           <button className="mr-4" onClick={close}>
