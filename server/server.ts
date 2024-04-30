@@ -9,7 +9,7 @@ import {
   authMiddleware,
 } from './lib/index.js';
 import jwt from 'jsonwebtoken';
-import { argon2d } from 'argon2';
+import argon2 from 'argon2';
 
 type User = {
   userId: number;

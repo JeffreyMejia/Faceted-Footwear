@@ -8,11 +8,34 @@ import { NotFound } from './pages/NotFound';
 import { Home } from './pages/Home';
 import { CartContext, CartProduct } from './components/CartContext';
 import { useState } from 'react';
-import { Product, updateQuantity, add, remove } from './library/data';
+import {
+  Product,
+  updateQuantity,
+  add,
+  remove,
+  saveToken,
+} from './library/data';
+import { AppContext, User } from './components/UserContext';
 
 export default function App() {
   const [cart, setCart] = useState<CartProduct[]>([]);
   const [error, setError] = useState<unknown>();
+  const [user, setUser] = useState<User>();
+  const [token, setToken] = useState<string>();
+
+  function handleSignIn(user: User, token: string) {
+    setUser(user);
+    setToken(token);
+    saveToken(token);
+  }
+
+  function handleSignOut() {
+    setUser(undefined);
+    setToken(undefined);
+    saveToken(undefined);
+  }
+
+  const contextValue = { user, token, handleSignIn, handleSignOut };
 
   // useEffect(() => {
   //   async function load() {
@@ -89,30 +112,32 @@ export default function App() {
   if (error) {
     return (
       <div className="text-primary">
-        Error Loading catalog:{' '}
+        Error Loading Cart:{' '}
         {error instanceof Error ? error.message : 'Unknown Error'}
       </div>
     );
   }
   return (
     <>
-      <CartContext.Provider
-        value={{
-          cart: cart,
-          addToCart: addToCart,
-          removeFromCart: removeFromCart,
-          incrementProductInCart: incrementProductInCart,
-        }}>
-        <Routes>
-          <Route path="/" element={<Navbar />}>
-            <Route index element={<Home />} />
-            <Route path="catalog" element={<Catalog />} />
-            <Route path="registration" element={<Registration />} />
-            <Route path="details/:productId" element={<ProductDetails />} />
-            <Route path="*" element={<NotFound />} />
-          </Route>
-        </Routes>
-      </CartContext.Provider>
+      <AppContext.Provider value={contextValue}>
+        <CartContext.Provider
+          value={{
+            cart: cart,
+            addToCart: addToCart,
+            removeFromCart: removeFromCart,
+            incrementProductInCart: incrementProductInCart,
+          }}>
+          <Routes>
+            <Route path="/" element={<Navbar />}>
+              <Route index element={<Home />} />
+              <Route path="catalog" element={<Catalog />} />
+              <Route path="registration" element={<Registration />} />
+              <Route path="details/:productId" element={<ProductDetails />} />
+              <Route path="*" element={<NotFound />} />
+            </Route>
+          </Routes>
+        </CartContext.Provider>
+      </AppContext.Provider>
     </>
   );
 }

@@ -46,7 +46,7 @@ export function ProductDetails() {
   if (error || !product) {
     return (
       <div className="text-primary">
-        Error Loading catalog:{' '}
+        Error Loading product:{' '}
         {error instanceof Error ? error.message : 'Unknown Error'}
       </div>
     );

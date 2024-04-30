@@ -11,25 +11,26 @@ export function Registration() {
     <div className="container flex justify-center mt-20 ">
       <div className="text-primary flex flex-col  items-center bg-secondary sm:6/12 md:6/12 lg:w-3/12 rounded p-4 shadow-wrapper">
         <div className="flex mb-4 border-b-4 border-black w-full justify-around">
-          <div>
-            <button onClick={() => setActiveTab(true)}>Sign In</button>
-          </div>
-          <div>
-            <button onClick={() => setActiveTab(false)}>Registration</button>
-          </div>
+          <button
+            className="bg-black w-full rounded hover:bg-primary hover:text-black active:bg-secondary active:text-tertiary"
+            onClick={() => setActiveTab(true)}>
+            Sign In
+          </button>
+          <button
+            className="bg-black w-full rounded hover:bg-primary hover:text-black active:bg-secondary active:text-tertiary"
+            onClick={() => setActiveTab(false)}>
+            Registration
+          </button>
         </div>
         {activeTab === true ? (
-          <SignIn
-            value={pass}
-            handlePassword={(e) => setPass(e.target.value)}
-          />
+          <SignIn />
         ) : (
           <>
             <RegistrationForm
               value={pass}
               handlePassword={(e) => setPass(e.target.value)}
             />
-            <CheckList value={pass} />
+            {pass && <CheckList value={pass} />}
           </>
         )}
       </div>

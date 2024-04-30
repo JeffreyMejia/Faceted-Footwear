@@ -16,6 +16,7 @@ type Props = {
 };
 
 export const tokenKey = 'um.token';
+
 export function saveToken(token: string | undefined): void {
   if (token) {
     sessionStorage.setItem(tokenKey, token);
