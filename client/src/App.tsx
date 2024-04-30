@@ -14,6 +14,18 @@ export default function App() {
   const [cart, setCart] = useState<CartProduct[]>([]);
   const [error, setError] = useState<unknown>();
 
+  // useEffect(() => {
+  //   async function load() {
+  //     try {
+  //       const cart = await readCart();
+  //       setCart(cart);
+  //     } catch (error) {
+  //       setError(error);
+  //     }
+  //   }
+  //   load();
+  // }, []);
+
   async function addToCart(item: Product, size: number) {
     try {
       const exists = cart.find(

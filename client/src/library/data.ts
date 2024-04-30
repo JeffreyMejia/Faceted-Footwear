@@ -67,3 +67,10 @@ export async function readProduct(
   const result = await response.json();
   return result;
 }
+
+export async function readCart() {
+  const response = await fetch('/api/catalog/cart');
+  const results = await response.json();
+  if (!response.ok) throw new Error(`fetch Error ${response.status}`);
+  return results;
+}

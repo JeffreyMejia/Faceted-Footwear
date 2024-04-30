@@ -83,6 +83,20 @@ app.get('/api/catalog/search', async (req, res, next) => {
   }
 });
 
+app.get('/api/catalog/cart', async (req, res, next) => {
+  try {
+    const sql = `
+    select * from "cartItems"
+    where "userId" = 1
+    `;
+    const results = await db.query(sql);
+    const cart = results.rows;
+    res.status(200).json(cart);
+  } catch (error) {
+    next(error);
+  }
+});
+
 app.post('/api/catalog/cart', async (req, res, next) => {
   try {
     const { productId, quantity, size } = req.body;

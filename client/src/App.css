@@ -7,3 +7,18 @@
   opacity: 0.5;
   pointer-events: all;
 }
+
+.passed {
+  color: green;
+  content: '✔';
+  display: inline-block;
+  margin-right: 0.4em;
+}
+
+.check {
+  color: green;
+}
+
+.x {
+  color: red;
+}
