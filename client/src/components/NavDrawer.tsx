@@ -3,13 +3,15 @@ import { FaCube, FaPlus, FaMinus } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { Footwear } from './Footwear';
 import { Brand } from './Brand';
+import { User } from './UserContext';
 
 type Props = {
   isItOpen: boolean;
   close: () => void;
+  user: User | undefined;
 };
 
-export function NavDrawer({ isItOpen, close }: Props) {
+export function NavDrawer({ isItOpen, close, user }: Props) {
   const [openFootwear, setOpenFootwear] = useState(false);
   const [openBrand, setOpenBrand] = useState(false);
   const [searchValue, setSearchValue] = useState('');
@@ -18,6 +20,7 @@ export function NavDrawer({ isItOpen, close }: Props) {
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     navigate(`/catalog?q=${searchValue}`);
+    setSearchValue('');
   }
 
   if (!isItOpen) return null;
@@ -82,7 +85,11 @@ export function NavDrawer({ isItOpen, close }: Props) {
           <Brand isOpen={openBrand} onClose={() => setOpenBrand(!openBrand)} />
           <h2
             className="cursor-pointer"
-            onClick={() => navigate('/registration')}>
+            onClick={() =>
+              user === undefined
+                ? navigate('/registration')
+                : navigate('/account')
+            }>
             Account
           </h2>
         </div>

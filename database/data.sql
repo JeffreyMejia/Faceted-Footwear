@@ -61,5 +61,5 @@ values  ('Adidas', 'ZX 1000', 'sneakers', '/final-project-photos/Adidas - ZX 100
 
 
 
-insert into "users" ("password", "email")
+insert into "users" ("hashedPassword", "email")
 values ('something', 'stuff');

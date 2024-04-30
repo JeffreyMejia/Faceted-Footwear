@@ -16,6 +16,8 @@ import {
   saveToken,
 } from './library/data';
 import { AppContext, User } from './components/UserContext';
+import { Wishlist } from './pages/Wishlist';
+import { AccountPage } from './pages/AccountPage';
 
 export default function App() {
   const [cart, setCart] = useState<CartProduct[]>([]);
@@ -128,11 +130,13 @@ export default function App() {
             incrementProductInCart: incrementProductInCart,
           }}>
           <Routes>
-            <Route path="/" element={<Navbar />}>
+            <Route path="/" element={<Navbar user={user} />}>
               <Route index element={<Home />} />
               <Route path="catalog" element={<Catalog />} />
               <Route path="registration" element={<Registration />} />
               <Route path="details/:productId" element={<ProductDetails />} />
+              <Route path="account" element={<AccountPage />} />
+              <Route path="wishlist" element={<Wishlist />} />
               <Route path="*" element={<NotFound />} />
             </Route>
           </Routes>

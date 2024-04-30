@@ -5,7 +5,13 @@ import { SearchDrawer } from './SearchDrawer';
 import { CartDrawer } from './CartDrawer';
 import { useContext, useState } from 'react';
 import { CartContext } from './CartContext';
-export function Navbar() {
+import { User } from './UserContext';
+
+type Props = {
+  user: User | undefined;
+};
+
+export function Navbar({ user }: Props) {
   const navigate = useNavigate();
   const [openNavDrawer, setOpenNavDrawer] = useState(false);
   const [openSearchDrawer, setOpenSearchDrawer] = useState(false);
@@ -24,6 +30,7 @@ export function Navbar() {
           className="fill-primary cursor-pointer h-7 w-7 hover:fill-tertiary active:fill-tertiary"
         />
         <NavDrawer
+          user={user}
           isItOpen={openNavDrawer}
           close={() => setOpenNavDrawer(false)}
         />

@@ -1,15 +1,14 @@
 import { FormEvent, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 type Props = {
   value: string;
-  handlePassword: (e) => void;
+  handlePassword: () => void;
+  onSwitch: () => void;
 };
 
-export function RegistrationForm({ value, handlePassword }: Props) {
+export function RegistrationForm({ value, handlePassword, onSwitch }: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<unknown>();
-  const navigate = useNavigate();
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -33,7 +32,6 @@ export function RegistrationForm({ value, handlePassword }: Props) {
       alert(
         `Successfully registered ${user.username} as userId ${user.userId}.`
       );
-      navigate('/registration');
     } catch (error) {
       setError(error);
     } finally {
@@ -61,23 +59,23 @@ export function RegistrationForm({ value, handlePassword }: Props) {
       <form
         onSubmit={handleSubmit}
         className="flex flex-col justify-center items-center my-2">
-        <label htmlFor="First Name" className="my-3">
+        <label htmlFor="firstName" className="my-3">
           First Name
         </label>
-        <input name="First Name" type="text" className="rounded" required />
-        <label htmlFor="Last Name" className="my-3">
+        <input name="firstName" type="text" className="rounded" required />
+        <label htmlFor="lastName" className="my-3">
           Last Name
         </label>
-        <input name="Last Name" type="text" className="rounded" required />
-        <label htmlFor="Email" className="my-3">
+        <input name="lastName" type="text" className="rounded" required />
+        <label htmlFor="email" className="my-3">
           Email
         </label>
-        <input name="Email" type="email" className="rounded" required />
-        <label htmlFor="Password" className="my-3">
+        <input name="email" type="email" className="rounded" required />
+        <label htmlFor="password" className="my-3">
           Password
         </label>
         <input
-          name="Password"
+          name="password"
           type="password"
           className="rounded"
           value={value}
@@ -85,6 +83,7 @@ export function RegistrationForm({ value, handlePassword }: Props) {
           required
         />
         <button
+          onClick={onSwitch}
           type="submit"
           className="my-4 bg-black rounded w-full hover:bg-primary hover:text-black active:bg-secondary active:text-tertiary">
           Create

@@ -54,15 +54,16 @@ export function SignIn() {
         <form
           onSubmit={handleSubmit}
           className="flex flex-col justify-center items-center p-4">
-          <label htmlFor="Email" className="mb-2">
+          <label htmlFor="email" className="mb-2">
             Email
           </label>
-          <input type="email" name="Email" className="rounded mb-2" />
-          <label htmlFor="Password" className="mb-2">
+          <input type="email" name="email" className="rounded mb-2" />
+          <label htmlFor="password" className="mb-2">
             Password
           </label>
-          <input name="Password" type="password" className="rounded mb-2" />
+          <input name="password" type="password" className="rounded mb-2" />
           <button
+            onClick={() => navigate('/')}
             type="submit"
             className="my-4 bg-black rounded w-full hover:bg-primary hover:text-black active:bg-secondary active:text-tertiary">
             Sign In

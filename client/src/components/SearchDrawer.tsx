@@ -13,6 +13,7 @@ export function SearchDrawer({ isItOpen, close }: Props) {
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     navigate(`/catalog?q=${searchValue}`);
+    setSearchValue('');
   }
 
   if (!isItOpen) return null;
@@ -42,6 +43,12 @@ export function SearchDrawer({ isItOpen, close }: Props) {
         className={`shade ${
           isItOpen ? 'is-drawn' : ''
         } w-screen h-screen bg-black opacity-0 absolute top-0 right-0 left-[-10]`}
+      />
+      <div
+        onClick={close}
+        className={`shade ${
+          isItOpen ? 'is-drawn' : ''
+        } w-screen h-screen bg-black opacity-0 absolute top-0 right-10 left-10`}
       />
     </>
   );

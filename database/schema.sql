@@ -19,7 +19,7 @@ CREATE TABLE "products" (
 
 CREATE TABLE "users" (
   "userId" serial PRIMARY KEY,
-  "password" text,
+  "hashedPassword" text,
   "email" text,
   "firstName" text,
   "lastName" text,

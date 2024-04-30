@@ -38,6 +38,7 @@ export async function add(cartItem: Props) {
     method: 'POST',
     headers: {
       'content-type': 'application/JSON',
+      Authorization: `Bearer ${readToken()}`,
     },
     body: JSON.stringify(cartItem),
   });
@@ -52,6 +53,7 @@ export async function updateQuantity(cartProduct: CartProduct) {
       method: 'PUT',
       headers: {
         'content-type': 'application/JSON',
+        Authorization: `Bearer ${readToken()}`,
       },
       body: JSON.stringify({
         quantity: cartProduct.quantity,
@@ -69,6 +71,7 @@ export async function remove(product: CartProduct) {
     `/api/catalog/cart/${product.item.productId}/${product.size}`,
     {
       method: 'DELETE',
+      headers: { Authorization: `Bearer ${readToken()}` },
     }
   );
   if (!response.ok)
@@ -78,14 +81,18 @@ export async function remove(product: CartProduct) {
 export async function readProduct(
   productId: number
 ): Promise<Product | undefined> {
-  const response = await fetch(`/api/catalog/details/${productId}`);
+  const response = await fetch(`/api/catalog/details/${productId}`, {
+    headers: { Authorization: `Bearer ${readToken()}` },
+  });
   if (!response.ok) throw new Error(`fetch Error ${response.status}`);
   const result = await response.json();
   return result;
 }
 
 export async function readCart() {
-  const response = await fetch('/api/catalog/cart');
+  const response = await fetch('/api/catalog/cart', {
+    headers: { Authorization: `Bearer ${readToken()}` },
+  });
   const results = await response.json();
   if (!response.ok) throw new Error(`fetch Error ${response.status}`);
   return results;
