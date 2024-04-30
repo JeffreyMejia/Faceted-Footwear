@@ -1,6 +1,6 @@
 import { toDollars } from '../library/to-dollars';
 import { useParams } from 'react-router-dom';
-import type { Product } from '../library/data';
+import { readProduct, type Product } from '../library/data';
 import { useEffect, useState, useContext, FormEvent } from 'react';
 import { CartContext } from '../components/CartContext';
 
@@ -14,10 +14,9 @@ export function ProductDetails() {
   useEffect(() => {
     async function loadProduct(productId: number) {
       try {
-        const response = await fetch(`/api/catalog/details/${productId}`);
-        if (!response.ok) throw new Error(`fetch Error ${response.status}`);
-        const result = await response.json();
-        setProduct(result);
+        const product = await readProduct(productId);
+        if (!product) throw new Error(`Entry with ID ${productId} not found`);
+        setProduct(product);
       } catch (error) {
         setError(error);
       } finally {
@@ -47,7 +46,7 @@ export function ProductDetails() {
   if (error || !product) {
     return (
       <div className="text-primary">
-        Error Loading catalog:{' '}
+        Error Loading product:{' '}
         {error instanceof Error ? error.message : 'Unknown Error'}
       </div>
     );
@@ -57,11 +56,7 @@ export function ProductDetails() {
     <div className="container mt-4">
       <div className="flex  text-primary bg-secondary rounded shadow-wrapper">
         <div className="ml-3">
-          <img
-            className="object-contain mt-3  object-contain"
-            src={image}
-            alt={name}
-          />
+          <img className="mt-3 " src={image} alt={name} />
           <h1 className="text-3xl font-bold my-3">{`${brand} ${name}`}</h1>
           <h3>{toDollars(amount)}</h3>
         </div>
