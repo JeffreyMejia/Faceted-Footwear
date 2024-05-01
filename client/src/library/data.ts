@@ -34,7 +34,7 @@ export function readToken(): string {
 
 // All fetches below
 
-export async function add(cartItem: Props) {
+export async function cartAddition(cartItem: Props) {
   const response = await fetch('/api/catalog/cart', {
     method: 'POST',
     headers: {
@@ -67,7 +67,7 @@ export async function updateQuantity(cartProduct: CartProduct) {
   }
 }
 
-export async function remove(product: CartProduct) {
+export async function cartRemoval(product: CartProduct) {
   const response = await fetch(
     `/api/catalog/cart/${product.item.productId}/${product.size}`,
     {
@@ -82,9 +82,7 @@ export async function remove(product: CartProduct) {
 export async function readProduct(
   productId: number
 ): Promise<Product | undefined> {
-  const response = await fetch(`/api/catalog/details/${productId}`, {
-    headers: { Authorization: `Bearer ${readToken()}` },
-  });
+  const response = await fetch(`/api/catalog/details/${productId}`);
   if (!response.ok) throw new Error(`fetch Error ${response.status}`);
   const result = await response.json();
   return result;
@@ -119,5 +117,13 @@ export async function wishlistRemove(wishlistItem: wishlistItem) {
     headers: { Authorization: `Bearer ${readToken()}` },
   });
   if (!response.ok)
-    throw new Error('Error! bad network request ${response.status}');
+    throw new Error(`Error! bad network request ${response.status}`);
+}
+
+export async function readBrands() {
+  const response = await fetch('/api/catalog/brands');
+  if (!response.ok)
+    throw new Error(`Error! bad network request ${response.status}`);
+  const results = await response.json();
+  return results;
 }

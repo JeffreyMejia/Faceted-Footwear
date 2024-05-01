@@ -26,7 +26,7 @@ export function NavDrawer({ isItOpen, close, user }: Props) {
   if (!isItOpen) return null;
   return (
     <>
-      <div className="fixed left-0 top-0 h-screen bg-secondary flex flex-col text-primary z-10">
+      <div className="fixed left-0 top-0 h-screen bg-secondary flex flex-col text-primary z-10 overflow-y-auto">
         <div>
           <div className="flex h-full items-center p-4">
             <button onClick={close} className="text-primary mx-4">

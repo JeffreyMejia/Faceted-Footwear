@@ -67,13 +67,17 @@ export function ProductDetails() {
   const { brand, name, amount, image, details } = product;
   return (
     <div className="container mt-4">
-      <div className="flex  text-primary bg-secondary rounded shadow-wrapper p-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 bg-secondary rounded shadow-wrapper p-4 lg:w-10/12 lg:h-5/6">
         <div className="ml-3">
-          <img className="mt-3 " src={image} alt={name} />
-          <h1 className="text-3xl font-bold my-3">{`${brand} ${name}`}</h1>
-          <h3>{toDollars(amount)}</h3>
+          <img
+            className="rounded mt-3 lg:aspect-square"
+            src={image}
+            alt={name}
+          />
+          <h1 className="text-xl md:text-2xl lg:text-3xl font-bold my-3 text-tertiary">{`${brand} ${name}`}</h1>
+          <h3 className="text-primary">{toDollars(amount)}</h3>
           <span>
-            <p>add to wishlist</p>
+            <p className="text-primary">add to wishlist</p>
             {!exists && (
               <FaBookmark
                 onClick={() => handleAddToWishlist(product)}
@@ -82,10 +86,10 @@ export function ProductDetails() {
             )}
           </span>
         </div>
-        <div className="mx-6 mt-3">
-          <h1 className="text-3xl font-bold">Details</h1>
-          <p className="whitespace-normal">{details}</p>
-          <h3 className="text-xl mt-10 mb-5">Choose your size</h3>
+        <div className="ml-6 mt-3">
+          <h1 className="text-3xl font-zen text-tertiary">Details</h1>
+          <p className="whitespace-normal text-primary">{details}</p>
+          <h3 className="text-xl mt-10 mb-5 text-primary">Choose your size</h3>
           <form onSubmit={handleAddToCart}>
             <label>
               <select name="sizes" id="size-select">
@@ -111,7 +115,7 @@ const sizes = [8, 8.5, 9, 9.5, 10, 10.5, 11, 11.5, 12];
 
 function Size({ size }) {
   return (
-    <option value={size} className="bg-black">
+    <option value={size} className="bg-black text-primary">
       {size}
     </option>
   );
