@@ -155,11 +155,12 @@ app.get('/api/catalog/search', authMiddleware, async (req, res, next) => {
   }
 });
 
-app.get('/api/catalog/cart', authMiddleware, async (req, res, next) => {
+app.get('/api/catalog/cart/:userId', authMiddleware, async (req, res, next) => {
   try {
+    const { userId } = req.params;
     const sql = `
     select * from "cartItems"
-    where "userId" = 1
+    where "userId" = $1
     `;
     const results = await db.query(sql);
     const cart = results.rows;
@@ -177,10 +178,10 @@ app.post('/api/catalog/cart', authMiddleware, async (req, res, next) => {
     if (!size) throw new ClientError(400, 'size required!');
     const sql = `
      insert into "cartItems" ("userId", "productId", "quantity", "size")
-     values ('1', $1, $2, $3)
+     values ($1, $2, $3, $4)
      returning *
                 `;
-    const params = [productId, quantity, size];
+    const params = [req.user?.userId, productId, quantity, size];
     const results = await db.query(sql, params);
     const newCart = results.rows[0];
     res.status(201).json(newCart);
@@ -233,6 +234,64 @@ app.put(
         throw new ClientError(404, `error ${productId} does not exist`);
       }
       res.status(200).json(updatedProduct);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+app.get('/api/wishlist', authMiddleware, async (req, res, next) => {
+  try {
+    const { userId } = req.body;
+    if (!userId) throw new ClientError(400, 'User Id required!');
+    const sql = `
+    select * from "cartItems"
+    where "userId" = $1
+    `;
+    const params = [req.user?.userId];
+    const results = await db.query(sql);
+    const wishlist = results.rows;
+    res.status(200).json(wishlist);
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.post('/api/wishlist/', authMiddleware, async (req, res, next) => {
+  try {
+    const { productId, userId } = req.body;
+    if (!productId) throw new ClientError(400, 'productId required!');
+    const sql = `
+     insert into "wishlists" ( "productId", "userId")
+     values ($1, $2)
+     returning *
+                `;
+    const params = [productId, req.user?.userId];
+    const results = await db.query(sql, params);
+    const wishlistItem = results.rows[0];
+    res.status(201).json(wishlistItem);
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.delete(
+  '/api/wishlist/:productId',
+  authMiddleware,
+  async (req, res, next) => {
+    try {
+      const { productId } = req.params;
+      const sql = `
+       delete from "wishlists"
+       where "productId" = $1
+       returning *
+                 `;
+      const params = [productId];
+      const results = await db.query(sql, params);
+      const deletedCartItem = results.rows[0];
+      if (!deletedCartItem)
+        throw new ClientError(404, `error could not find ${productId}`);
+      res.sendStatus(204);
     } catch (error) {
       next(error);
     }

@@ -14,16 +14,46 @@ import {
   add,
   remove,
   saveToken,
+  wishlistAdd,
+  wishlistRemove,
 } from './library/data';
 import { AppContext, User } from './components/UserContext';
 import { Wishlist } from './pages/Wishlist';
 import { AccountPage } from './pages/AccountPage';
+import { WishlistContext, wishlistItem } from './components/WishlistContext';
 
 export default function App() {
   const [cart, setCart] = useState<CartProduct[]>([]);
   const [error, setError] = useState<unknown>();
   const [user, setUser] = useState<User>();
   const [token, setToken] = useState<string>();
+  const [wishlist, setWishlist] = useState<wishlistItem[]>([]);
+
+  async function addToWishlist(item: Product) {
+    try {
+      const exists = wishlist.find(
+        (product) => product.item?.productId === item.productId
+      );
+      if (!exists) {
+        await wishlistAdd(item);
+        setWishlist([...wishlist, { item }]);
+      }
+    } catch (error) {
+      setError(error);
+    }
+  }
+
+  async function removeFromWishlist(item: wishlistItem) {
+    try {
+      const filtered = wishlist.filter(
+        (product) => product.item.productId !== item.item.productId
+      );
+      await wishlistRemove(item);
+      setWishlist([...filtered]);
+    } catch (error) {
+      setError(error);
+    }
+  }
 
   function handleSignIn(user: User, token: string) {
     setUser(user);
@@ -42,14 +72,14 @@ export default function App() {
   // useEffect(() => {
   //   async function load() {
   //     try {
-  //       const cart = await readCart();
+  //       const cart = await readCart(user);
   //       setCart(cart);
   //     } catch (error) {
   //       setError(error);
   //     }
   //   }
   //   load();
-  // }, []);
+  // }, [user]);
 
   async function addToCart(item: Product, size: number) {
     try {
@@ -59,11 +89,11 @@ export default function App() {
       );
       if (!exists) {
         const cartItem = { productId: item.productId, quantity: 1, size };
-        add(cartItem);
+        await add(cartItem);
         setCart([...cart, { item, quantity: 1, size }]);
       } else if (exists.size !== size) {
         const cartItem = { productId: item.productId, quantity: 1, size };
-        add(cartItem);
+        await add(cartItem);
         setCart([...cart, { item, quantity: 1, size }]);
       }
     } catch (error) {
@@ -129,17 +159,24 @@ export default function App() {
             removeFromCart: removeFromCart,
             incrementProductInCart: incrementProductInCart,
           }}>
-          <Routes>
-            <Route path="/" element={<Navbar user={user} />}>
-              <Route index element={<Home />} />
-              <Route path="catalog" element={<Catalog />} />
-              <Route path="registration" element={<Registration />} />
-              <Route path="details/:productId" element={<ProductDetails />} />
-              <Route path="account" element={<AccountPage />} />
-              <Route path="wishlist" element={<Wishlist />} />
-              <Route path="*" element={<NotFound />} />
-            </Route>
-          </Routes>
+          <WishlistContext.Provider
+            value={{
+              wishlist: wishlist,
+              addToWishlist: addToWishlist,
+              removeFromWishlist: removeFromWishlist,
+            }}>
+            <Routes>
+              <Route path="/" element={<Navbar user={user} />}>
+                <Route index element={<Home />} />
+                <Route path="catalog" element={<Catalog />} />
+                <Route path="registration" element={<Registration />} />
+                <Route path="details/:productId" element={<ProductDetails />} />
+                <Route path="account" element={<AccountPage />} />
+                <Route path="wishlist" element={<Wishlist />} />
+                <Route path="*" element={<NotFound />} />
+              </Route>
+            </Routes>
+          </WishlistContext.Provider>
         </CartContext.Provider>
       </AppContext.Provider>
     </>

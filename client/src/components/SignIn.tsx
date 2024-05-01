@@ -27,6 +27,7 @@ export function SignIn() {
       handleSignIn(user, token);
       console.log('Signed In', user);
       console.log('Received token:', token);
+      alert('you are signed in');
       navigate('/');
     } catch (err) {
       setError(error);
@@ -61,7 +62,12 @@ export function SignIn() {
           <label htmlFor="password" className="mb-2">
             Password
           </label>
-          <input name="password" type="password" className="rounded mb-2" />
+          <input
+            name="password"
+            type="password"
+            className="rounded mb-2"
+            required
+          />
           <button
             type="submit"
             className="my-4 bg-black rounded w-full hover:bg-primary hover:text-black active:bg-secondary active:text-tertiary">

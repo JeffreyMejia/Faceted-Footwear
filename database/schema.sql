@@ -60,6 +60,13 @@ CREATE TABLE "orderItems" (
   "createdAt" timestamptz default now()
 );
 
+CREATE TABLE "wishlists" (
+  "wishlistId" serial PRIMARY KEY,
+  "userId" integer,
+  "productId" integer,
+  "createdAt" timestamptz default now()
+)
+
 ALTER TABLE "cartItems" ADD FOREIGN KEY ("productId") REFERENCES "products" ("productId");
 
 ALTER TABLE "inventory" ADD FOREIGN KEY ("productId") REFERENCES "products" ("productId");
@@ -71,3 +78,7 @@ ALTER TABLE "orders" ADD FOREIGN KEY ("userId") REFERENCES "users" ("userId");
 ALTER TABLE "cartItems" ADD FOREIGN KEY ("userId") REFERENCES "users" ("userId");
 
 ALTER TABLE "orderItems" ADD FOREIGN KEY ("orderId") REFERENCES "orders" ("orderId");
+
+ALTER TABLE "wishlists" ADD FOREIGN KEY ("userId") REFERENCES "users" ("userId");
+
+ALTER TABLE "wishlists" ADD FOREIGN KEY ("productId") REFERENCES "products" ("productId");

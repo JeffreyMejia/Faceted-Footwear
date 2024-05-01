@@ -27,7 +27,6 @@ export function Registration() {
         ) : (
           <>
             <RegistrationForm
-              onSwitch={() => setActiveTab(true)}
               value={pass}
               handlePassword={(e) => setPass(e.target.value)}
             />

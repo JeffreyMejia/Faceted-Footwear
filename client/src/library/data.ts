@@ -1,4 +1,6 @@
 import { CartProduct } from '../components/CartContext';
+import { User } from '../components/UserContext';
+import { wishlistItem } from '../components/WishlistContext';
 
 export type Product = {
   brand: string;
@@ -89,11 +91,34 @@ export async function readProduct(
   return result;
 }
 
-export async function readCart() {
-  const response = await fetch('/api/catalog/cart', {
+export async function readCart(user: User | undefined) {
+  const response = await fetch(`/api/catalog/cart/${user?.userId}`, {
     headers: { Authorization: `Bearer ${readToken()}` },
   });
   const results = await response.json();
   if (!response.ok) throw new Error(`fetch Error ${response.status}`);
   return results;
+}
+
+export async function wishlistAdd(product: Product) {
+  const response = await fetch(`/api/wishlist/`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${readToken()}`,
+      'content-type': 'application/JSON',
+    },
+    body: JSON.stringify({ productId: product.productId }),
+  });
+  const results = await response.json();
+  if (!response.ok) throw new Error(`fetch Error ${response.status}`);
+  return results;
+}
+
+export async function wishlistRemove(wishlistItem: wishlistItem) {
+  const response = await fetch(`/api/wishlist/${wishlistItem.item.productId}`, {
+    method: 'DELETE',
+    headers: { Authorization: `Bearer ${readToken()}` },
+  });
+  if (!response.ok)
+    throw new Error('Error! bad network request ${response.status}');
 }
