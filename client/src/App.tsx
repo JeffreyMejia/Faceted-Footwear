@@ -7,7 +7,7 @@ import { ProductDetails } from './pages/ProductDetails';
 import { NotFound } from './pages/NotFound';
 import { Home } from './pages/Home';
 import { CartContext, CartProduct } from './components/CartContext';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Product,
   updateQuantity,
@@ -16,6 +16,7 @@ import {
   saveToken,
   wishlistAdd,
   wishlistRemove,
+  readCart,
 } from './library/data';
 import { AppContext, User } from './components/UserContext';
 import { Wishlist } from './pages/Wishlist';
@@ -28,6 +29,20 @@ export default function App() {
   const [user, setUser] = useState<User>();
   const [token, setToken] = useState<string>();
   const [wishlist, setWishlist] = useState<wishlistItem[]>([]);
+
+  useEffect(() => {
+    async function load() {
+      try {
+        if (user !== undefined) {
+          const cart = await readCart();
+          setCart(cart);
+        }
+      } catch (error) {
+        setError(error);
+      }
+    }
+    load();
+  }, [user]);
 
   async function addToWishlist(item: Product) {
     try {
@@ -68,18 +83,6 @@ export default function App() {
   }
 
   const contextValue = { user, token, handleSignIn, handleSignOut };
-
-  // useEffect(() => {
-  //   async function load() {
-  //     try {
-  //       const cart = await readCart(user);
-  //       setCart(cart);
-  //     } catch (error) {
-  //       setError(error);
-  //     }
-  //   }
-  //   load();
-  // }, [user]);
 
   async function addToCart(item: Product, size: number) {
     try {

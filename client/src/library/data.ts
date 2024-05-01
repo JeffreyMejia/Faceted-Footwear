@@ -1,5 +1,4 @@
 import { CartProduct } from '../components/CartContext';
-import { User } from '../components/UserContext';
 import { wishlistItem } from '../components/WishlistContext';
 
 export type Product = {
@@ -91,8 +90,8 @@ export async function readProduct(
   return result;
 }
 
-export async function readCart(user: User | undefined) {
-  const response = await fetch(`/api/catalog/cart/${user?.userId}`, {
+export async function readCart() {
+  const response = await fetch(`/api/catalog/cart`, {
     headers: { Authorization: `Bearer ${readToken()}` },
   });
   const results = await response.json();

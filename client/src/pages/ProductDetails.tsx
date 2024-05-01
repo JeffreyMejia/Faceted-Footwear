@@ -12,7 +12,7 @@ export function ProductDetails() {
   const [error, setError] = useState<unknown>();
   const [product, setProduct] = useState<Product>();
   const { addToCart } = useContext(CartContext);
-  const { addToWishlist } = useContext(WishlistContext);
+  const { addToWishlist, wishlist } = useContext(WishlistContext);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -29,6 +29,10 @@ export function ProductDetails() {
     }
     loadProduct(Number(productId));
   }, [productId]);
+
+  const exists = wishlist.find(
+    (item) => item.item?.productId === product?.productId
+  );
 
   async function handleAddToWishlist(item: Product) {
     addToWishlist(item);
@@ -70,10 +74,12 @@ export function ProductDetails() {
           <h3>{toDollars(amount)}</h3>
           <span>
             <p>add to wishlist</p>
-            <FaBookmark
-              onClick={() => handleAddToWishlist(product)}
-              className="fill-primary my-2 cursor-pointer"
-            />
+            {!exists && (
+              <FaBookmark
+                onClick={() => handleAddToWishlist(product)}
+                className="fill-primary my-2 cursor-pointer"
+              />
+            )}
           </span>
         </div>
         <div className="mx-6 mt-3">

@@ -155,14 +155,13 @@ app.get('/api/catalog/search', authMiddleware, async (req, res, next) => {
   }
 });
 
-app.get('/api/catalog/cart/:userId', authMiddleware, async (req, res, next) => {
+app.get('/api/catalog/cart', authMiddleware, async (req, res, next) => {
   try {
-    const { userId } = req.params;
     const sql = `
     select * from "cartItems"
     where "userId" = $1
     `;
-    const results = await db.query(sql);
+    const results = await db.query(sql, [req.user?.userId]);
     const cart = results.rows;
     res.status(200).json(cart);
   } catch (error) {

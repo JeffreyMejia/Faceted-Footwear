@@ -65,7 +65,7 @@ CREATE TABLE "wishlists" (
   "userId" integer,
   "productId" integer,
   "createdAt" timestamptz default now()
-)
+);
 
 ALTER TABLE "cartItems" ADD FOREIGN KEY ("productId") REFERENCES "products" ("productId");
 

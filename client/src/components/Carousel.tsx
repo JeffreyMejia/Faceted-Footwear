@@ -3,12 +3,12 @@ import { Indicators } from './Indicators';
 import { useState, useCallback, useEffect } from 'react';
 
 const footwear = [
-  '/public/final-project-photos/Adidas - ZX 10000.png',
-  '/public/final-project-photos/Solovair - 8 eye derby.png',
-  '/public/final-project-photos/Asics - Gel Lyte iii.png',
-  '/public/final-project-photos/Jim Green - African Ranger.png',
-  '/public/final-project-photos/Whites - Drifter.png',
-  '/public/final-project-photos/Jordan-1-chicago.png',
+  '/final-project-photos/Adidas - ZX 10000.png',
+  '/final-project-photos/Solovair - 8 eye derby.png',
+  '/final-project-photos/Asics - Gel Lyte iii.png',
+  '/final-project-photos/Jim Green - African Ranger.png',
+  '/final-project-photos/Whites - Drifter.png',
+  '/final-project-photos/Jordan-1-chicago.png',
 ];
 
 export function Carousel() {
@@ -16,7 +16,7 @@ export function Carousel() {
 
   const handleNext = useCallback(() => {
     setActiveIndex((activeIndex + 1) % footwear.length);
-  }, [activeIndex, footwear]);
+  }, [activeIndex]);
 
   useEffect(() => {
     const intervalId = setInterval(handleNext, 3000);
