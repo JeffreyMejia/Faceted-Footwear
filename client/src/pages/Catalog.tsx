@@ -58,8 +58,7 @@ export function Catalog() {
                 alt={product.name}
               />
               <div className="flex mt-2">
-                <h2 className="text-white mr-2">{product.brand}</h2>
-                <h2 className="text-white">{product.name}</h2>
+                <h2 className="text-white mr-2">{`${product.brand} ${product.name}`}</h2>
               </div>
               <h3 className="text-white font-bold">
                 {toDollars(product.amount)}

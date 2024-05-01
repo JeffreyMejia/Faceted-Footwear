@@ -7,23 +7,68 @@ import { ProductDetails } from './pages/ProductDetails';
 import { NotFound } from './pages/NotFound';
 import { Home } from './pages/Home';
 import { CartContext, CartProduct } from './components/CartContext';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Product,
   updateQuantity,
   add,
   remove,
   saveToken,
+  wishlistAdd,
+  wishlistRemove,
+  readCart,
 } from './library/data';
 import { AppContext, User } from './components/UserContext';
 import { Wishlist } from './pages/Wishlist';
 import { AccountPage } from './pages/AccountPage';
+import { WishlistContext, wishlistItem } from './components/WishlistContext';
 
 export default function App() {
   const [cart, setCart] = useState<CartProduct[]>([]);
   const [error, setError] = useState<unknown>();
   const [user, setUser] = useState<User>();
   const [token, setToken] = useState<string>();
+  const [wishlist, setWishlist] = useState<wishlistItem[]>([]);
+
+  useEffect(() => {
+    async function load() {
+      try {
+        if (user !== undefined) {
+          const cart = await readCart();
+          setCart(cart);
+        }
+      } catch (error) {
+        setError(error);
+      }
+    }
+    load();
+  }, [user]);
+
+  async function addToWishlist(item: Product) {
+    try {
+      const exists = wishlist.find(
+        (product) => product.item?.productId === item.productId
+      );
+      if (!exists) {
+        await wishlistAdd(item);
+        setWishlist([...wishlist, { item }]);
+      }
+    } catch (error) {
+      setError(error);
+    }
+  }
+
+  async function removeFromWishlist(item: wishlistItem) {
+    try {
+      const filtered = wishlist.filter(
+        (product) => product.item.productId !== item.item.productId
+      );
+      await wishlistRemove(item);
+      setWishlist([...filtered]);
+    } catch (error) {
+      setError(error);
+    }
+  }
 
   function handleSignIn(user: User, token: string) {
     setUser(user);
@@ -39,18 +84,6 @@ export default function App() {
 
   const contextValue = { user, token, handleSignIn, handleSignOut };
 
-  // useEffect(() => {
-  //   async function load() {
-  //     try {
-  //       const cart = await readCart();
-  //       setCart(cart);
-  //     } catch (error) {
-  //       setError(error);
-  //     }
-  //   }
-  //   load();
-  // }, []);
-
   async function addToCart(item: Product, size: number) {
     try {
       const exists = cart.find(
@@ -59,11 +92,11 @@ export default function App() {
       );
       if (!exists) {
         const cartItem = { productId: item.productId, quantity: 1, size };
-        add(cartItem);
+        await add(cartItem);
         setCart([...cart, { item, quantity: 1, size }]);
       } else if (exists.size !== size) {
         const cartItem = { productId: item.productId, quantity: 1, size };
-        add(cartItem);
+        await add(cartItem);
         setCart([...cart, { item, quantity: 1, size }]);
       }
     } catch (error) {
@@ -129,17 +162,24 @@ export default function App() {
             removeFromCart: removeFromCart,
             incrementProductInCart: incrementProductInCart,
           }}>
-          <Routes>
-            <Route path="/" element={<Navbar user={user} />}>
-              <Route index element={<Home />} />
-              <Route path="catalog" element={<Catalog />} />
-              <Route path="registration" element={<Registration />} />
-              <Route path="details/:productId" element={<ProductDetails />} />
-              <Route path="account" element={<AccountPage />} />
-              <Route path="wishlist" element={<Wishlist />} />
-              <Route path="*" element={<NotFound />} />
-            </Route>
-          </Routes>
+          <WishlistContext.Provider
+            value={{
+              wishlist: wishlist,
+              addToWishlist: addToWishlist,
+              removeFromWishlist: removeFromWishlist,
+            }}>
+            <Routes>
+              <Route path="/" element={<Navbar user={user} />}>
+                <Route index element={<Home />} />
+                <Route path="catalog" element={<Catalog />} />
+                <Route path="registration" element={<Registration />} />
+                <Route path="details/:productId" element={<ProductDetails />} />
+                <Route path="account" element={<AccountPage />} />
+                <Route path="wishlist" element={<Wishlist />} />
+                <Route path="*" element={<NotFound />} />
+              </Route>
+            </Routes>
+          </WishlistContext.Provider>
         </CartContext.Provider>
       </AppContext.Provider>
     </>
