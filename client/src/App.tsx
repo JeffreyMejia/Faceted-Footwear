@@ -86,16 +86,16 @@ export default function App() {
     try {
       const exists = cart.find(
         (product) =>
-          product.item.productId === item.productId && product.size === size
+          product.productId === item.productId && product.size === size
       );
       if (!exists) {
         const cartItem = { productId: item.productId, quantity: 1, size };
         await cartAddition(cartItem);
-        setCart([...cart, { item, quantity: 1, size }]);
+        setCart([...cart, { ...item, quantity: 1, size }]);
       } else if (exists.size !== size) {
         const cartItem = { productId: item.productId, quantity: 1, size };
         await cartAddition(cartItem);
-        setCart([...cart, { item, quantity: 1, size }]);
+        setCart([...cart, { ...item, quantity: 1, size }]);
       }
     } catch (error) {
       setError(error);
@@ -106,8 +106,7 @@ export default function App() {
     try {
       product.quantity++;
       const newArr = cart.map((item) =>
-        item.item.productId === product.item.productId &&
-        item.size === product.size
+        item.productId === product.productId && item.size === product.size
           ? product
           : item
       );
@@ -122,8 +121,7 @@ export default function App() {
     try {
       item.quantity--;
       const newArr = cart.map((product) =>
-        product.item.productId === item.item.productId &&
-        item.size === product.size
+        product.productId === item.productId && item.size === product.size
           ? item
           : product
       );
@@ -131,8 +129,7 @@ export default function App() {
       setCart(newArr);
       if (item.quantity === 0) {
         const filtered = cart.filter(
-          (p) =>
-            p.item.productId !== item.item.productId || p.size !== item.size
+          (p) => p.productId !== item.productId || p.size !== item.size
         );
         setCart([...filtered]);
         await cartRemoval(item);

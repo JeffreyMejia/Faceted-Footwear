@@ -20,7 +20,7 @@ export function Wishlist() {
             className="bg-tertiary rounded p-2 shadow-wrapper hover:bg-black">
             <Link to={`/details/${product.item.productId}`}>
               <img
-                className="h-36  md:h-52 lg:h-52 w-full rounded shadow-md"
+                className="w-full rounded shadow-md aspect-square "
                 src={product.item.image}
                 alt={product.item.name}
               />

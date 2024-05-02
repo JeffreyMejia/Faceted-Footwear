@@ -101,13 +101,14 @@ app.post('/api/auth/sign-in', async (req, res, next) => {
 
 app.get(`/api/catalog`, async (req, res, next) => {
   try {
-    const { style } = req.query;
+    const { style, brand } = req.query;
     const sql = `
      select * from "products"
                 `;
-    const where = style ? 'where style = $1' : '';
-    const params = style ? [style] : [];
-    const results = await db.query(sql + where, params);
+    const styleWhere = style ? 'where style = $1' : '';
+    const brandWhere = brand ? 'where brand = $1' : '';
+    const params = style || brand ? [style || brand] : [];
+    const results = await db.query(sql + styleWhere + brandWhere, params);
     const footwearStyles = results.rows;
     res.status(200).json(footwearStyles);
   } catch (error) {
@@ -171,6 +172,7 @@ app.get('/api/catalog/cart', authMiddleware, async (req, res, next) => {
   try {
     const sql = `
     select * from "cartItems"
+    join "products" using ("productId")
     where "userId" = $1
     `;
     const results = await db.query(sql, [req.user?.userId]);

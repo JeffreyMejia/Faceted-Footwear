@@ -13,10 +13,13 @@ export function Catalog() {
     async function getStyle() {
       try {
         const style = searchParams.get('style');
+        const brand = searchParams.get('brand');
         const q = searchParams.get('q');
+        const brandQuery = brand ? `?brand=${brand}` : '';
         const query = q ? `/search?q=${q}` : '';
         const styleQuery = style ? `?style=${style}` : '';
-        const newQuery = styleQuery ? styleQuery : query;
+        const brandOrStyleQuery = styleQuery ? styleQuery : brandQuery;
+        const newQuery = brandOrStyleQuery ? brandOrStyleQuery : query;
         const response = await fetch(`/api/catalog${newQuery}`);
         if (!response.ok)
           throw new Error(`Error! bad network request ${response.status}`);

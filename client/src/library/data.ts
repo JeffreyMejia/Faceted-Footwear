@@ -48,20 +48,17 @@ export async function cartAddition(cartItem: Props) {
 }
 
 export async function updateQuantity(cartProduct: CartProduct) {
-  const response = await fetch(
-    `/api/catalog/cart/${cartProduct.item.productId}`,
-    {
-      method: 'PUT',
-      headers: {
-        'content-type': 'application/JSON',
-        Authorization: `Bearer ${readToken()}`,
-      },
-      body: JSON.stringify({
-        quantity: cartProduct.quantity,
-        size: cartProduct.size,
-      }),
-    }
-  );
+  const response = await fetch(`/api/catalog/cart/${cartProduct.productId}`, {
+    method: 'PUT',
+    headers: {
+      'content-type': 'application/JSON',
+      Authorization: `Bearer ${readToken()}`,
+    },
+    body: JSON.stringify({
+      quantity: cartProduct.quantity,
+      size: cartProduct.size,
+    }),
+  });
   if (!response.ok) {
     throw new Error(`Error! bad network request ${response.status}`);
   }
@@ -69,7 +66,7 @@ export async function updateQuantity(cartProduct: CartProduct) {
 
 export async function cartRemoval(product: CartProduct) {
   const response = await fetch(
-    `/api/catalog/cart/${product.item.productId}/${product.size}`,
+    `/api/catalog/cart/${product.productId}/${product.size}`,
     {
       method: 'DELETE',
       headers: { Authorization: `Bearer ${readToken()}` },

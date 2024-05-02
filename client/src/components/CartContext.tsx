@@ -1,8 +1,7 @@
 import { createContext } from 'react';
 import { Product } from '../library/data';
 
-export type CartProduct = {
-  item: Product;
+export type CartProduct = Product & {
   quantity: number;
   size: number;
 };
