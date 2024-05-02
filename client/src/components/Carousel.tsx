@@ -1,25 +1,35 @@
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { Indicators } from './Indicators';
 import { useState, useCallback, useEffect } from 'react';
+import { Product, loadCarousel } from '../library/data';
+import { Link } from 'react-router-dom';
 
-const footwear = [
-  '/final-project-photos/Adidas - ZX 10000.png',
-  '/final-project-photos/Solovair - 8 eye derby.png',
-  '/final-project-photos/Asics - Gel Lyte iii.png',
-  '/final-project-photos/Jim Green - African Ranger.png',
-  '/final-project-photos/Whites - Drifter.png',
-  '/final-project-photos/Jordan-1-chicago.png',
-];
+type CarouselProducts = Product;
 
 export function Carousel() {
   const [activeIndex, setActiveIndex] = useState(0);
-
-  const handleNext = useCallback(() => {
-    setActiveIndex((activeIndex + 1) % footwear.length);
-  }, [activeIndex]);
+  const [carousel, setCarousel] = useState<CarouselProducts[]>([]);
+  const [error, setError] = useState<unknown>();
 
   useEffect(() => {
-    const intervalId = setInterval(handleNext, 3000);
+    async function load() {
+      try {
+        const carouselProducts = await loadCarousel();
+        setCarousel(carouselProducts);
+        console.log(carouselProducts);
+      } catch (error) {
+        setError(error);
+      }
+    }
+    load();
+  }, []);
+
+  const handleNext = useCallback(() => {
+    setActiveIndex((activeIndex + 1) % carousel.length);
+  }, [activeIndex, carousel]);
+
+  useEffect(() => {
+    const intervalId = setInterval(handleNext, 5000);
     return () => {
       clearInterval(intervalId);
     };
@@ -30,25 +40,42 @@ export function Carousel() {
   }
 
   function handlePrevious() {
-    setActiveIndex((activeIndex - 1 + footwear.length) % footwear.length);
+    setActiveIndex((activeIndex - 1 + carousel.length) % carousel.length);
   }
 
+  if (error) {
+    return (
+      <div className="text-primary">
+        Error Loading carousel:{' '}
+        {error instanceof Error ? error.message : 'Unknown Error'}
+      </div>
+    );
+  }
   return (
-    <div className="flex relative flex-wrap justify-center">
-      <FaChevronLeft
-        className="text-primary w-20 h-20 absolute left-0 top-2/4 cursor-pointer"
-        onClick={handlePrevious}
-      />
-      <img className="w-screen my-6" src={footwear[activeIndex]} />
-      <FaChevronRight
-        className="text-primary w-20 h-20 absolute  right-0   top-2/4 cursor-pointer"
-        onClick={handleNext}
-      />
-      <Indicators
-        thisIsCurrent={handleCurrent}
-        count={footwear.length}
-        current={activeIndex}
-      />
+    <div className="grid grid-cols-1">
+      <div className="flex justify-center">
+        <Indicators
+          thisIsCurrent={handleCurrent}
+          count={carousel.length}
+          current={activeIndex}
+        />
+      </div>
+      <div className="flex justify-center aspect-square ">
+        <FaChevronLeft
+          className="text-primary w-20 h-20 fixed left-0 top-2/4 cursor-pointer"
+          onClick={handlePrevious}
+        />
+        <Link to={`/details/${carousel[activeIndex]?.productId}`}>
+          <img
+            className="rounded object-fit aspect-square my-6"
+            src={carousel[activeIndex]?.image}
+          />
+        </Link>
+        <FaChevronRight
+          className="text-primary w-20 h-20 fixed right-0 top-2/4 cursor-pointer"
+          onClick={handleNext}
+        />
+      </div>
     </div>
   );
 }

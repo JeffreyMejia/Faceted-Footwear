@@ -99,15 +99,16 @@ app.post('/api/auth/sign-in', async (req, res, next) => {
   }
 });
 
-app.get(`/api/catalog`, authMiddleware, async (req, res, next) => {
+app.get(`/api/catalog`, async (req, res, next) => {
   try {
-    const { style } = req.query;
+    const { style, brand } = req.query;
     const sql = `
      select * from "products"
                 `;
-    const where = style ? 'where style = $1' : '';
-    const params = style ? [style] : [];
-    const results = await db.query(sql + where, params);
+    const styleWhere = style ? 'where style = $1' : '';
+    const brandWhere = brand ? 'where brand = $1' : '';
+    const params = style || brand ? [style || brand] : [];
+    const results = await db.query(sql + styleWhere + brandWhere, params);
     const footwearStyles = results.rows;
     res.status(200).json(footwearStyles);
   } catch (error) {
@@ -115,31 +116,27 @@ app.get(`/api/catalog`, authMiddleware, async (req, res, next) => {
   }
 });
 
-app.get(
-  '/api/catalog/details/:productId',
-  authMiddleware,
-  async (req, res, next) => {
-    try {
-      const { productId } = req.params;
-      if (!Number.isInteger(+productId)) {
-        throw new ClientError(400, 'productId must be a number');
-      }
-      const sql = `
+app.get('/api/catalog/details/:productId', async (req, res, next) => {
+  try {
+    const { productId } = req.params;
+    if (!Number.isInteger(+productId)) {
+      throw new ClientError(400, 'productId must be a number');
+    }
+    const sql = `
      select * from "products"
      where "productId" = $1
                 `;
-      const params = [productId];
-      const results = await db.query(sql, params);
-      const [product] = results.rows;
-      if (!product) throw new ClientError(404, 'Error that id does not exist!');
-      res.status(200).json(product);
-    } catch (error) {
-      next(error);
-    }
+    const params = [productId];
+    const results = await db.query(sql, params);
+    const [product] = results.rows;
+    if (!product) throw new ClientError(404, 'Error that id does not exist!');
+    res.status(200).json(product);
+  } catch (error) {
+    next(error);
   }
-);
+});
 
-app.get('/api/catalog/search', authMiddleware, async (req, res, next) => {
+app.get('/api/catalog/search', async (req, res, next) => {
   try {
     const { q } = req.query;
     const sql = `
@@ -155,10 +152,42 @@ app.get('/api/catalog/search', authMiddleware, async (req, res, next) => {
   }
 });
 
+app.get('/api/catalog/brands', async (req, res, next) => {
+  try {
+    const sql = `
+    select "brand"
+    from "products"
+    group by "brand"
+    order by "brand"
+    `;
+    const results = await db.query(sql);
+    const brand = results.rows;
+    res.status(200).json(brand);
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.get('/api/carousel', async (req, res, next) => {
+  try {
+    const sql = `
+     select * from "products"
+     order by RANDOM()
+     limit 6
+     `;
+    const results = await db.query(sql);
+    const carousel = results.rows;
+    res.status(200).json(carousel);
+  } catch (error) {
+    next(error);
+  }
+});
+
 app.get('/api/catalog/cart', authMiddleware, async (req, res, next) => {
   try {
     const sql = `
     select * from "cartItems"
+    join "products" using ("productId")
     where "userId" = $1
     `;
     const results = await db.query(sql, [req.user?.userId]);

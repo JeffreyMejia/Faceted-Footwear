@@ -1,6 +1,6 @@
 import { toDollars } from '../library/to-dollars';
 import { useState, useEffect } from 'react';
-import { Product, readToken } from '../library/data';
+import { Product } from '../library/data';
 import { useSearchParams, Link } from 'react-router-dom';
 
 export function Catalog() {
@@ -13,13 +13,14 @@ export function Catalog() {
     async function getStyle() {
       try {
         const style = searchParams.get('style');
+        const brand = searchParams.get('brand');
         const q = searchParams.get('q');
+        const brandQuery = brand ? `?brand=${brand}` : '';
         const query = q ? `/search?q=${q}` : '';
         const styleQuery = style ? `?style=${style}` : '';
-        const newQuery = styleQuery ? styleQuery : query;
-        const response = await fetch(`/api/catalog${newQuery}`, {
-          headers: { Authorization: `Bearer ${readToken()}` },
-        });
+        const brandOrStyleQuery = styleQuery ? styleQuery : brandQuery;
+        const newQuery = brandOrStyleQuery ? brandOrStyleQuery : query;
+        const response = await fetch(`/api/catalog${newQuery}`);
         if (!response.ok)
           throw new Error(`Error! bad network request ${response.status}`);
         const catalog = await response.json();
@@ -45,7 +46,7 @@ export function Catalog() {
 
   return (
     <div className="container">
-      <h1 className="text-zen text-xl md:text-3xl lg:text-5xl text-tertiary my-6">
+      <h1 className="font-zen text-xl md:text-3xl lg:text-5xl text-tertiary my-6">
         Catalog
       </h1>
       <div className="grid grid-cols-2 gap-10 md:grid-cols-3 lg:grid-cols-4 cursor-pointer">
@@ -53,7 +54,7 @@ export function Catalog() {
           <Link key={product?.productId} to={`/details/${product.productId}`}>
             <div className="bg-tertiary rounded p-2 shadow-wrapper hover:bg-black">
               <img
-                className="h-36  md:h-52 lg:h-52 w-full rounded shadow-md"
+                className=" w-full rounded shadow-md aspect-square"
                 src={product.image}
                 alt={product.name}
               />

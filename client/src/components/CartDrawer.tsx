@@ -23,14 +23,14 @@ export function CartDrawer({ isItOpen, close }: Props) {
           </button>
         </div>
         {cart.map((p) => (
-          <div key={`${p.item.productId} + ${p.size}`} className="p-4">
-            <img className="object-contain w-60" src={p?.item?.image} />
+          <div key={`${p.productId} + ${p.size}`} className="p-4">
+            <img className="object-contain w-60" src={p.image} />
             <div className="flex mt-4 justify-evenly">
-              <h3>{p?.item?.brand}</h3>
-              <h3>{p?.item?.name}</h3>
+              <h3>{p.brand}</h3>
+              <h3>{p.name}</h3>
             </div>
             <div className="flex justify-around">
-              <h3>{toDollars(p?.item?.amount * p?.quantity)}</h3>
+              <h3>{toDollars(p.amount * p?.quantity)}</h3>
               <p>{p?.size}</p>
             </div>
             <div className="flex items-center mt-2">

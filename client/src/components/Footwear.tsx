@@ -37,7 +37,7 @@ export function Footwear({ isOpen, handleClose }: Footwear) {
               </Link>
             </li>
             <li>
-              <Link to="/catalog?style=dress" onClick={handleClose}>
+              <Link to={`/catalog?style=dress shoes`} onClick={handleClose}>
                 Dress shoes
               </Link>
             </li>

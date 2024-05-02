@@ -11,8 +11,8 @@ import { useEffect, useState } from 'react';
 import {
   Product,
   updateQuantity,
-  add,
-  remove,
+  cartAddition,
+  cartRemoval,
   saveToken,
   wishlistAdd,
   wishlistRemove,
@@ -47,7 +47,7 @@ export default function App() {
   async function addToWishlist(item: Product) {
     try {
       const exists = wishlist.find(
-        (product) => product.item?.productId === item.productId
+        (product) => product.item.productId === item.productId
       );
       if (!exists) {
         await wishlistAdd(item);
@@ -82,22 +82,20 @@ export default function App() {
     saveToken(undefined);
   }
 
-  const contextValue = { user, token, handleSignIn, handleSignOut };
-
   async function addToCart(item: Product, size: number) {
     try {
       const exists = cart.find(
         (product) =>
-          product.item?.productId === item.productId && product.size === size
+          product.productId === item.productId && product.size === size
       );
       if (!exists) {
         const cartItem = { productId: item.productId, quantity: 1, size };
-        await add(cartItem);
-        setCart([...cart, { item, quantity: 1, size }]);
+        await cartAddition(cartItem);
+        setCart([...cart, { ...item, quantity: 1, size }]);
       } else if (exists.size !== size) {
         const cartItem = { productId: item.productId, quantity: 1, size };
-        await add(cartItem);
-        setCart([...cart, { item, quantity: 1, size }]);
+        await cartAddition(cartItem);
+        setCart([...cart, { ...item, quantity: 1, size }]);
       }
     } catch (error) {
       setError(error);
@@ -108,8 +106,7 @@ export default function App() {
     try {
       product.quantity++;
       const newArr = cart.map((item) =>
-        item.item.productId === product.item.productId &&
-        item.size === product.size
+        item.productId === product.productId && item.size === product.size
           ? product
           : item
       );
@@ -124,8 +121,7 @@ export default function App() {
     try {
       item.quantity--;
       const newArr = cart.map((product) =>
-        product.item.productId === item.item.productId &&
-        item.size === product.size
+        product.productId === item.productId && item.size === product.size
           ? item
           : product
       );
@@ -133,16 +129,30 @@ export default function App() {
       setCart(newArr);
       if (item.quantity === 0) {
         const filtered = cart.filter(
-          (p) =>
-            p.item.productId !== item.item.productId || p.size !== item.size
+          (p) => p.productId !== item.productId || p.size !== item.size
         );
-        await remove(item);
         setCart([...filtered]);
+        await cartRemoval(item);
       }
     } catch (error) {
       setError(error);
     }
   }
+
+  const userContextValue = { user, token, handleSignIn, handleSignOut };
+
+  const wishlistContextValue = {
+    wishlist,
+    addToWishlist,
+    removeFromWishlist,
+  };
+
+  const cartContextValue = {
+    cart,
+    addToCart,
+    removeFromCart,
+    incrementProductInCart,
+  };
 
   if (error) {
     return (
@@ -154,20 +164,9 @@ export default function App() {
   }
   return (
     <>
-      <AppContext.Provider value={contextValue}>
-        <CartContext.Provider
-          value={{
-            cart: cart,
-            addToCart: addToCart,
-            removeFromCart: removeFromCart,
-            incrementProductInCart: incrementProductInCart,
-          }}>
-          <WishlistContext.Provider
-            value={{
-              wishlist: wishlist,
-              addToWishlist: addToWishlist,
-              removeFromWishlist: removeFromWishlist,
-            }}>
+      <AppContext.Provider value={userContextValue}>
+        <CartContext.Provider value={cartContextValue}>
+          <WishlistContext.Provider value={wishlistContextValue}>
             <Routes>
               <Route path="/" element={<Navbar user={user} />}>
                 <Route index element={<Home />} />
