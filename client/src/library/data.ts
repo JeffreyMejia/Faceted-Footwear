@@ -34,6 +34,15 @@ export function readToken(): string {
 
 // All fetches below
 
+export async function loadCarousel() {
+  const response = await fetch('/api/carousel');
+  if (!response.ok) {
+    throw new Error(`Error! bad network request ${response.status}`);
+  }
+  const result = await response.json();
+  return result;
+}
+
 export async function cartAddition(cartItem: Props) {
   const response = await fetch('/api/catalog/cart', {
     method: 'POST',

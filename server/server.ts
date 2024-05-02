@@ -168,6 +168,21 @@ app.get('/api/catalog/brands', async (req, res, next) => {
   }
 });
 
+app.get('/api/carousel', async (req, res, next) => {
+  try {
+    const sql = `
+     select * from "products"
+     order by RANDOM()
+     limit 6
+     `;
+    const results = await db.query(sql);
+    const carousel = results.rows;
+    res.status(200).json(carousel);
+  } catch (error) {
+    next(error);
+  }
+});
+
 app.get('/api/catalog/cart', authMiddleware, async (req, res, next) => {
   try {
     const sql = `
