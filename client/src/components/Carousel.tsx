@@ -2,10 +2,9 @@ import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { Indicators } from './Indicators';
 import { useState, useCallback, useEffect } from 'react';
 import { Product, loadCarousel } from '../library/data';
+import { Link } from 'react-router-dom';
 
-type CarouselProducts = {
-  index: Product;
-};
+type CarouselProducts = Product;
 
 export function Carousel() {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -30,7 +29,7 @@ export function Carousel() {
   }, [activeIndex, carousel]);
 
   useEffect(() => {
-    const intervalId = setInterval(handleNext, 3000);
+    const intervalId = setInterval(handleNext, 5000);
     return () => {
       clearInterval(intervalId);
     };
@@ -53,24 +52,30 @@ export function Carousel() {
     );
   }
   return (
-    <div className="flex relative flex-wrap justify-center">
-      <FaChevronLeft
-        className="text-primary w-20 h-20 absolute left-0 top-2/4 cursor-pointer"
-        onClick={handlePrevious}
-      />
-      <img
-        className="w-screen my-6"
-        src={carousel[activeIndex]?.index?.image}
-      />
-      <FaChevronRight
-        className="text-primary w-20 h-20 absolute  right-0   top-2/4 cursor-pointer"
-        onClick={handleNext}
-      />
-      <Indicators
-        thisIsCurrent={handleCurrent}
-        count={carousel.length}
-        current={activeIndex}
-      />
+    <div className="grid grid-cols-1">
+      <div className="flex justify-center">
+        <Indicators
+          thisIsCurrent={handleCurrent}
+          count={carousel.length}
+          current={activeIndex}
+        />
+      </div>
+      <div className="flex justify-center aspect-square ">
+        <FaChevronLeft
+          className="text-primary w-20 h-20 fixed left-0 top-2/4 cursor-pointer"
+          onClick={handlePrevious}
+        />
+        <Link to={`/details/${carousel[activeIndex]?.productId}`}>
+          <img
+            className="rounded object-fit aspect-square my-6"
+            src={carousel[activeIndex]?.image}
+          />
+        </Link>
+        <FaChevronRight
+          className="text-primary w-20 h-20 fixed right-0 top-2/4 cursor-pointer"
+          onClick={handleNext}
+        />
+      </div>
     </div>
   );
 }

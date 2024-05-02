@@ -1,5 +1,13 @@
 import { FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import {
+  lengthRegex,
+  numberRegex,
+  specialCharactersRegex,
+  uppercaseRegex,
+} from '../library/data';
+import { FaCheck } from 'react-icons/fa';
+import { FaX } from 'react-icons/fa6';
 
 type Props = {
   value: string;
@@ -36,6 +44,22 @@ export function RegistrationForm({ value, handlePassword }: Props) {
       setIsLoading(false);
     }
   }
+
+  const rules = [
+    { label: 'One upper case', pattern: uppercaseRegex, id: 1 },
+    { label: 'One number', pattern: numberRegex, id: 2 },
+    { label: 'Minimum 8 characters', pattern: lengthRegex, id: 3 },
+    { label: 'One special Character', pattern: specialCharactersRegex, id: 4 },
+  ];
+
+  const passwordValidRegex = new RegExp(
+    `^(?=${[
+      lengthRegex.source,
+      uppercaseRegex.source,
+      numberRegex.source,
+      specialCharactersRegex.source,
+    ].join(')(?=')}).*$`
+  );
 
   if (isLoading) return <div className="tex-primary">Loading...</div>;
   if (error) {
@@ -80,12 +104,32 @@ export function RegistrationForm({ value, handlePassword }: Props) {
           onChange={handlePassword}
           required
         />
-        <button
-          type="submit"
-          className="my-4 bg-black rounded w-full hover:bg-primary hover:text-black active:bg-secondary active:text-tertiary">
-          Create
-        </button>
+        {value.match(passwordValidRegex) && (
+          <button
+            type="submit"
+            className="my-4 bg-black rounded w-full hover:bg-primary hover:text-black active:bg-secondary active:text-tertiary">
+            Create
+          </button>
+        )}
       </form>
+      <div>
+        {value && <h3 className="mb-4">Password requirements:</h3>}
+        {value &&
+          rules.map((rule) => {
+            const name = value && value.match(rule.pattern) ? 'passed' : '';
+            return name === 'passed' ? (
+              <div key={rule.id}>
+                <p className={name}>{rule.label}</p>
+                <FaCheck className="check" />
+              </div>
+            ) : (
+              <div key={rule.id}>
+                <p className={name}>{rule.label}</p>
+                <FaX className="x" />
+              </div>
+            );
+          })}
+      </div>
     </>
   );
 }

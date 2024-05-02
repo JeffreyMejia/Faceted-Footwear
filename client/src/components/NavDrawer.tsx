@@ -26,9 +26,9 @@ export function NavDrawer({ isItOpen, close, user }: Props) {
   if (!isItOpen) return null;
   return (
     <>
-      <div className="fixed left-0 top-0 h-screen bg-secondary flex flex-col text-primary z-10 overflow-y-auto">
-        <div>
-          <div className="flex h-full items-center p-4">
+      <div className="fixed left-0 top-0 h-screen bg-secondary text-primary z-10 overflow-y-auto">
+        <div className="flex flex-col">
+          <div className="flex h-full items-center p-4 my-2">
             <button onClick={close} className="text-primary mx-4">
               Close
             </button>
@@ -49,8 +49,8 @@ export function NavDrawer({ isItOpen, close, user }: Props) {
               onChange={(e) => setSearchValue(e.target.value)}
             />
           </form>
-          <h1>Shop by</h1>
-          <div className="flex items-center justify-between">
+          <h1 className="mt-2">Shop by</h1>
+          <div className="flex items-center justify-between ">
             <h2>Footwear</h2>
             {openFootwear === false ? (
               <FaPlus
@@ -82,7 +82,12 @@ export function NavDrawer({ isItOpen, close, user }: Props) {
               />
             )}
           </div>
-          <Brand isOpen={openBrand} onClose={() => setOpenBrand(!openBrand)} />
+          <div>
+            <Brand
+              isOpen={openBrand}
+              onClose={() => setOpenBrand(!openBrand)}
+            />
+          </div>
           <h2
             className="cursor-pointer"
             onClick={() =>

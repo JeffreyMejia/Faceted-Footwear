@@ -16,6 +16,13 @@ type Props = {
   size: number;
 };
 
+export const uppercaseRegex = new RegExp(/.*[A-Z]/);
+export const numberRegex = new RegExp(/.*\d/);
+export const lengthRegex = new RegExp(/.{8,}$/);
+export const specialCharactersRegex = new RegExp(
+  /.*[-’/`~!#*$@_%+=.,^&(){}[\]|;:”<>?\\]/
+);
+
 export const tokenKey = 'um.token';
 
 export function saveToken(token: string | undefined): void {

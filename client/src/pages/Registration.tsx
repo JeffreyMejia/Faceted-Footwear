@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { CheckList } from '../components/CheckList';
 import { RegistrationForm } from '../components/RegistrationForm';
 import { SignIn } from '../components/SignIn';
 
@@ -30,7 +29,6 @@ export function Registration() {
               value={pass}
               handlePassword={(e) => setPass(e.target.value)}
             />
-            {pass && <CheckList value={pass} />}
           </>
         )}
       </div>
