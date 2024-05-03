@@ -50,9 +50,11 @@ export function Navbar({ user }: Props) {
           />
         </div>
         <div className="flex">
-          <Link to={'/wishlist'}>
-            <FaBookmark className="fill-primary cursor-pointer h-7 w-7 hover:fill-tertiary active:fill-tertiary mr-4" />
-          </Link>
+          {user !== undefined && (
+            <Link to={'/wishlist'}>
+              <FaBookmark className="fill-primary cursor-pointer h-7 w-7 hover:fill-tertiary active:fill-tertiary mr-4" />
+            </Link>
+          )}
           <FaSearch
             onClick={() => setOpenSearchDrawer(true)}
             className="fill-primary cursor-pointer h-7 w-7 hover:fill-tertiary active:fill-tertiary"
