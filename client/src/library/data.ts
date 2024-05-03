@@ -140,3 +140,12 @@ export async function readBrands() {
   const results = await response.json();
   return results;
 }
+
+export async function cartCheckout() {
+  const response = await fetch('/api/checkout', {
+    method: 'DELETE',
+    headers: { Authorization: `Bearer ${readToken()}` },
+  });
+  if (!response.ok)
+    throw new Error(`Error! bad network request ${response.status}`);
+}

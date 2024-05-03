@@ -46,9 +46,11 @@ export function Catalog() {
 
   return (
     <div className="container">
-      <h1 className="font-zen text-xl md:text-3xl lg:text-5xl text-tertiary my-6">
-        Catalog
-      </h1>
+      <div className="border-b-4 rounded border-primary mb-6">
+        <h1 className="font-zen text-xl md:text-3xl lg:text-5xl text-tertiary my-6">
+          Catalog
+        </h1>
+      </div>
       <div className="grid grid-cols-2 gap-10 md:grid-cols-3 lg:grid-cols-4 cursor-pointer">
         {products.map((product) => (
           <Link key={product?.productId} to={`/details/${product.productId}`}>

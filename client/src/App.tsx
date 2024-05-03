@@ -17,6 +17,7 @@ import {
   wishlistAdd,
   wishlistRemove,
   readCart,
+  cartCheckout,
 } from './library/data';
 import { AppContext, User } from './components/UserContext';
 import { Wishlist } from './pages/Wishlist';
@@ -140,12 +141,12 @@ export default function App() {
     }
   }
 
-  async function checkout(product: CartProduct) {
+  async function checkout(cart: CartProduct[]) {
     const filtered = cart.filter(
-      (p) => p.productId !== product.productId || p.size !== product.size
+      (p) => p.productId !== p.productId || p.size !== p.size
     );
     setCart([...filtered]);
-    await cartRemoval(product);
+    await cartCheckout();
   }
 
   const userContextValue = { user, token, handleSignIn, handleSignOut };

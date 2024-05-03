@@ -17,7 +17,7 @@ export function CartDrawer({ isItOpen, close }: Props) {
   return (
     <>
       <div className="fixed right-0 top-0 h-screen bg-secondary text-primary flex flex-col z-10 overflow-y-auto">
-        <div className="p-4">
+        <div className="p-4 border-b-2 border-primary rounded">
           <h1 className="font-zen text-3xl">Shopping Cart</h1>{' '}
           <button className="mx-4" onClick={close}>
             Close

@@ -10,8 +10,15 @@ export function Wishlist() {
   const { wishlist } = useContext(WishlistContext);
   return (
     <div className="container">
-      <div className="text-primary flex justify-center mt-4">
-        <h1 className="font-zen text-4xl">Wishlist</h1>
+      <div className="text-primary flex flex-col justify-center items-center mt-4">
+        <div>
+          <h1 className="font-zen text-4xl">Wishlist</h1>
+        </div>
+        {wishlist.length === 0 && (
+          <h1 className="text-primary text-xl mt-10">
+            You currently have no items in your wishlist!
+          </h1>
+        )}
       </div>
       <div className="grid grid-cols-2 gap-10 md:grid-cols-3 lg:grid-cols-4">
         {wishlist.map((product) => (

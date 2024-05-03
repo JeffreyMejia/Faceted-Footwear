@@ -183,6 +183,22 @@ app.get('/api/carousel', async (req, res, next) => {
   }
 });
 
+app.delete('/api/checkout', authMiddleware, async (req, res, next) => {
+  try {
+    const sql = `
+      delete from "cartItems"
+      where "userId" = $1
+      returning*
+    `;
+    const results = await db.query(sql, [req.user?.userId]);
+    const noCart = results.rows;
+    if (!noCart) throw new ClientError(404, 'User Id not found!');
+    res.sendStatus(204);
+  } catch (error) {
+    next(error);
+  }
+});
+
 app.get('/api/catalog/cart', authMiddleware, async (req, res, next) => {
   try {
     const sql = `

@@ -10,11 +10,11 @@ export function Checkout() {
   const navigate = useNavigate();
 
   let sum = 0;
-  cart.forEach((p) => (sum += p.amount));
+  cart.forEach((p) => (sum += p.amount * p.quantity));
 
   async function handlePurchase(cart: CartProduct[]) {
     try {
-      cart.map((p) => checkout(p));
+      checkout(cart);
       navigate('/catalog');
       alert('Thank you for your purchase!');
     } catch (error) {

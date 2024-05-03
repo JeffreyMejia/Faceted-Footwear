@@ -11,7 +11,7 @@ export type CartValues = {
   addToCart: (product: Product, size: number) => void;
   removeFromCart: (product: CartProduct) => void;
   incrementProductInCart: (product: CartProduct) => void;
-  checkout: (cart: CartProduct) => void;
+  checkout: (item: CartProduct[]) => void;
 };
 
 export const CartContext = createContext<CartValues>({
