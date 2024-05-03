@@ -77,12 +77,14 @@ export function ProductDetails() {
           <h1 className="text-xl md:text-2xl lg:text-3xl font-bold my-3 text-tertiary">{`${brand} ${name}`}</h1>
           <h3 className="text-primary">{toDollars(amount)}</h3>
           <span>
-            <p className="text-primary">add to wishlist</p>
             {!exists && (
-              <FaBookmark
-                onClick={() => handleAddToWishlist(product)}
-                className="fill-primary my-2 cursor-pointer"
-              />
+              <>
+                <p className="text-primary">add to wishlist</p>
+                <FaBookmark
+                  onClick={() => handleAddToWishlist(product)}
+                  className="fill-primary my-2 cursor-pointer"
+                />
+              </>
             )}
           </span>
         </div>

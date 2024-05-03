@@ -2,6 +2,7 @@ import { FaPlus, FaMinus } from 'react-icons/fa';
 import { toDollars } from '../library/to-dollars';
 import { CartContext } from './CartContext';
 import { useContext } from 'react';
+import { Link } from 'react-router-dom';
 
 type Props = {
   isItOpen: boolean;
@@ -26,8 +27,7 @@ export function CartDrawer({ isItOpen, close }: Props) {
           <div key={`${p.productId} + ${p.size}`} className="p-4">
             <img className="object-contain w-60" src={p.image} />
             <div className="flex mt-4 justify-evenly">
-              <h3>{p.brand}</h3>
-              <h3>{p.name}</h3>
+              <h3>{`${p.brand} ${p.name}`}</h3>
             </div>
             <div className="flex justify-around">
               <h3>{toDollars(p.amount * p?.quantity)}</h3>
@@ -46,6 +46,13 @@ export function CartDrawer({ isItOpen, close }: Props) {
             </div>
           </div>
         ))}
+        {cart.length !== 0 && (
+          <Link to={'/checkout'}>
+            <button className="my-4 bg-black rounded w-full hover:bg-primary hover:text-black active:bg-secondary active:text-tertiary">
+              Go to Checkout
+            </button>
+          </Link>
+        )}
       </div>
       <div
         onClick={close}

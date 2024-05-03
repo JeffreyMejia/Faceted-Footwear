@@ -11,6 +11,7 @@ export type CartValues = {
   addToCart: (product: Product, size: number) => void;
   removeFromCart: (product: CartProduct) => void;
   incrementProductInCart: (product: CartProduct) => void;
+  checkout: (cart: CartProduct) => void;
 };
 
 export const CartContext = createContext<CartValues>({
@@ -18,4 +19,5 @@ export const CartContext = createContext<CartValues>({
   addToCart: () => undefined,
   removeFromCart: () => undefined,
   incrementProductInCart: () => undefined,
+  checkout: () => undefined,
 });

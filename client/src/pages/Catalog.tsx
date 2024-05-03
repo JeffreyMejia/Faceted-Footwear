@@ -54,7 +54,7 @@ export function Catalog() {
           <Link key={product?.productId} to={`/details/${product.productId}`}>
             <div className="bg-tertiary rounded p-2 shadow-wrapper hover:bg-black">
               <img
-                className=" w-full rounded shadow-md aspect-square"
+                className="rounded shadow-md aspect-square w-full"
                 src={product.image}
                 alt={product.name}
               />

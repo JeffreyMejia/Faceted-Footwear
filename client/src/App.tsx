@@ -22,6 +22,7 @@ import { AppContext, User } from './components/UserContext';
 import { Wishlist } from './pages/Wishlist';
 import { AccountPage } from './pages/AccountPage';
 import { WishlistContext, wishlistItem } from './components/WishlistContext';
+import { Checkout } from './pages/checkout';
 
 export default function App() {
   const [cart, setCart] = useState<CartProduct[]>([]);
@@ -139,6 +140,14 @@ export default function App() {
     }
   }
 
+  async function checkout(product: CartProduct) {
+    const filtered = cart.filter(
+      (p) => p.productId !== product.productId || p.size !== product.size
+    );
+    setCart([...filtered]);
+    await cartRemoval(product);
+  }
+
   const userContextValue = { user, token, handleSignIn, handleSignOut };
 
   const wishlistContextValue = {
@@ -152,6 +161,7 @@ export default function App() {
     addToCart,
     removeFromCart,
     incrementProductInCart,
+    checkout,
   };
 
   if (error) {
@@ -175,6 +185,7 @@ export default function App() {
                 <Route path="details/:productId" element={<ProductDetails />} />
                 <Route path="account" element={<AccountPage />} />
                 <Route path="wishlist" element={<Wishlist />} />
+                <Route path="checkout" element={<Checkout />} />
                 <Route path="*" element={<NotFound />} />
               </Route>
             </Routes>
