@@ -29,7 +29,7 @@ export function Carousel() {
   }, [activeIndex, carousel]);
 
   useEffect(() => {
-    const intervalId = setInterval(handleNext, 5000);
+    const intervalId = setInterval(handleNext, 3000);
     return () => {
       clearInterval(intervalId);
     };
@@ -60,14 +60,14 @@ export function Carousel() {
           current={activeIndex}
         />
       </div>
-      <div className="flex justify-center aspect-square ">
+      <div className="flex justify-center object-fit aspect-square ">
         <FaChevronLeft
           className="text-primary w-20 h-20 fixed left-0 top-2/4 cursor-pointer"
           onClick={handlePrevious}
         />
         <Link to={`/details/${carousel[activeIndex]?.productId}`}>
           <img
-            className="rounded object-fit aspect-square my-6"
+            className="rounded w-full aspect-square my-6"
             src={carousel[activeIndex]?.image}
           />
         </Link>

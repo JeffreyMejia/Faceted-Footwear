@@ -34,9 +34,7 @@ export function RegistrationForm({ value, handlePassword }: Props) {
         throw new Error(`fetch Error ${res.status}`);
       }
       const user = await res.json();
-      alert(
-        `Successfully registered ${user.username} as userId ${user.userId}.`
-      );
+      alert(`Successfully registered ${user.email} as userId ${user.userId}.`);
       navigate('/registration');
     } catch (error) {
       setError(error);

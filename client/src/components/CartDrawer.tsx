@@ -2,6 +2,7 @@ import { FaPlus, FaMinus } from 'react-icons/fa';
 import { toDollars } from '../library/to-dollars';
 import { CartContext } from './CartContext';
 import { useContext } from 'react';
+import { Link } from 'react-router-dom';
 
 type Props = {
   isItOpen: boolean;
@@ -46,6 +47,13 @@ export function CartDrawer({ isItOpen, close }: Props) {
             </div>
           </div>
         ))}
+        {cart.length !== 0 && (
+          <Link to={'/checkout'}>
+            <button className="my-4 bg-black rounded w-full hover:bg-primary hover:text-black active:bg-secondary active:text-tertiary">
+              Go to Checkout
+            </button>
+          </Link>
+        )}
       </div>
       <div
         onClick={close}

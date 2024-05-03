@@ -1,5 +1,11 @@
-import { Outlet, useNavigate } from 'react-router-dom';
-import { FaBars, FaSearch, FaShoppingCart, FaCube } from 'react-icons/fa';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
+import {
+  FaBars,
+  FaSearch,
+  FaShoppingCart,
+  FaCube,
+  FaBookmark,
+} from 'react-icons/fa';
 import { NavDrawer } from './NavDrawer';
 import { SearchDrawer } from './SearchDrawer';
 import { CartDrawer } from './CartDrawer';
@@ -44,6 +50,9 @@ export function Navbar({ user }: Props) {
           />
         </div>
         <div className="flex">
+          <Link to={'/wishlist'}>
+            <FaBookmark className="fill-primary cursor-pointer h-7 w-7 hover:fill-tertiary active:fill-tertiary mr-4" />
+          </Link>
           <FaSearch
             onClick={() => setOpenSearchDrawer(true)}
             className="fill-primary cursor-pointer h-7 w-7 hover:fill-tertiary active:fill-tertiary"
