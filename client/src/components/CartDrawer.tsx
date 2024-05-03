@@ -27,8 +27,7 @@ export function CartDrawer({ isItOpen, close }: Props) {
           <div key={`${p.productId} + ${p.size}`} className="p-4">
             <img className="object-contain w-60" src={p.image} />
             <div className="flex mt-4 justify-evenly">
-              <h3>{p.brand}</h3>
-              <h3>{p.name}</h3>
+              <h3>{`${p.brand} ${p.name}`}</h3>
             </div>
             <div className="flex justify-around">
               <h3>{toDollars(p.amount * p?.quantity)}</h3>

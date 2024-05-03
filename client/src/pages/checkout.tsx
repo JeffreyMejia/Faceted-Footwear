@@ -34,7 +34,6 @@ export function Checkout() {
             </div>
             <div className="flex mt-4 ">
               <h3>{`${p.brand} ${p.name}`}</h3>
-
               <p className="ml-4">{p?.size}</p>
             </div>
             <div className="flex items-center mt-2">

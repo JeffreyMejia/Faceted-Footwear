@@ -52,29 +52,31 @@ export function Carousel() {
     );
   }
   return (
-    <div className="grid grid-cols-1">
-      <div className="flex justify-center">
-        <Indicators
-          thisIsCurrent={handleCurrent}
-          count={carousel.length}
-          current={activeIndex}
-        />
-      </div>
-      <div className="flex justify-center object-fit aspect-square ">
-        <FaChevronLeft
-          className="text-primary w-20 h-20 fixed left-0 top-2/4 cursor-pointer"
-          onClick={handlePrevious}
-        />
-        <Link to={`/details/${carousel[activeIndex]?.productId}`}>
-          <img
-            className="rounded w-full aspect-square my-6"
-            src={carousel[activeIndex]?.image}
+    <div className="container">
+      <div className="grid grid-cols-1">
+        <div className="flex justify-center">
+          <Indicators
+            thisIsCurrent={handleCurrent}
+            count={carousel.length}
+            current={activeIndex}
           />
-        </Link>
-        <FaChevronRight
-          className="text-primary w-20 h-20 fixed right-0 top-2/4 cursor-pointer"
-          onClick={handleNext}
-        />
+        </div>
+        <div className="flex justify-center items-center">
+          <FaChevronLeft
+            className="text-primary w-20 h-20  cursor-pointer"
+            onClick={handlePrevious}
+          />
+          <Link to={`/details/${carousel[activeIndex]?.productId}`}>
+            <img
+              className="rounded w-full aspect-square my-6 lg:w-[700px] lg:h-[700px]"
+              src={carousel[activeIndex]?.image}
+            />
+          </Link>
+          <FaChevronRight
+            className="text-primary w-20 h-20  cursor-pointer"
+            onClick={handleNext}
+          />
+        </div>
       </div>
     </div>
   );
