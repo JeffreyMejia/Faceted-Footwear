@@ -12,11 +12,6 @@ export function Footwear({ isOpen, handleClose }: Footwear) {
         <div>
           <ul className="ml-3 cursor-pointer">
             <li>
-              <Link to="/catalog" onClick={handleClose}>
-                Shop all
-              </Link>
-            </li>
-            <li>
               <Link to="/catalog?style=sneakers" onClick={handleClose}>
                 Sneakers
               </Link>

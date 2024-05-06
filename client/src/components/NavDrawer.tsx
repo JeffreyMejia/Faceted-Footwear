@@ -1,6 +1,6 @@
 import { FormEvent, useState } from 'react';
 import { FaCube, FaPlus, FaMinus } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Footwear } from './Footwear';
 import { Brand } from './Brand';
 import { User } from './UserContext';
@@ -49,7 +49,9 @@ export function NavDrawer({ isItOpen, close, user }: Props) {
               onChange={(e) => setSearchValue(e.target.value)}
             />
           </form>
-          <h1 className="mt-2">Shop by</h1>
+          <Link className="mt-2" to="/catalog">
+            Shop all
+          </Link>
           <div className="flex items-center justify-between ">
             <h2>Footwear</h2>
             {openFootwear === false ? (

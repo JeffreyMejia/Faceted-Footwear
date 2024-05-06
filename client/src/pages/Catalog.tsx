@@ -54,7 +54,7 @@ export function Catalog() {
       <div className="grid grid-cols-2 gap-10 md:grid-cols-3 lg:grid-cols-4 cursor-pointer">
         {products.map((product) => (
           <Link key={product?.productId} to={`/details/${product.productId}`}>
-            <div className="bg-tertiary rounded p-2 shadow-wrapper hover:bg-black">
+            <div className="bg-black rounded p-2 hover:bg-primary">
               <img
                 className="rounded shadow-md aspect-square w-full"
                 src={product.image}

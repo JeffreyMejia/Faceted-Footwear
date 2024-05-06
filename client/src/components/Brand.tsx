@@ -13,6 +13,7 @@ type BrandProps = {
 
 export function Brand({ isOpen, onClose }: BrandProps) {
   const [brands, setBrands] = useState<Brands[]>([]);
+  const [error, setError] = useState<unknown>();
 
   useEffect(() => {
     async function load() {
@@ -21,11 +22,20 @@ export function Brand({ isOpen, onClose }: BrandProps) {
         setBrands(brands);
         console.log(brands);
       } catch (error) {
-        console.error(error);
+        setError(error);
       }
     }
     load();
   }, []);
+
+  if (error) {
+    return (
+      <div className="text-primary">
+        Error Loading brands:{' '}
+        {error instanceof Error ? error.message : 'Unknown Error'}
+      </div>
+    );
+  }
 
   return (
     <>

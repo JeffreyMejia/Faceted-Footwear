@@ -27,9 +27,9 @@ export const tokenKey = 'um.token';
 
 export function saveToken(token: string | undefined): void {
   if (token) {
-    sessionStorage.setItem(tokenKey, token);
+    localStorage.setItem(tokenKey, token);
   } else {
-    sessionStorage.removeItem(tokenKey);
+    localStorage.removeItem(tokenKey);
   }
 }
 

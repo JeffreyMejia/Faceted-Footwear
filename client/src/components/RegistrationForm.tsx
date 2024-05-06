@@ -1,4 +1,4 @@
-import { FormEvent, useState } from 'react';
+import { FormEvent, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   lengthRegex,
@@ -17,7 +17,14 @@ type Props = {
 export function RegistrationForm({ value, handlePassword }: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<unknown>();
+  const [isDisabled, setIsDisabled] = useState(true);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (value.match(passwordValidRegex)) {
+      setIsDisabled(false);
+    }
+  }, [value]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -69,6 +76,9 @@ export function RegistrationForm({ value, handlePassword }: Props) {
     );
   }
 
+  const buttonClass =
+    isDisabled === true ? `bg-red-700 text-white button is disable` : '';
+
   return (
     <>
       <div>
@@ -102,15 +112,19 @@ export function RegistrationForm({ value, handlePassword }: Props) {
           onChange={handlePassword}
           required
         />
-        {value.match(passwordValidRegex) && (
-          <button
-            type="submit"
-            className="my-4 bg-black rounded w-full hover:bg-primary hover:text-black active:bg-secondary active:text-tertiary">
-            Create
-          </button>
-        )}
+        <button
+          type="submit"
+          disabled={isDisabled}
+          className={`${
+            value && buttonClass
+          }my-4 bg-black rounded w-full hover:bg-primary hover:text-black active:bg-secondary active:text-tertiary mt-3`}>
+          Create
+        </button>
       </form>
       <div>
+        {value && isDisabled === true && (
+          <h3>password must meet requirements!</h3>
+        )}
         {value && <h3 className="mb-4">Password requirements:</h3>}
         {value &&
           rules.map((rule) => {
