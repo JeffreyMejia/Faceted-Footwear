@@ -8,6 +8,7 @@ import {
 } from '../library/data';
 import { FaCheck } from 'react-icons/fa';
 import { FaX } from 'react-icons/fa6';
+import { FaEye } from 'react-icons/fa';
 
 type Props = {
   value: string;
@@ -18,6 +19,7 @@ export function RegistrationForm({ value, handlePassword }: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<unknown>();
   const [isDisabled, setIsDisabled] = useState(true);
+  const [passType, setPassType] = useState('password');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -66,6 +68,14 @@ export function RegistrationForm({ value, handlePassword }: Props) {
     ].join(')(?=')}).*$`
   );
 
+  function showPass() {
+    if (passType === 'password') {
+      setPassType('text');
+    } else {
+      setPassType('password');
+    }
+  }
+
   if (isLoading) return <div className="tex-primary">Loading...</div>;
   if (error) {
     return (
@@ -104,14 +114,20 @@ export function RegistrationForm({ value, handlePassword }: Props) {
         <label htmlFor="password" className="my-3">
           Password
         </label>
-        <input
-          name="password"
-          type="password"
-          className="rounded"
-          value={value}
-          onChange={handlePassword}
-          required
-        />
+        <span className="flex items-center">
+          <input
+            name="password"
+            type={passType}
+            className="rounded ml-6"
+            value={value}
+            onChange={handlePassword}
+            required
+          />
+          <FaEye
+            onClick={() => showPass()}
+            className={`ml-2 ${passType === 'text' ? 'fill-black' : ''}`}
+          />
+        </span>
         <button
           type="submit"
           disabled={isDisabled}

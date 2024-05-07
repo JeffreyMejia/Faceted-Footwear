@@ -17,7 +17,7 @@ export function CartDrawer({ isItOpen, close }: Props) {
   if (!isItOpen) return null;
   return (
     <>
-      <div className="fixed right-0 top-0 h-screen bg-secondary text-primary flex flex-col z-10 overflow-y-auto">
+      <div className="fixed right-0 top-0 h-screen bg-secondary text-primary flex flex-col z-10 overflow-y-auto scrollable-content">
         <div className="p-4 border-b-2 border-primary rounded flex items-center">
           <FaX
             className="mx-4 hover:text-white active:text-white"

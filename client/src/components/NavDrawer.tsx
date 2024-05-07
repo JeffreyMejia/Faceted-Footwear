@@ -27,7 +27,7 @@ export function NavDrawer({ isItOpen, close, user }: Props) {
   if (!isItOpen) return null;
   return (
     <>
-      <div className="fixed left-0 top-0 h-screen bg-secondary text-primary z-10 overflow-y-auto">
+      <div className="fixed left-0 top-0 h-screen bg-secondary text-primary z-10 overflow-y-auto scrollable-content">
         <div className="flex flex-col">
           <div className="flex h-full items-center p-4 my-4 border-b-2 border-primary rounded">
             <h1 className="text-primary text-lg md:text-xl lg:text-2xl font-zen">

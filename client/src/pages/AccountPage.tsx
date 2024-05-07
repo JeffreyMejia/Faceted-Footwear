@@ -10,6 +10,7 @@ export function AccountPage() {
   const { cartSignOut } = useContext(CartContext);
 
   function handleSubmit() {
+    localStorage.clear();
     handleSignOut();
     alert('You have signed out successfully');
     navigate('/registration');
