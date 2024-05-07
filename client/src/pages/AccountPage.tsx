@@ -1,15 +1,20 @@
 import { Link } from 'react-router-dom';
 import { useUser } from '../library/useUser';
 import { useNavigate } from 'react-router-dom';
+import { CartContext } from '../components/CartContext';
+import { useContext } from 'react';
 
 export function AccountPage() {
   const { handleSignOut } = useUser();
   const navigate = useNavigate();
+  const { cartSignOut } = useContext(CartContext);
 
   function handleSubmit() {
+    localStorage.clear();
     handleSignOut();
     alert('You have signed out successfully');
     navigate('/registration');
+    cartSignOut();
   }
 
   return (

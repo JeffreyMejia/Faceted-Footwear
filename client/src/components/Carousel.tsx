@@ -68,7 +68,7 @@ export function Carousel() {
           />
           <Link to={`/details/${carousel[activeIndex]?.productId}`}>
             <img
-              className="rounded w-full aspect-square my-6 lg:w-[700px] lg:h-[700px]"
+              className="rounded w-full aspect-square my-6 lg:w-[700px] lg:h-[700px] hover:scale-105 transition"
               src={carousel[activeIndex]?.image}
             />
           </Link>

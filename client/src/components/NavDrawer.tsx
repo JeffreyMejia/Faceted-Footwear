@@ -1,9 +1,10 @@
 import { FormEvent, useState } from 'react';
 import { FaCube, FaPlus, FaMinus } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Footwear } from './Footwear';
 import { Brand } from './Brand';
 import { User } from './UserContext';
+import { FaX } from 'react-icons/fa6';
 
 type Props = {
   isItOpen: boolean;
@@ -26,12 +27,9 @@ export function NavDrawer({ isItOpen, close, user }: Props) {
   if (!isItOpen) return null;
   return (
     <>
-      <div className="fixed left-0 top-0 h-screen bg-secondary text-primary z-10 overflow-y-auto">
+      <div className="fixed left-0 top-0 h-screen bg-secondary text-primary z-10 overflow-y-auto scrollable-content">
         <div className="flex flex-col">
-          <div className="flex h-full items-center p-4 my-2">
-            <button onClick={close} className="text-primary mx-4">
-              Close
-            </button>
+          <div className="flex h-full items-center p-4 my-4 border-b-2 border-primary rounded">
             <h1 className="text-primary text-lg md:text-xl lg:text-2xl font-zen">
               Faceted Footwear
             </h1>
@@ -39,6 +37,11 @@ export function NavDrawer({ isItOpen, close, user }: Props) {
               onClick={() => navigate('/')}
               className="text-primary ml-3 h-7 w-7 hover:animate-spin active:animate-bounce"
             />
+            <FaX
+              className="mx-4 hover:text-white active:text-white"
+              onClick={close}>
+              Close
+            </FaX>
           </div>
           <form onSubmit={(e) => handleSubmit(e)}>
             <input
@@ -49,9 +52,15 @@ export function NavDrawer({ isItOpen, close, user }: Props) {
               onChange={(e) => setSearchValue(e.target.value)}
             />
           </form>
-          <h1 className="mt-2">Shop by</h1>
+          <Link className="mt-2" to="/catalog">
+            Shop all
+          </Link>
           <div className="flex items-center justify-between ">
-            <h2>Footwear</h2>
+            <h2
+              className="cursor-pointer"
+              onClick={() => setOpenFootwear(!openFootwear)}>
+              Footwear
+            </h2>
             {openFootwear === false ? (
               <FaPlus
                 onClick={() => setOpenFootwear(!openFootwear)}
@@ -64,12 +73,13 @@ export function NavDrawer({ isItOpen, close, user }: Props) {
               />
             )}
           </div>
-          <Footwear
-            isOpen={openFootwear}
-            handleClose={() => setOpenFootwear(!openFootwear)}
-          />
+          <Footwear isOpen={openFootwear} />
           <div className="flex items-center justify-between">
-            <h2>Brand</h2>
+            <h2
+              className="cursor-pointer"
+              onClick={() => setOpenBrand(!openBrand)}>
+              Brand
+            </h2>
             {openBrand === false ? (
               <FaPlus
                 onClick={() => setOpenBrand(!openBrand)}

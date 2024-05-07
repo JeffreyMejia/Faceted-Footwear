@@ -21,12 +21,13 @@ export function SignIn() {
       };
       const res = await fetch('/api/auth/sign-in', req);
       if (!res.ok) {
-        throw new Error(`fetch Error ${res.status}`);
+        alert(
+          `invalid login! Check your password and email to make sure it is correct.`
+        );
+        throw new Error(`fetch Error `);
       }
       const { user, token } = await res.json();
       handleSignIn(user, token);
-      console.log('Signed In', user);
-      console.log('Received token:', token);
       alert('you are signed in');
       navigate('/');
     } catch (err) {
@@ -40,7 +41,7 @@ export function SignIn() {
   if (error) {
     return (
       <div className="text-primary">
-        Error Loading catalog:{' '}
+        Error Loading:{' '}
         {error instanceof Error ? error.message : 'Unknown Error'}
       </div>
     );

@@ -13,13 +13,13 @@ export function Indicators({ count, current, thisIsCurrent }: Props) {
     indicators.push(
       current === i ? (
         <FaDotCircle
-          className="text-primary mx-5"
+          className="text-primary mx-5 cursor-pointer hover:scale-105 transition"
           key={i}
           onClick={() => thisIsCurrent(i)}
         />
       ) : (
         <FaRegDotCircle
-          className="text-primary mx-5"
+          className="text-primary mx-5 cursor-pointer hover:scale-105 transition"
           key={i}
           onClick={() => thisIsCurrent(i)}
         />

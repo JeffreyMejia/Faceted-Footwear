@@ -3,6 +3,7 @@ import { toDollars } from '../library/to-dollars';
 import { CartContext } from './CartContext';
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { FaX } from 'react-icons/fa6';
 
 type Props = {
   isItOpen: boolean;
@@ -16,13 +17,20 @@ export function CartDrawer({ isItOpen, close }: Props) {
   if (!isItOpen) return null;
   return (
     <>
-      <div className="fixed right-0 top-0 h-screen bg-secondary text-primary flex flex-col z-10 overflow-y-auto">
-        <div className="p-4">
-          <h1 className="font-zen text-3xl">Shopping Cart</h1>{' '}
-          <button className="mx-4" onClick={close}>
+      <div className="fixed right-0 top-0 h-screen bg-secondary text-primary flex flex-col z-10 overflow-y-auto scrollable-content">
+        <div className="p-4 border-b-2 border-primary rounded flex items-center">
+          <FaX
+            className="mx-4 hover:text-white active:text-white"
+            onClick={close}>
             Close
-          </button>
+          </FaX>
+          <h1 className="font-zen text-3xl">Shopping Cart</h1>
         </div>
+        {cart.length === 0 && (
+          <h1 className="text-primary text-lg mt-10 mx-4">
+            No items in cart...
+          </h1>
+        )}
         {cart.map((p) => (
           <div key={`${p.productId} + ${p.size}`} className="p-4">
             <img className="object-contain w-60" src={p.image} />

@@ -1,4 +1,4 @@
-import { FormEvent, useState } from 'react';
+import { FormEvent, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   lengthRegex,
@@ -8,6 +8,7 @@ import {
 } from '../library/data';
 import { FaCheck } from 'react-icons/fa';
 import { FaX } from 'react-icons/fa6';
+import { FaEye } from 'react-icons/fa';
 
 type Props = {
   value: string;
@@ -17,7 +18,15 @@ type Props = {
 export function RegistrationForm({ value, handlePassword }: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<unknown>();
+  const [isDisabled, setIsDisabled] = useState(true);
+  const [passType, setPassType] = useState('password');
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (value.match(passwordValidRegex)) {
+      setIsDisabled(false);
+    }
+  }, [value]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -59,6 +68,14 @@ export function RegistrationForm({ value, handlePassword }: Props) {
     ].join(')(?=')}).*$`
   );
 
+  function showPass() {
+    if (passType === 'password') {
+      setPassType('text');
+    } else {
+      setPassType('password');
+    }
+  }
+
   if (isLoading) return <div className="tex-primary">Loading...</div>;
   if (error) {
     return (
@@ -68,6 +85,9 @@ export function RegistrationForm({ value, handlePassword }: Props) {
       </div>
     );
   }
+
+  const buttonClass =
+    isDisabled === true ? `bg-red-700 text-white button is disabled` : '';
 
   return (
     <>
@@ -94,23 +114,33 @@ export function RegistrationForm({ value, handlePassword }: Props) {
         <label htmlFor="password" className="my-3">
           Password
         </label>
-        <input
-          name="password"
-          type="password"
-          className="rounded"
-          value={value}
-          onChange={handlePassword}
-          required
-        />
-        {value.match(passwordValidRegex) && (
-          <button
-            type="submit"
-            className="my-4 bg-black rounded w-full hover:bg-primary hover:text-black active:bg-secondary active:text-tertiary">
-            Create
-          </button>
-        )}
+        <span className="flex items-center">
+          <input
+            name="password"
+            type={passType}
+            className="rounded ml-6"
+            value={value}
+            onChange={handlePassword}
+            required
+          />
+          <FaEye
+            onClick={() => showPass()}
+            className={`ml-2 ${passType === 'text' ? 'fill-black' : ''}`}
+          />
+        </span>
+        <button
+          type="submit"
+          disabled={isDisabled}
+          className={`${
+            value && buttonClass
+          }my-4 bg-black rounded w-full hover:bg-primary hover:text-black active:bg-secondary active:text-tertiary mt-3`}>
+          Create
+        </button>
       </form>
       <div>
+        {value && isDisabled === true && (
+          <h3>password must meet requirements!</h3>
+        )}
         {value && <h3 className="mb-4">Password requirements:</h3>}
         {value &&
           rules.map((rule) => {

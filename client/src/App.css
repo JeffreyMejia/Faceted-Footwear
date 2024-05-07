@@ -22,3 +22,7 @@
 .x {
   color: red;
 }
+
+.scrollable-content::-webkit-scrollbar {
+  display: none;
+}
