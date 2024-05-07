@@ -13,6 +13,9 @@ export type CartValues = {
   incrementProductInCart: (product: CartProduct) => void;
   checkout: (item: CartProduct[]) => void;
   cartSignOut: () => void;
+  cartDrawerOpen: () => void;
+  cartDrawerClose: () => void;
+  isCartDrawerOpen: boolean;
 };
 
 export const CartContext = createContext<CartValues>({
@@ -22,4 +25,7 @@ export const CartContext = createContext<CartValues>({
   incrementProductInCart: () => undefined,
   checkout: () => undefined,
   cartSignOut: () => undefined,
+  cartDrawerOpen: () => undefined,
+  cartDrawerClose: () => undefined,
+  isCartDrawerOpen: true,
 });

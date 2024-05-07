@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Footwear } from './Footwear';
 import { Brand } from './Brand';
 import { User } from './UserContext';
+import { FaX } from 'react-icons/fa6';
 
 type Props = {
   isItOpen: boolean;
@@ -29,11 +30,6 @@ export function NavDrawer({ isItOpen, close, user }: Props) {
       <div className="fixed left-0 top-0 h-screen bg-secondary text-primary z-10 overflow-y-auto">
         <div className="flex flex-col">
           <div className="flex h-full items-center p-4 my-4 border-b-2 border-primary rounded">
-            <button
-              onClick={close}
-              className="text-primary mx-4 hover:text-white active:text-white">
-              Close
-            </button>
             <h1 className="text-primary text-lg md:text-xl lg:text-2xl font-zen">
               Faceted Footwear
             </h1>
@@ -41,6 +37,11 @@ export function NavDrawer({ isItOpen, close, user }: Props) {
               onClick={() => navigate('/')}
               className="text-primary ml-3 h-7 w-7 hover:animate-spin active:animate-bounce"
             />
+            <FaX
+              className="mx-4 hover:text-white active:text-white"
+              onClick={close}>
+              Close
+            </FaX>
           </div>
           <form onSubmit={(e) => handleSubmit(e)}>
             <input
@@ -72,10 +73,7 @@ export function NavDrawer({ isItOpen, close, user }: Props) {
               />
             )}
           </div>
-          <Footwear
-            isOpen={openFootwear}
-            handleClose={() => setOpenFootwear(!openFootwear)}
-          />
+          <Footwear isOpen={openFootwear} />
           <div className="flex items-center justify-between">
             <h2
               className="cursor-pointer"

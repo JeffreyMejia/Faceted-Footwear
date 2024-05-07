@@ -1,5 +1,5 @@
 import { CartContext, CartProduct } from '../components/CartContext';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { toDollars } from '../library/to-dollars';
 import { FaMinus, FaPlus } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
@@ -8,6 +8,12 @@ export function Checkout() {
   const { cart, incrementProductInCart, removeFromCart, checkout } =
     useContext(CartContext);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (cart.length === 0) {
+      navigate('/catalog');
+    }
+  });
 
   let sum = 0;
   cart.forEach((p) => (sum += p.amount * p.quantity));

@@ -5,15 +5,17 @@ import { useEffect, useState, useContext, FormEvent } from 'react';
 import { CartContext } from '../components/CartContext';
 import { FaBookmark } from 'react-icons/fa';
 import { WishlistContext } from '../components/WishlistContext';
+import { useUser } from '../library/useUser';
 
 export function ProductDetails() {
   const { productId } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<unknown>();
   const [product, setProduct] = useState<Product>();
-  const { addToCart } = useContext(CartContext);
+  const { addToCart, cartDrawerOpen } = useContext(CartContext);
   const { addToWishlist, wishlist } = useContext(WishlistContext);
   const navigate = useNavigate();
+  const { user } = useUser();
 
   useEffect(() => {
     async function loadProduct(productId: number) {
@@ -48,7 +50,7 @@ export function ProductDetails() {
       const formData = new FormData(event.currentTarget);
       const formValues = Object.fromEntries(formData);
       addToCart(product, +formValues.sizes);
-      alert(`${product.name} added to cart`);
+      cartDrawerOpen();
     } catch (error) {
       setError(error);
     } finally {
@@ -77,15 +79,17 @@ export function ProductDetails() {
           <h1 className="text-xl md:text-2xl lg:text-3xl font-bold my-3 text-tertiary">{`${brand} ${name}`}</h1>
           <h3 className="text-primary">{toDollars(amount)}</h3>
           <span>
-            {!exists && (
-              <>
-                <p className="text-primary">add to wishlist</p>
-                <FaBookmark
-                  onClick={() => handleAddToWishlist(product)}
-                  className="fill-primary my-2 cursor-pointer"
-                />
-              </>
-            )}
+            {user
+              ? !exists && (
+                  <>
+                    <p className="text-primary">add to wishlist</p>
+                    <FaBookmark
+                      onClick={() => handleAddToWishlist(product)}
+                      className="fill-primary my-2 cursor-pointer"
+                    />
+                  </>
+                )
+              : undefined}
           </span>
         </div>
         <div className="ml-6 mt-3">

@@ -2,39 +2,28 @@ import { Link } from 'react-router-dom';
 
 type Footwear = {
   isOpen: boolean;
-  handleClose: () => void;
 };
 
-export function Footwear({ isOpen, handleClose }: Footwear) {
+export function Footwear({ isOpen }: Footwear) {
   return (
     <>
       {isOpen && (
         <div>
           <ul className="ml-3 cursor-pointer">
             <li>
-              <Link to="/catalog?style=sneakers" onClick={handleClose}>
-                Sneakers
-              </Link>
+              <Link to="/catalog?style=sneakers">Sneakers</Link>
             </li>
             <li>
-              <Link to="/catalog?style=boots" onClick={handleClose}>
-                Boots
-              </Link>
+              <Link to="/catalog?style=boots">Boots</Link>
             </li>
             <li>
-              <Link to="/catalog?style=loafers" onClick={handleClose}>
-                Loafers
-              </Link>
+              <Link to="/catalog?style=loafers">Loafers</Link>
             </li>
             <li>
-              <Link to="/catalog?style=sandals" onClick={handleClose}>
-                Sandals
-              </Link>
+              <Link to="/catalog?style=sandals">Sandals</Link>
             </li>
             <li>
-              <Link to={`/catalog?style=dress shoes`} onClick={handleClose}>
-                Dress shoes
-              </Link>
+              <Link to={`/catalog?style=dress shoes`}>Dress shoes</Link>
             </li>
           </ul>
         </div>

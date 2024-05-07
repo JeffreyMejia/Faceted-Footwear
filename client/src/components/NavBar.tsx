@@ -21,8 +21,8 @@ export function Navbar({ user }: Props) {
   const navigate = useNavigate();
   const [openNavDrawer, setOpenNavDrawer] = useState(false);
   const [openSearchDrawer, setOpenSearchDrawer] = useState(false);
-  const [openCartDrawer, setOpenCartDrawer] = useState(false);
-  const { cart } = useContext(CartContext);
+  const { cart, cartDrawerOpen, cartDrawerClose, isCartDrawerOpen } =
+    useContext(CartContext);
 
   let quantity = 0;
 
@@ -41,7 +41,9 @@ export function Navbar({ user }: Props) {
           close={() => setOpenNavDrawer(false)}
         />
         <div className="flex bg-secondary h-full items-center p-4">
-          <h1 className="text-primary text-2xl md:text-4xl lg:text-4xl font-zen">
+          <h1
+            onClick={() => navigate('/')}
+            className="text-primary text-2xl md:text-4xl lg:text-4xl font-zen cursor-pointer">
             Faceted Footwear
           </h1>
           <FaCube
@@ -50,7 +52,7 @@ export function Navbar({ user }: Props) {
           />
         </div>
         <div className="flex">
-          {user !== undefined && (
+          {user && (
             <Link to={'/wishlist'}>
               <FaBookmark className="fill-primary cursor-pointer h-7 w-7 hover:fill-tertiary active:fill-tertiary mr-4 hover:scale-150 transition" />
             </Link>
@@ -64,7 +66,7 @@ export function Navbar({ user }: Props) {
             isItOpen={openSearchDrawer}
           />
           <FaShoppingCart
-            onClick={() => setOpenCartDrawer(true)}
+            onClick={() => cartDrawerOpen()}
             className="fill-primary cursor-pointer h-7 w-7 ml-4 hover:fill-tertiary active:fill-tertiary hover:scale-150 transition"
           />
           {quantity !== 0 && (
@@ -73,8 +75,8 @@ export function Navbar({ user }: Props) {
             </span>
           )}
           <CartDrawer
-            close={() => setOpenCartDrawer(false)}
-            isItOpen={openCartDrawer}
+            close={() => cartDrawerClose()}
+            isItOpen={isCartDrawerOpen}
           />
         </div>
       </div>

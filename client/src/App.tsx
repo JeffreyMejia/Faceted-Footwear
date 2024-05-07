@@ -33,6 +33,7 @@ export default function App() {
   const [user, setUser] = useState<User>();
   const [token, setToken] = useState<string>();
   const [wishlist, setWishlist] = useState<wishlistItem[]>([]);
+  const [openCartDrawer, setOpenCartDrawer] = useState(false);
 
   useEffect(() => {
     async function load() {
@@ -183,6 +184,16 @@ export default function App() {
     setCart([]);
   }
 
+  function cartDrawerOpen() {
+    setOpenCartDrawer(true);
+  }
+
+  function cartDrawerClose() {
+    setOpenCartDrawer(false);
+  }
+
+  const isCartDrawerOpen = openCartDrawer;
+
   const userContextValue = { user, token, handleSignIn, handleSignOut };
 
   const wishlistContextValue = {
@@ -198,6 +209,9 @@ export default function App() {
     incrementProductInCart,
     checkout,
     cartSignOut,
+    cartDrawerOpen,
+    cartDrawerClose,
+    isCartDrawerOpen,
   };
 
   if (error) {
