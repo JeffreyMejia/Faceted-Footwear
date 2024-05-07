@@ -24,7 +24,9 @@ export function SearchDrawer({ isItOpen, close }: Props) {
           <h1 className="text-primary font-zen text-3xl mb-2">Search</h1>
         </div>
         <div className="flex items-center justify-center">
-          <button className="mr-4" onClick={close}>
+          <button
+            className="mr-4 hover:text-white active:text-white"
+            onClick={close}>
             Close
           </button>
           <form onSubmit={(e) => handleSubmit(e)}>

@@ -18,6 +18,8 @@ import {
   wishlistRemove,
   readCart,
   cartCheckout,
+  readLocalCart,
+  saveCartLocally,
 } from './library/data';
 import { AppContext, User } from './components/UserContext';
 import { Wishlist } from './pages/Wishlist';
@@ -35,15 +37,18 @@ export default function App() {
   useEffect(() => {
     async function load() {
       try {
-        if (user !== undefined) {
-          const cart = await readCart();
-          setCart(cart);
-        }
+        const cart = await readCart();
+        setCart(cart);
       } catch (error) {
         setError(error);
       }
     }
-    load();
+    if (user) {
+      load();
+    } else {
+      const localCart = readLocalCart();
+      setCart(localCart);
+    }
   }, [user]);
 
   async function addToWishlist(item: Product) {
@@ -92,12 +97,20 @@ export default function App() {
       );
       if (!exists) {
         const cartItem = { productId: item.productId, quantity: 1, size };
-        await cartAddition(cartItem);
         setCart([...cart, { ...item, quantity: 1, size }]);
+        if (user) {
+          await cartAddition(cartItem);
+        } else {
+          saveCartLocally(cart);
+        }
       } else if (exists.size !== size) {
         const cartItem = { productId: item.productId, quantity: 1, size };
-        await cartAddition(cartItem);
         setCart([...cart, { ...item, quantity: 1, size }]);
+        if (user) {
+          await cartAddition(cartItem);
+        } else {
+          saveCartLocally(cart);
+        }
       }
     } catch (error) {
       setError(error);
@@ -112,8 +125,12 @@ export default function App() {
           ? product
           : item
       );
-      await updateQuantity(product);
       setCart(newArr);
+      if (user) {
+        await updateQuantity(product);
+      } else {
+        saveCartLocally(cart);
+      }
     } catch (error) {
       setError(error);
     }
@@ -127,14 +144,22 @@ export default function App() {
           ? item
           : product
       );
-      await updateQuantity(item);
       setCart(newArr);
+      if (user) {
+        await updateQuantity(item);
+      } else {
+        saveCartLocally(cart);
+      }
       if (item.quantity === 0) {
         const filtered = cart.filter(
           (p) => p.productId !== item.productId || p.size !== item.size
         );
         setCart([...filtered]);
-        await cartRemoval(item);
+        if (user) {
+          await cartRemoval(item);
+        } else {
+          saveCartLocally(cart);
+        }
       }
     } catch (error) {
       setError(error);
@@ -147,6 +172,10 @@ export default function App() {
     );
     setCart([...filtered]);
     await cartCheckout();
+  }
+
+  function cartSignOut() {
+    setCart([]);
   }
 
   const userContextValue = { user, token, handleSignIn, handleSignOut };
@@ -163,6 +192,7 @@ export default function App() {
     removeFromCart,
     incrementProductInCart,
     checkout,
+    cartSignOut,
   };
 
   if (error) {

@@ -33,7 +33,7 @@ export function Navbar({ user }: Props) {
       <div className="flex w-full bg-transparent px-4 h-16 items-center justify-between sticky top-0 z-50">
         <FaBars
           onClick={() => setOpenNavDrawer(true)}
-          className="fill-primary cursor-pointer h-7 w-7 hover:fill-tertiary active:fill-tertiary"
+          className="fill-primary cursor-pointer h-7 w-7 hover:fill-tertiary active:fill-tertiary hover:scale-150 transition"
         />
         <NavDrawer
           user={user}
@@ -52,12 +52,12 @@ export function Navbar({ user }: Props) {
         <div className="flex">
           {user !== undefined && (
             <Link to={'/wishlist'}>
-              <FaBookmark className="fill-primary cursor-pointer h-7 w-7 hover:fill-tertiary active:fill-tertiary mr-4" />
+              <FaBookmark className="fill-primary cursor-pointer h-7 w-7 hover:fill-tertiary active:fill-tertiary mr-4 hover:scale-150 transition" />
             </Link>
           )}
           <FaSearch
             onClick={() => setOpenSearchDrawer(true)}
-            className="fill-primary cursor-pointer h-7 w-7 hover:fill-tertiary active:fill-tertiary"
+            className="fill-primary cursor-pointer h-7 w-7 hover:fill-tertiary active:fill-tertiary hover:scale-150 transition"
           />
           <SearchDrawer
             close={() => setOpenSearchDrawer(false)}
@@ -65,7 +65,7 @@ export function Navbar({ user }: Props) {
           />
           <FaShoppingCart
             onClick={() => setOpenCartDrawer(true)}
-            className="fill-primary cursor-pointer h-7 w-7 ml-4 hover:fill-tertiary active:fill-tertiary"
+            className="fill-primary cursor-pointer h-7 w-7 ml-4 hover:fill-tertiary active:fill-tertiary hover:scale-150 transition"
           />
           {quantity !== 0 && (
             <span className="absolute top-3 right-2 inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-secondary rounded-full">

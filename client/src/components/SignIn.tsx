@@ -25,8 +25,6 @@ export function SignIn() {
       }
       const { user, token } = await res.json();
       handleSignIn(user, token);
-      console.log('Signed In', user);
-      console.log('Received token:', token);
       alert('you are signed in');
       navigate('/');
     } catch (err) {
@@ -40,7 +38,7 @@ export function SignIn() {
   if (error) {
     return (
       <div className="text-primary">
-        Error Loading catalog:{' '}
+        Error Loading:{' '}
         {error instanceof Error ? error.message : 'Unknown Error'}
       </div>
     );

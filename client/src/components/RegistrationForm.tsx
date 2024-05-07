@@ -77,7 +77,7 @@ export function RegistrationForm({ value, handlePassword }: Props) {
   }
 
   const buttonClass =
-    isDisabled === true ? `bg-red-700 text-white button is disable` : '';
+    isDisabled === true ? `bg-red-700 text-white button is disabled` : '';
 
   return (
     <>

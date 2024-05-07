@@ -1,4 +1,5 @@
 import { CartProduct } from '../components/CartContext';
+import { User } from '../components/UserContext';
 import { wishlistItem } from '../components/WishlistContext';
 
 export type Product = {
@@ -34,9 +35,39 @@ export function saveToken(token: string | undefined): void {
 }
 
 export function readToken(): string {
-  const token = sessionStorage.getItem(tokenKey);
+  const token = localStorage.getItem(tokenKey);
   if (!token) throw new Error('No token found');
   return token;
+}
+
+export function saveUserLocally(user: User | undefined): void {
+  if (user) {
+    localStorage.setItem('user', JSON.stringify(user));
+  } else {
+    localStorage.removeItem('user');
+  }
+}
+export function readUser(): string {
+  const token = localStorage.getItem('user');
+  if (!token) throw new Error('No token found');
+  return token;
+}
+
+export function saveCartLocally(cart: CartProduct[]) {
+  if (cart.length > 0) {
+    localStorage.setItem('cart', JSON.stringify(cart));
+  } else {
+    localStorage.removeItem('cart');
+  }
+}
+
+export function readLocalCart() {
+  const cart = localStorage.getItem('cart');
+  if (cart) {
+    return JSON.parse(cart);
+  } else {
+    return [];
+  }
 }
 
 // All fetches below

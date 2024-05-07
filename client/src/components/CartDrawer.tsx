@@ -18,11 +18,18 @@ export function CartDrawer({ isItOpen, close }: Props) {
     <>
       <div className="fixed right-0 top-0 h-screen bg-secondary text-primary flex flex-col z-10 overflow-y-auto">
         <div className="p-4 border-b-2 border-primary rounded">
-          <h1 className="font-zen text-3xl">Shopping Cart</h1>{' '}
-          <button className="mx-4" onClick={close}>
+          <h1 className="font-zen text-3xl">Shopping Cart</h1>
+          <button
+            className="mx-4 hover:text-white active:text-white"
+            onClick={close}>
             Close
           </button>
         </div>
+        {cart.length === 0 && (
+          <h1 className="text-primary text-lg mt-10 mx-4">
+            You currently have no items in your cart!
+          </h1>
+        )}
         {cart.map((p) => (
           <div key={`${p.productId} + ${p.size}`} className="p-4">
             <img className="object-contain w-60" src={p.image} />

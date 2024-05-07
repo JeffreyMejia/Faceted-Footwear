@@ -24,7 +24,7 @@ export function Wishlist() {
         {wishlist.map((product) => (
           <div
             key={product?.item.productId}
-            className="bg-black rounded p-2 hover:bg-primary">
+            className="bg-black rounded p-2 hover:bg-primary hover:scale-105 transition">
             <Link to={`/details/${product.item.productId}`}>
               <img
                 className="w-full rounded shadow-md aspect-square "

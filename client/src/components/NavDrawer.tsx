@@ -29,7 +29,9 @@ export function NavDrawer({ isItOpen, close, user }: Props) {
       <div className="fixed left-0 top-0 h-screen bg-secondary text-primary z-10 overflow-y-auto">
         <div className="flex flex-col">
           <div className="flex h-full items-center p-4 my-4 border-b-2 border-primary rounded">
-            <button onClick={close} className="text-primary mx-4">
+            <button
+              onClick={close}
+              className="text-primary mx-4 hover:text-white active:text-white">
               Close
             </button>
             <h1 className="text-primary text-lg md:text-xl lg:text-2xl font-zen">
@@ -53,7 +55,11 @@ export function NavDrawer({ isItOpen, close, user }: Props) {
             Shop all
           </Link>
           <div className="flex items-center justify-between ">
-            <h2>Footwear</h2>
+            <h2
+              className="cursor-pointer"
+              onClick={() => setOpenFootwear(!openFootwear)}>
+              Footwear
+            </h2>
             {openFootwear === false ? (
               <FaPlus
                 onClick={() => setOpenFootwear(!openFootwear)}
@@ -71,7 +77,11 @@ export function NavDrawer({ isItOpen, close, user }: Props) {
             handleClose={() => setOpenFootwear(!openFootwear)}
           />
           <div className="flex items-center justify-between">
-            <h2>Brand</h2>
+            <h2
+              className="cursor-pointer"
+              onClick={() => setOpenBrand(!openBrand)}>
+              Brand
+            </h2>
             {openBrand === false ? (
               <FaPlus
                 onClick={() => setOpenBrand(!openBrand)}

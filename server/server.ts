@@ -240,12 +240,13 @@ app.delete(
   async (req, res, next) => {
     try {
       const { productId, size } = req.params;
+      const { userId } = req.body;
       const sql = `
        delete from "cartItems"
-       where "productId" = $1 and "size" =$2
+       where "productId" = $1 and "size" =$2 and "userId" = $3
        returning *
                  `;
-      const params = [productId, size];
+      const params = [productId, size, req.user?.userId];
       const results = await db.query(sql, params);
       const deletedCartItem = results.rows[0];
       if (!deletedCartItem)
@@ -263,15 +264,16 @@ app.put(
   async (req, res, next) => {
     try {
       const { productId } = req.params;
-      const { quantity, size } = req.body;
+      const { quantity, size, userId } = req.body;
       const sql = `
     update "cartItems"
     set "quantity" = $1
     where "productId" = $2
     and "size" = $3
+    and "userId" = $4
     returning*
     `;
-      const params = [quantity, productId, size];
+      const params = [quantity, productId, size, req.user?.userId];
       const results = await db.query(sql, params);
       const updatedProduct = results.rows[0];
       if (!updatedProduct) {
@@ -325,12 +327,14 @@ app.delete(
   async (req, res, next) => {
     try {
       const { productId } = req.params;
+      const { userId } = req.body;
       const sql = `
        delete from "wishlists"
        where "productId" = $1
+       and "userId" = $2
        returning *
                  `;
-      const params = [productId];
+      const params = [productId, req.user?.userId];
       const results = await db.query(sql, params);
       const deletedCartItem = results.rows[0];
       if (!deletedCartItem)
