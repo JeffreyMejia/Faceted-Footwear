@@ -44,6 +44,11 @@ export default function App() {
       }
     }
     if (user) {
+      // const localCart = readLocalCart();
+      // if (localCart) {
+      //   localCart.map((p) => cartAddition(p));
+      // }
+      // localStorage.removeItem(JSON.stringify(localCart));
       load();
     } else {
       const localCart = readLocalCart();
@@ -101,7 +106,7 @@ export default function App() {
         if (user) {
           await cartAddition(cartItem);
         } else {
-          saveCartLocally(cart);
+          saveCartLocally([...cart, { ...item, quantity: 1, size }]);
         }
       } else if (exists.size !== size) {
         const cartItem = { productId: item.productId, quantity: 1, size };
@@ -158,7 +163,7 @@ export default function App() {
         if (user) {
           await cartRemoval(item);
         } else {
-          saveCartLocally(cart);
+          saveCartLocally(filtered);
         }
       }
     } catch (error) {
