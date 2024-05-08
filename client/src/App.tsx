@@ -48,10 +48,6 @@ export default function App() {
       const localCart = readLocalCart();
       if (localCart) {
         localCart.map((p) => cartAddition(p));
-        // const oldCart = localCart.map((p) =>
-        //   localStorage.removeItem(JSON.stringify(p))
-        // );
-        // saveCartLocally(oldCart);
       }
       load();
     } else {

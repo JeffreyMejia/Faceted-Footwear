@@ -25,6 +25,7 @@ export const specialCharactersRegex = new RegExp(
 );
 
 export const tokenKey = 'um.token';
+export const userKey = 'um.user';
 
 export function saveToken(token: string | undefined): void {
   if (token) {
@@ -42,13 +43,13 @@ export function readToken(): string {
 
 export function saveUserLocally(user: User | undefined): void {
   if (user) {
-    localStorage.setItem('user', JSON.stringify(user));
+    localStorage.setItem(userKey, JSON.stringify(user));
   } else {
-    localStorage.removeItem('user');
+    localStorage.removeItem(userKey);
   }
 }
 export function readUser(): string {
-  const token = localStorage.getItem('user');
+  const token = localStorage.getItem(userKey);
   if (!token) throw new Error('No token found');
   return token;
 }

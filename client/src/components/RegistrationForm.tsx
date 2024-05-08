@@ -25,6 +25,8 @@ export function RegistrationForm({ value, handlePassword }: Props) {
   useEffect(() => {
     if (value.match(passwordValidRegex)) {
       setIsDisabled(false);
+    } else {
+      setIsDisabled(true);
     }
   }, [value]);
 
