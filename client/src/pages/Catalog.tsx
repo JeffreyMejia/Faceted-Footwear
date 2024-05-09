@@ -52,23 +52,31 @@ export function Catalog() {
         </h1>
       </div>
       <div className="grid grid-cols-2 gap-10 md:grid-cols-3 lg:grid-cols-4 cursor-pointer">
-        {products.map((product) => (
-          <Link key={product?.productId} to={`/details/${product.productId}`}>
-            <div className="bg-black rounded p-2 hover:bg-primary hover:scale-105 transition">
-              <img
-                className="rounded shadow-md aspect-square w-full"
-                src={product.image}
-                alt={product.name}
-              />
-              <div className="flex mt-2">
-                <h2 className="text-white mr-2">{`${product.brand} ${product.name}`}</h2>
+        {products.length !== 0 ? (
+          products.map((product) => (
+            <Link key={product?.productId} to={`/details/${product.productId}`}>
+              <div className="bg-black rounded p-2 hover:bg-primary hover:scale-105 transition">
+                <img
+                  className="rounded shadow-md aspect-square w-full"
+                  src={product.image}
+                  alt={product.name}
+                />
+                <div className="flex mt-2">
+                  <h2 className="text-white mr-2">{`${product.brand} ${product.name}`}</h2>
+                </div>
+                <h3 className="text-white font-bold">
+                  {toDollars(product.amount)}
+                </h3>
               </div>
-              <h3 className="text-white font-bold">
-                {toDollars(product.amount)}
-              </h3>
-            </div>
-          </Link>
-        ))}
+            </Link>
+          ))
+        ) : (
+          <div>
+            <h1 className="text-primary text-2xl">
+              Sorry there were no results for your query!
+            </h1>
+          </div>
+        )}
       </div>
     </div>
   );

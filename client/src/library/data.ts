@@ -1,5 +1,4 @@
 import { CartProduct } from '../components/CartContext';
-import { User } from '../components/UserContext';
 import { wishlistItem } from '../components/WishlistContext';
 
 export type Product = {
@@ -37,19 +36,6 @@ export function saveToken(token: string | undefined): void {
 
 export function readToken(): string {
   const token = localStorage.getItem(tokenKey);
-  if (!token) throw new Error('No token found');
-  return token;
-}
-
-export function saveUserLocally(user: User | undefined): void {
-  if (user) {
-    localStorage.setItem(userKey, JSON.stringify(user));
-  } else {
-    localStorage.removeItem(userKey);
-  }
-}
-export function readUser(): string {
-  const token = localStorage.getItem(userKey);
   if (!token) throw new Error('No token found');
   return token;
 }
