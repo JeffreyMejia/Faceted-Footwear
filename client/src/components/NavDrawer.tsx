@@ -43,7 +43,7 @@ export function NavDrawer({ isItOpen, close, user }: Props) {
               Close
             </FaX>
           </div>
-          <form onSubmit={(e) => handleSubmit(e)}>
+          <form className="ml-2" onSubmit={(e) => handleSubmit(e)}>
             <input
               className="rounded"
               type="text"
@@ -52,10 +52,10 @@ export function NavDrawer({ isItOpen, close, user }: Props) {
               onChange={(e) => setSearchValue(e.target.value)}
             />
           </form>
-          <Link className="mt-2" to="/catalog">
+          <Link className="mt-2 ml-2" to="/catalog">
             Shop all
           </Link>
-          <div className="flex items-center justify-between ">
+          <div className="flex items-center justify-between ml-2">
             <h2
               className="cursor-pointer"
               onClick={() => setOpenFootwear(!openFootwear)}>
@@ -74,7 +74,7 @@ export function NavDrawer({ isItOpen, close, user }: Props) {
             )}
           </div>
           <Footwear isOpen={openFootwear} />
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between ml-2">
             <h2
               className="cursor-pointer"
               onClick={() => setOpenBrand(!openBrand)}>
@@ -99,7 +99,7 @@ export function NavDrawer({ isItOpen, close, user }: Props) {
             />
           </div>
           <h2
-            className="cursor-pointer"
+            className="cursor-pointer ml-2"
             onClick={() =>
               user === undefined
                 ? navigate('/registration')
